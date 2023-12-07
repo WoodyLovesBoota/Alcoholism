@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLeftLong } from "@fortawesome/free-solid-svg-icons";
 
 const Detail = () => {
-  const detailMatch: PathMatch<string> | null = useMatch("/details/:id");
   const [current, setCurrent] = useRecoilState(cockTailState);
   const cocktail = current.drinks[0];
   const navigate = useNavigate();
@@ -89,6 +88,9 @@ const Main = styled.div`
   border-radius: 1.875rem;
   padding: 6.25rem;
   position: relative;
+  @media screen and (max-width: 899px) {
+    flex-direction: column;
+  }
 `;
 
 const Photo = styled.div<{ bgPhoto: string }>`
@@ -98,10 +100,16 @@ const Photo = styled.div<{ bgPhoto: string }>`
   background-position: center center;
   background-size: cover;
   border-radius: 9.375rem;
+  @media screen and (max-width: 899px) {
+    margin-bottom: 2.5rem;
+  }
 `;
 
 const Contents = styled.div`
   margin-left: 9.375rem;
+  @media screen and (max-width: 899px) {
+    margin-left: 0;
+  }
 `;
 
 const Name = styled.h2`
@@ -112,7 +120,7 @@ const Name = styled.h2`
 
 const Ingradients = styled.div`
   margin-top: 1.25rem;
-  margin-bottom: 3.125rem;
+  margin-bottom: 1.875rem;
 `;
 
 const IngItem = styled.div`
@@ -167,12 +175,12 @@ const Desc = styled.h2`
 
 const Button = styled.button`
   position: absolute;
-  top: 50px;
-  left: 50px;
-  font-size: 21px;
+  top: 3.125rem;
+  left: 3.125rem;
+  font-size: 1.3125rem;
   background-color: ${(props) => props.theme.lightGreen};
   color: ${(props) => props.theme.snow};
-  padding: 15px;
-  border-radius: 30px;
+  padding: 0.9375rem;
+  border-radius: 1.875rem;
   cursor: pointer;
 `;

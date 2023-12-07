@@ -41,16 +41,16 @@ const Wrapper = styled.div`
 `;
 
 const Card = styled.div`
-  padding: 0 20px;
-  padding-top: 70px;
-  padding-bottom: 50px;
+  padding: 0 1.25rem;
+  padding-top: 4.375rem;
+  padding-bottom: 3.125rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: ${(props) => props.theme.lightGray};
-  border-radius: 40px;
-  width: 300px;
-  height: 450px;
+  border-radius: 2.5rem;
+  width: 18.75rem;
+  height: 28.125rem;
   cursor: pointer;
   &:hover {
     background-color: ${(props) => props.theme.gray};
@@ -58,17 +58,17 @@ const Card = styled.div`
 `;
 
 const Photo = styled.div<{ bgPhoto: string }>`
-  width: 250px;
-  height: 250px;
+  width: 15.625rem;
+  height: 15.625rem;
   border-radius: 50%;
   background-image: url(${(props) => props.bgPhoto});
   background-size: cover;
   background-position: center center;
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
 `;
 
 const Title = styled.h2`
-  font-size: 21px;
+  font-size: 1.3125rem;
   font-weight: 700;
   display: flex;
   justify-content: center;

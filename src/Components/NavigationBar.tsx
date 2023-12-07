@@ -51,13 +51,13 @@ export default NavigationBar;
 const Wrapper = styled.div`
   width: 100%;
   background-color: ${(props) => props.theme.snow};
-  padding: 50px 15%;
+  padding: 3.125rem 15%;
   display: flex;
   align-items: center;
 `;
 
 const Logo = styled.h2`
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
   cursor: pointer;
 `;
@@ -69,8 +69,8 @@ const Contents = styled.div`
 `;
 
 const Item = styled.h2`
-  margin-left: 30px;
-  font-size: 16px;
+  margin-left: 1.875rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
 `;
@@ -81,19 +81,19 @@ const Form = styled(motion.form)`
 `;
 
 const Input = styled(motion.input)`
-  padding: 10px;
+  padding: 0.625rem;
   border: none;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
-  border-bottom: 1.5px solid ${(props) => props.theme.black};
+  border-bottom: 0.0938rem solid ${(props) => props.theme.black};
   background-color: transparent;
-  width: 150px;
+  width: 9.375rem;
   &:focus {
     outline: none;
   }
   &::placeholder {
     color: lightgray;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
   }
 `;

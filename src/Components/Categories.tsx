@@ -58,20 +58,27 @@ const Menus = styled.div`
   display: grid;
   justify-content: space-between;
   grid-template-columns: repeat(4, 1fr);
-  grid-row-gap: 50px;
+  grid-row-gap: 3.125rem;
+  grid-column-gap: 0.9375rem;
   width: 100%;
+  @media screen and (max-width: 1199px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 599px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const Pages = styled.div`
   display: flex;
   width: 60%;
   justify-content: space-between;
-  margin-top: 100px;
+  margin-top: 6.25rem;
 `;
 
 const Page = styled.button<{ isNow: boolean }>`
   cursor: pointer;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 500;
   color: ${(props) => (props.isNow ? "black" : props.theme.gray)};
   background-color: transparent;

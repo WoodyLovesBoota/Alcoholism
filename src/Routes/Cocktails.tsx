@@ -28,7 +28,7 @@ const Cocktails = () => {
         <Title>Cocktails</Title>
         <List>
           <Category isNow={current === 1} onClick={() => handleCateClick(1)}>
-            All Categories
+            All
           </Category>
           <Category isNow={current === 2} onClick={() => handleCateClick(2)}>
             Vodka
@@ -77,17 +77,17 @@ const List = styled.div`
 `;
 
 const Category = styled.h2<{ isNow: boolean }>`
-  border: 1.5px solid ${(props) => (props.isNow ? props.theme.red : props.theme.gray)};
+  border: 0.0938rem solid ${(props) => (props.isNow ? props.theme.red : props.theme.gray)};
   color: ${(props) => (props.isNow ? props.theme.snow : props.theme.gray)};
   background-color: ${(props) => (props.isNow ? props.theme.red : "transparent")};
-  padding: 20px 0;
+  padding: 1.25rem 0;
   width: 15%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 1.125rem;
   cursor: pointer;
   &:hover {
     background-color: ${(props) => (props.isNow ? props.theme.red : props.theme.gray)};
@@ -96,7 +96,7 @@ const Category = styled.h2<{ isNow: boolean }>`
 `;
 
 const Title = styled.h2`
-  font-size: 48px;
+  font-size: 3rem;
   font-weight: 600;
   margin-bottom: 8%;
   display: flex;

@@ -53,21 +53,21 @@ const Menu = styled.div`
   display: grid;
   justify-content: space-between;
   grid-template-columns: repeat(4, 1fr);
-  grid-row-gap: 50px;
+  grid-row-gap: 3.125rem;
   width: 100%;
 `;
 
 const Title = styled.h2`
   color: ${(props) => props.theme.snow};
-  font-size: 21px;
+  font-size: 1.3125rem;
   font-weight: 500;
-  margin-bottom: 50px;
-  margin-left: 50px;
+  margin-bottom: 3.125rem;
+  margin-left: 3.125rem;
 `;
 
 const Keyword = styled.span`
   color: ${(props) => props.theme.lightGreen};
-  font-size: 21px;
+  font-size: 1.3125rem;
   font-weight: 500;
-  margin-bottom: 50px;
+  margin-bottom: 3.125rem;
 `;

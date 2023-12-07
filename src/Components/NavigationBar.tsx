@@ -2,9 +2,13 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 const NavigationBar = () => {
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<IForm>();
 
   const onHomeClick = () => {
     navigate("/");
@@ -14,6 +18,10 @@ const NavigationBar = () => {
     navigate("/cocktails/Cocktail");
   };
 
+  const onValid = (data: IForm) => {
+    navigate(`/search?keyword=${data.keyword}`);
+  };
+
   return (
     <Wrapper>
       <Logo onClick={onHomeClick}>ALCOHOLISM</Logo>
@@ -21,7 +29,14 @@ const NavigationBar = () => {
         <Item onClick={onHomeClick}>Home</Item>
         <Item onClick={onCocktailClick}>Cocktails</Item>
         <Item>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
+          <Form onSubmit={handleSubmit(onValid)}>
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+            <Input
+              {...register("keyword", { required: true, minLength: 1 })}
+              placeholder="Search Alcohol"
+              autoComplete="off"
+            />
+          </Form>
         </Item>
         <Item>
           <FontAwesomeIcon icon={faUser} />
@@ -59,3 +74,30 @@ const Item = styled.h2`
   font-weight: 500;
   cursor: pointer;
 `;
+
+const Form = styled(motion.form)`
+  display: flex;
+  align-items: center;
+`;
+
+const Input = styled(motion.input)`
+  padding: 10px;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 1.5px solid ${(props) => props.theme.black};
+  background-color: transparent;
+  width: 150px;
+  &:focus {
+    outline: none;
+  }
+  &::placeholder {
+    color: lightgray;
+    font-size: 14px;
+    font-weight: 500;
+  }
+`;
+
+interface IForm {
+  keyword: string;
+}

@@ -6,15 +6,19 @@ import { useNavigate } from "react-router-dom";
 const NavigationBar = () => {
   const navigate = useNavigate();
 
+  const onHomeClick = () => {
+    navigate("/");
+  };
+
   const onCocktailClick = () => {
-    navigate("/cocktails");
+    navigate("/cocktails/Cocktail");
   };
 
   return (
     <Wrapper>
-      <Logo>ALCOHOLISM</Logo>
+      <Logo onClick={onHomeClick}>ALCOHOLISM</Logo>
       <Contents>
-        <Item>Home</Item>
+        <Item onClick={onHomeClick}>Home</Item>
         <Item onClick={onCocktailClick}>Cocktails</Item>
         <Item>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -40,6 +44,7 @@ const Wrapper = styled.div`
 const Logo = styled.h2`
   font-size: 18px;
   font-weight: 700;
+  cursor: pointer;
 `;
 
 const Contents = styled.div`
@@ -51,6 +56,6 @@ const Contents = styled.div`
 const Item = styled.h2`
   margin-left: 30px;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   cursor: pointer;
 `;

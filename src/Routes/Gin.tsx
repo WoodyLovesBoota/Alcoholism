@@ -1,42 +1,17 @@
 import styled from "styled-components";
 import NavigationBar from "../Components/NavigationBar";
-import { ReactComponent as Cocktail } from "../assets/cocktail.svg";
-import { useNavigate } from "react-router-dom";
-const Home = () => {
-  const navigate = useNavigate();
-  return (
-    <Wrapper>
-      <NavigationBar />
-      <Main>
-        <Column>
-          <Title>Alcoholics are drinking alcohol</Title>
-          <Desc>Find the best way to get drunk.</Desc>
-          <Buttons>
-            <ButtonMain>Get Started</ButtonMain>
-            <ButtonSub
-              onClick={() => {
-                navigate("/cocktails/Cocktail");
-              }}
-            >
-              View Menu
-            </ButtonSub>
-          </Buttons>
-        </Column>
-        <Logo>
-          <Cocktail width={"70%"} />
-        </Logo>
-      </Main>
-      <Sub>
-        <SubTitle>What it Works</SubTitle>
-      </Sub>
-    </Wrapper>
-  );
+import { useState } from "react";
+const Gin = () => {
+  const [current, setCurrent] = useState(0);
+
+  return <Wrapper></Wrapper>;
 };
 
-export default Home;
+export default Gin;
 
 const Wrapper = styled.div`
   width: 100vw;
+  padding: 8%;
 `;
 
 const Main = styled.div`
@@ -48,19 +23,40 @@ const Main = styled.div`
   background-color: ${(props) => props.theme.darkGreen};
 `;
 
-const Column = styled.div``;
+const Header = styled.div``;
+
+const List = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Category = styled.h2<{ isNow: boolean }>`
+  border: 1.5px solid ${(props) => (props.isNow ? props.theme.red : props.theme.gray)};
+  color: ${(props) => (props.isNow ? props.theme.red : props.theme.gray)};
+  padding: 20px 0;
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  font-weight: 400;
+  font-size: 18px;
+  cursor: pointer;
+`;
 
 const Title = styled.h2`
-  color: ${(props) => props.theme.snow};
   font-size: 48px;
   font-weight: 600;
   margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
 `;
 
 const Desc = styled.h2`
   color: ${(props) => props.theme.snow};
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 2;
 `;
 

@@ -8,5 +8,7 @@ declare module "styled-components" {
     snow: string;
     red: string;
     wine: string;
+    gray: string;
+    lightGray: string;
   }
 }

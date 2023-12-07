@@ -42,7 +42,7 @@ const GlobalStyle = createGlobalStyle`
     @media screen and (max-width: 599px) {
       font-size: 8px;
     }
-  
+    /* color: #13140D; */
 
   }
   /* HTML5 display-role reset for older browsers */

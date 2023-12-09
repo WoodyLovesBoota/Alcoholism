@@ -26,7 +26,7 @@ const Search = () => {
 
           <Menu>
             {data?.drinks.map((cocktail) => (
-              <GlassCard cocktail={cocktail} />
+              <GlassCard key={"search" + cocktail.idDrink} cocktail={cocktail} />
             ))}
           </Menu>
         </Main>

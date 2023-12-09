@@ -2,23 +2,58 @@ import styled from "styled-components";
 import { Link, PathMatch, useMatch, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { cockTailState } from "../atoms";
+import { cockTailState, likesState } from "../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLeftLong } from "@fortawesome/free-solid-svg-icons";
+import { faLeftLong, faStar } from "@fortawesome/free-solid-svg-icons";
 
 const Detail = () => {
   const [current, setCurrent] = useRecoilState(cockTailState);
   const cocktail = current.drinks[0];
   const navigate = useNavigate();
+  const [isLike, setIsLike] = useRecoilState(likesState);
+  const [isIn, setIsIn] = useState(false);
 
   const onBackClick = () => {
     navigate("/cocktails/Cocktail");
   };
 
+  const onYellowStarClick = () => {
+    setIsLike((prev) => {
+      let index = -1;
+      for (let i = 0; i < isLike.length; i++) {
+        if (isLike[i].idDrink === cocktail.idDrink) index = i;
+      }
+      return [...prev.slice(0, index), ...prev.slice(index + 1)];
+    });
+    setIsIn(false);
+  };
+
+  const onStarClick = () => {
+    setIsLike((prev) => [...prev, cocktail]);
+    setIsIn(true);
+  };
+
+  useEffect(() => {
+    for (let e of isLike) {
+      if (e.idDrink === cocktail.idDrink) setIsIn(true);
+    }
+  });
+
   return (
     <Wrapper>
       <Main>
         <Photo bgPhoto={cocktail?.strDrinkThumb ? cocktail?.strDrinkThumb : ""} />
+        <StarBox>
+          {isIn ? (
+            <YellowStar onClick={onYellowStarClick}>
+              <FontAwesomeIcon icon={faStar} />
+            </YellowStar>
+          ) : (
+            <Star onClick={onStarClick}>
+              <FontAwesomeIcon icon={faStar} />
+            </Star>
+          )}
+        </StarBox>
         <Contents>
           <Name>
             {cocktail.strDrink}
@@ -74,7 +109,7 @@ const Detail = () => {
 export default Detail;
 
 const Wrapper = styled.div`
-  padding: 8% 15%;
+  padding: 8% 12%;
   width: 100vw;
   min-height: 100vh;
   background-color: ${(props) => props.theme.lightGreen};
@@ -88,7 +123,7 @@ const Main = styled.div`
   border-radius: 1.875rem;
   padding: 6.25rem;
   position: relative;
-  @media screen and (max-width: 899px) {
+  @media screen and (max-width: 999px) {
     flex-direction: column;
   }
 `;
@@ -100,15 +135,16 @@ const Photo = styled.div<{ bgPhoto: string }>`
   background-position: center center;
   background-size: cover;
   border-radius: 9.375rem;
-  @media screen and (max-width: 899px) {
+  @media screen and (max-width: 999px) {
     margin-bottom: 2.5rem;
   }
 `;
 
 const Contents = styled.div`
-  margin-left: 9.375rem;
-  @media screen and (max-width: 899px) {
+  margin-left: 12.5rem;
+  @media screen and (max-width: 999px) {
     margin-left: 0;
+    width: 50%;
   }
 `;
 
@@ -126,6 +162,10 @@ const Ingradients = styled.div`
 const IngItem = styled.div`
   display: flex;
   margin-bottom: 0.9375rem;
+  @media screen and (max-width: 999px) {
+    width: 100%;
+    justify-content: space-between;
+  }
 `;
 
 const IngTitle = styled.h2`
@@ -144,6 +184,10 @@ const IngContent = styled.h2`
 const ContentItem = styled.div`
   display: flex;
   margin-bottom: 3.125rem;
+  @media screen and (max-width: 999px) {
+    width: 100%;
+    justify-content: space-between;
+  }
 `;
 
 const ContentTitle = styled.h2`
@@ -183,4 +227,33 @@ const Button = styled.button`
   padding: 0.9375rem;
   border-radius: 1.875rem;
   cursor: pointer;
+`;
+
+const StarBox = styled.div`
+  position: relative;
+  @media screen and (max-width: 999px) {
+  }
+`;
+
+const Star = styled.h2`
+  color: white;
+  font-size: 1.5rem;
+  position: absolute;
+  top: -10.625rem;
+  @media screen and (max-width: 999px) {
+    position: inherit;
+    top: 1.5625rem;
+    left: 7.5rem;
+    font-size: 1.2rem;
+  }
+`;
+
+const YellowStar = styled.h2`
+  color: ${(props) => props.theme.yellow};
+  font-size: 1.5rem;
+  position: absolute;
+  top: -10.625rem;
+  @media screen and (max-width: 999px) {
+    position: inherit;
+  }
 `;

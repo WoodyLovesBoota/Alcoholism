@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import NavigationBar from "../Components/NavigationBar";
 import { useEffect, useState } from "react";
-import Categories from "../Components/Categories";
 import { useQuery } from "react-query";
 import { ICocktail, ICocktailDetail, getCocktailDetail, getCategoryResult, getAllCategoryResult } from "../api";
 import { useNavigate } from "react-router-dom";
@@ -24,36 +22,49 @@ const GlassCard = ({ cocktail }: IGlassCardProps) => {
     navigate(`/details/${data?.drinks[0].idDrink}`);
   };
 
+  const onYellowStarClick = () => {
+    setIsLike((prev) => {
+      let index = -1;
+      for (let i = 0; i < isLike.length; i++) {
+        if (isLike[i].idDrink === cocktail.idDrink) index = i;
+      }
+      return [...prev.slice(0, index), ...prev.slice(index + 1)];
+    });
+    setIsIn(false);
+  };
+
   const onStarClick = () => {
-    if (isIn) {
-      setIsLike((prev) => {
-        let index = -1;
-        for (let i = 0; i < isLike.length; i++) {
-          if (isLike[i].idDrink === cocktail.idDrink) index = i;
-        }
-        return [...prev.slice(0, index), ...prev.slice(index + 1)];
-      });
-    } else {
-      data && setIsLike((prev) => [...prev, data.drinks[0]]);
-    }
+    data && setIsLike((prev) => [...prev, data.drinks[0]]);
+    setIsIn(true);
   };
 
   useEffect(() => {
     for (let e of isLike) {
-      if (e.idDrink === cocktail.idDrink) setIsIn(true);
+      if (e.idDrink === cocktail.idDrink) {
+        setIsIn(true);
+        console.log(e.idDrink, cocktail.idDrink);
+      }
     }
   });
 
   return (
     <Wrapper>
       {!isLoading && (
-        <Card onClick={onCardClick}>
-          <Photo bgPhoto={data?.drinks[0].strDrinkThumb ? data?.drinks[0].strDrinkThumb : ""} />
-          <Title>{cocktail.strDrink}</Title>
-          <Star isOn={isIn} onClick={onStarClick}>
-            <FontAwesomeIcon icon={faStar} />
-          </Star>
-        </Card>
+        <>
+          <Card onClick={onCardClick}>
+            <Photo bgPhoto={data?.drinks[0].strDrinkThumb ? data?.drinks[0].strDrinkThumb : ""} />
+            <Title>{cocktail.strDrink}</Title>
+          </Card>
+          {isIn ? (
+            <YellowStar onClick={onYellowStarClick}>
+              <FontAwesomeIcon icon={faStar} />
+            </YellowStar>
+          ) : (
+            <Star onClick={onStarClick}>
+              <FontAwesomeIcon icon={faStar} />
+            </Star>
+          )}
+        </>
       )}
     </Wrapper>
   );
@@ -64,6 +75,7 @@ export default GlassCard;
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
+  position: relative;
 `;
 
 const Card = styled.div`
@@ -101,8 +113,20 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-const Star = styled.h2<{ isOn: boolean }>`
-  color: ${(props) => (props.isOn ? "yellow" : "black")};
+const Star = styled.h2`
+  color: white;
+  position: absolute;
+  right: 18%;
+  top: 5%;
+  font-size: 1.3125rem;
+`;
+
+const YellowStar = styled.h2`
+  color: ${(props) => props.theme.yellow};
+  position: absolute;
+  right: 18%;
+  top: 5%;
+  font-size: 1.3125rem;
 `;
 
 interface IGlassCardProps {

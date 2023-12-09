@@ -18,6 +18,10 @@ const NavigationBar = () => {
     navigate("/cocktails/Cocktail");
   };
 
+  const onFavoriteClick = () => {
+    navigate("/favorites");
+  };
+
   const onValid = (data: IForm) => {
     navigate(`/search?keyword=${data.keyword}`);
   };
@@ -28,6 +32,7 @@ const NavigationBar = () => {
       <Contents>
         <Item onClick={onHomeClick}>Home</Item>
         <Item onClick={onCocktailClick}>Cocktails</Item>
+        <Item onClick={onFavoriteClick}>Favorites</Item>
         <Item>
           <Form onSubmit={handleSubmit(onValid)}>
             <FontAwesomeIcon icon={faMagnifyingGlass} />

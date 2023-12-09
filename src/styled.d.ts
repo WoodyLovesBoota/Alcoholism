@@ -10,5 +10,6 @@ declare module "styled-components" {
     wine: string;
     gray: string;
     lightGray: string;
+    yellow: string;
   }
 }

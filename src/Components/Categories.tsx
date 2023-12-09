@@ -31,7 +31,7 @@ const Categories = ({ name, data }: ICategoriesProps) => {
       <Menus>
         {cocktailMatch &&
           cocktailMatch.params.category === name &&
-          currentList.map((cocktail) => <GlassCard cocktail={cocktail} />)}
+          currentList.map((cocktail) => <GlassCard key={"cocktail" + cocktail.idDrink} cocktail={cocktail} />)}
       </Menus>
       <Pages>
         {totalPage.map((e) => (

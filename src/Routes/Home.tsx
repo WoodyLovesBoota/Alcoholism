@@ -5,23 +5,14 @@ import Categories from "../Components/Categories";
 import { useQuery } from "react-query";
 import { IGetCocktailResult, getCategoryResult, getAllCategoryResult } from "../api";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { currentCateState } from "../atoms";
 
 const Home = () => {
   const navigate = useNavigate();
   const [current, setCurrent] = useState(1);
-  const sample = [
-    "",
-    "Cocktail",
-    "Vodka",
-    "Gin",
-    "Rum",
-    "Tequila",
-    "Lime juice",
-    "Bourbon",
-    "Coffee",
-    "Brandy",
-    "Champagne",
-  ];
+  const [currentCate, setCurrentCate] = useRecoilState(currentCateState);
+  const sample = ["", "Cocktail", "Vodka", "Gin", "Rum", "Tequila", "Lime juice", "Triple Sec", "Brandy", "Bourbon"];
   const { data, isLoading } = useQuery<IGetCocktailResult>(
     ["cocktails", sample[current]],
     () => (current === 1 ? getAllCategoryResult(sample[current]) : getCategoryResult(sample[current])),
@@ -30,6 +21,7 @@ const Home = () => {
 
   const handleCateClick = (num: number) => {
     setCurrent(num);
+    setCurrentCate(num);
     navigate(`/${sample[num]}`);
   };
 
@@ -64,19 +56,16 @@ const Home = () => {
             TEQUILA
           </Category>
           <Category isNow={current === 6} onClick={() => handleCateClick(6)}>
-            LIMEJUICE
+            LIME_JUICE
           </Category>
           <Category isNow={current === 7} onClick={() => handleCateClick(7)}>
-            BOURBON
+            TRIPLE_SEC
           </Category>
           <Category isNow={current === 8} onClick={() => handleCateClick(8)}>
-            COFFEE
-          </Category>
-          <Category isNow={current === 9} onClick={() => handleCateClick(9)}>
             BRANDY
           </Category>
-          <Category isNow={current === 10} onClick={() => handleCateClick(10)}>
-            CHAMPAGNE
+          <Category isNow={current === 9} onClick={() => handleCateClick(9)}>
+            BOURBON
           </Category>
         </List>
       </Main>

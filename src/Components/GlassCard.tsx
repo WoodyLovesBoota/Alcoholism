@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { ICocktail, ICocktailDetail, getCocktailDetail, getCategoryResult, getAllCategoryResult } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { cockTailState, likesState } from "../atoms";
+import { cockTailState, likesState, searchState } from "../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { ReactComponent as Vector } from "../assets/vector.svg";
@@ -12,6 +12,7 @@ import { ReactComponent as Like } from "../assets/like.svg";
 
 const GlassCard = ({ cocktail }: IGlassCardProps) => {
   const navigate = useNavigate();
+  const [isSearch, setIsSearch] = useRecoilState(searchState);
   const [current, setCurrent] = useRecoilState(cockTailState);
   const [isLike, setIsLike] = useRecoilState(likesState);
   const [isIn, setIsIn] = useState(false);
@@ -21,6 +22,7 @@ const GlassCard = ({ cocktail }: IGlassCardProps) => {
 
   const onCardClick = () => {
     data && setCurrent(data);
+    setIsSearch(false);
     navigate(`/details/${data?.drinks[0].idDrink}`);
   };
 
@@ -108,12 +110,14 @@ const Star = styled.h2`
   position: absolute;
   right: 16px;
   top: 16px;
+  cursor: pointer;
 `;
 
 const YellowStar = styled.h2`
   position: absolute;
   right: 11px;
   top: 13px;
+  cursor: pointer;
 `;
 
 interface IGlassCardProps {

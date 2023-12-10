@@ -9,22 +9,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
 import { searchState } from "../atoms";
+import { useState } from "react";
+import GlassCard from "./GlassCard";
 
 const Search = () => {
-  const location = useLocation();
-  const keyword = new URLSearchParams(location.search).get("keyword");
   const [isSearch, setIsSearch] = useRecoilState(searchState);
+  const [keyword, setKeyword] = useState<string>();
 
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<IForm>();
 
-  const onValid = (data: IForm) => {};
+  const onValid = (data: IForm) => {
+    setKeyword(data.keyword);
+  };
 
   const onCancelClick = () => {
     setIsSearch(false);
   };
 
-  const { data, isLoading } = useQuery<IGetCocktailResult>(["search", keyword], () => getCocktailSearch(keyword));
+  const { data, isLoading } = useQuery<IGetCocktailResult>(["search", keyword], () => getCocktailSearch(keyword), {
+    enabled: !!keyword,
+  });
 
   return (
     <Wrapper>
@@ -43,6 +48,7 @@ const Search = () => {
         <Icon type="submit">
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </Icon>
+        <Reset type="reset">X</Reset>
         <Input
           {...register("keyword", { required: true, minLength: 1 })}
           placeholder="Search Alcohol"
@@ -50,6 +56,17 @@ const Search = () => {
         />
         <Cancel onClick={onCancelClick}>취소</Cancel>
       </Form>
+      <Main>
+        {isLoading ? (
+          <Loader>Loading...</Loader>
+        ) : (
+          <Menu>
+            {data?.drinks.map((cocktail) => (
+              <GlassCard key={"search" + cocktail.idDrink} cocktail={cocktail} />
+            ))}
+          </Menu>
+        )}
+      </Main>
     </Wrapper>
   );
 };
@@ -60,26 +77,27 @@ const Wrapper = styled(motion.div)`
   top: 0;
   left: 0;
   width: 100vw;
-  min-height: 100vh;
-  background-color: rgba(0, 0, 0, 0.9);
-  z-index: 1;
+  height: 100vh;
+  background-color: #141414;
+  z-index: 4;
   padding: 16px;
+  overflow: auto;
 `;
 
 const Loader = styled.h2``;
 
 const Main = styled.div`
-  padding: 8%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 `;
 
 const Menu = styled.div`
+  padding-top: 30px;
   display: grid;
   justify-content: space-between;
-  grid-template-columns: repeat(4, 1fr);
-  grid-row-gap: 3.125rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 16px;
   width: 100%;
 `;
 
@@ -116,11 +134,6 @@ const Input = styled(motion.input)`
   &:focus {
     outline: none;
   }
-  &::placeholder {
-    color: lightgray;
-    font-size: 14px;
-    font-weight: 500;
-  }
 `;
 
 const Icon = styled.button`
@@ -130,6 +143,24 @@ const Icon = styled.button`
   left: 15px;
   top: 10px;
   cursor: pointer;
+  background-color: transparent;
+`;
+
+const Reset = styled.button`
+  font-size: 8px;
+  position: absolute;
+  left: calc(85% - 25px);
+  top: 13px;
+  cursor: pointer;
+  background-color: rgba(179, 179, 179, 1);
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  font-weight: 900;
+  vertical-align: center;
 `;
 
 const Cancel = styled.button`

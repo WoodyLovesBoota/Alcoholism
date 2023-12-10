@@ -15,9 +15,26 @@ export const getCocktailDetail = async (keyword: string | undefined) => {
   return await axios.get(`${BASE_URL}json/v1/1/lookup.php?i=${keyword}`).then((res) => res.data);
 };
 
-export const getCocktailSearch = async (keyword: string | null) => {
+export const getCocktailSearch = async (keyword: string | undefined) => {
   return await axios.get(`${BASE_URL}json/v1/1/search.php?s=${keyword}`).then((res) => res.data);
 };
+
+export const getIngredient = async (keyword: string | undefined) => {
+  return await axios.get(`${BASE_URL}json/v1/1/search.php?i=${keyword}`).then((res) => res.data);
+};
+
+export interface IIngredient {
+  ingredients: [
+    {
+      idIngredient: string;
+      strIngredient: string;
+      strDescription: string;
+      strType: string;
+      strAlcohol: string;
+      strABV: string;
+    }
+  ];
+}
 
 export interface ICocktailDetail {
   drinks: ICocktailSingle[];

@@ -77,48 +77,72 @@ const Detail = () => {
       </Photo>
 
       <Contents>
-        <Name>
-          {cocktail.strDrink}
-          <Cate>({cocktail.strCategory})</Cate>{" "}
-        </Name>
+        <Name>{cocktail.strDrink}</Name>
+        <Cates>
+          {cocktail.strCategory && (
+            <Cate>{cocktail.strCategory.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
+          )}
+          {cocktail.strIngredient1 && (
+            <Cate>{cocktail.strIngredient1.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
+          )}
+          {cocktail.strIngredient2 && (
+            <Cate>{cocktail.strIngredient2.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
+          )}
+          {cocktail.strIngredient3 && (
+            <Cate>{cocktail.strIngredient3.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
+          )}
+          {cocktail.strIngredient4 && (
+            <Cate>{cocktail.strIngredient4.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
+          )}
+          {cocktail.strIngredient5 && (
+            <Cate>{cocktail.strIngredient5.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
+          )}
+        </Cates>
+
         <ContentItem>
-          <ContentTitle>Glass</ContentTitle>
+          <ContentTitle>GLASS</ContentTitle>
           <ContentDesc>{cocktail.strGlass}</ContentDesc>
         </ContentItem>
-        <ContentTitle>Ingradients</ContentTitle>
-        <Ingradients>
-          <IngItem>
-            <IngTitle>{cocktail.strIngredient1}</IngTitle>
-            <IngContent>{cocktail.strMeasure1}</IngContent>
-          </IngItem>
-          <IngItem>
-            <IngTitle>{cocktail.strIngredient2}</IngTitle>
-            <IngContent>{cocktail.strMeasure2}</IngContent>
-          </IngItem>
-          <IngItem>
-            <IngTitle>{cocktail.strIngredient3}</IngTitle>
-            <IngContent>{cocktail.strMeasure3}</IngContent>
-          </IngItem>
-          <IngItem>
-            <IngTitle>{cocktail.strIngredient4}</IngTitle>
-            <IngContent>{cocktail.strMeasure4}</IngContent>
-          </IngItem>
-          <IngItem>
-            <IngTitle>{cocktail.strIngredient5}</IngTitle>
-            <IngContent>{cocktail.strMeasure5}</IngContent>
-          </IngItem>
-        </Ingradients>
-        <ContentTitle>How to Make</ContentTitle>
-        <Description>
-          {cocktail.strInstructions?.split(".").map(
-            (e, i) =>
-              e !== "" && (
-                <Desc>
-                  {i + 1}. {e}.
-                </Desc>
-              )
-          )}
-        </Description>
+
+        <ContentItem>
+          <ContentTitle>Ingradients</ContentTitle>
+          <Ingradients>
+            <IngItem>
+              <IngTitle>{cocktail.strIngredient1}</IngTitle>
+              <IngContent>{cocktail.strMeasure1}</IngContent>
+            </IngItem>
+            <IngItem>
+              <IngTitle>{cocktail.strIngredient2}</IngTitle>
+              <IngContent>{cocktail.strMeasure2}</IngContent>
+            </IngItem>
+            <IngItem>
+              <IngTitle>{cocktail.strIngredient3}</IngTitle>
+              <IngContent>{cocktail.strMeasure3}</IngContent>
+            </IngItem>
+            <IngItem>
+              <IngTitle>{cocktail.strIngredient4}</IngTitle>
+              <IngContent>{cocktail.strMeasure4}</IngContent>
+            </IngItem>
+            <IngItem>
+              <IngTitle>{cocktail.strIngredient5}</IngTitle>
+              <IngContent>{cocktail.strMeasure5}</IngContent>
+            </IngItem>
+          </Ingradients>
+        </ContentItem>
+
+        <ContentItem>
+          <ContentTitle>How to Make</ContentTitle>
+          <Description>
+            {cocktail.strInstructions?.split(".").map(
+              (e, i) =>
+                e !== "" && (
+                  <Desc>
+                    {i + 1}. {e}.
+                  </Desc>
+                )
+            )}
+          </Description>
+        </ContentItem>
       </Contents>
       {/* <Button onClick={onBackClick}>
         <FontAwesomeIcon icon={faLeftLong} />
@@ -161,79 +185,92 @@ const StarBox = styled(motion.div)`
 `;
 
 const Contents = styled.div`
-  margin-left: 12.5rem;
+  padding: 16px;
+  width: 100%;
 `;
 
 const Name = styled.h2`
-  font-size: 1.3125rem;
-  font-weight: 500;
-  margin-bottom: 1.875rem;
+  margin-top: 16px;
+  font-size: 32px;
+  font-weight: 700;
+  margin-right: 80px;
+  color: ${(props) => props.theme.accent};
 `;
 
-const Ingradients = styled.div`
-  margin-top: 1.25rem;
-  margin-bottom: 1.875rem;
-`;
-
-const IngItem = styled.div`
+const Cates = styled.div`
   display: flex;
-  margin-bottom: 0.9375rem;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  overflow-x: auto;
+  width: 100%;
 `;
 
-const IngTitle = styled.h2`
-  font-size: 1rem;
-  width: 15.625rem;
-  font-weight: 500;
-  color: ${(props) => props.theme.gray};
-`;
-
-const IngContent = styled.h2`
-  font-size: 1rem;
-  font-weight: 500;
-  color: ${(props) => props.theme.gray};
+const Cate = styled.span`
+  font-weight: 400;
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  border: 1px solid white;
+  margin-right: 8px;
 `;
 
 const ContentItem = styled.div`
   display: flex;
-  margin-bottom: 3.125rem;
+  flex-direction: column;
+  margin-bottom: 36px;
 `;
 
 const ContentTitle = styled.h2`
-  font-size: 1rem;
-  width: 12.5rem;
+  font-size: 24px;
   font-weight: 500;
+  border-bottom: 2px solid white;
+  height: 40px;
 `;
 
 const ContentDesc = styled.h2`
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 10px;
 `;
 
-const Cate = styled.span`
-  margin-left: 1.25rem;
-  font-weight: 500;
-  color: ${(props) => props.theme.gray};
+const Ingradients = styled.div`
+  width: 100%;
 `;
 
-const Description = styled.div`
-  margin-top: 1.25rem;
+const IngItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
 `;
+
+const IngTitle = styled.h2`
+  font-size: 16px;
+  font-weight: 400;
+`;
+
+const IngContent = styled.h2`
+  font-size: 16px;
+  font-weight: 400;
+`;
+
+const Description = styled.div``;
 
 const Desc = styled.h2`
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0.9375rem;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 10px;
 `;
 
 const Button = styled.button`
   position: absolute;
-  top: 3.125rem;
-  left: 3.125rem;
-  font-size: 1.3125rem;
+  top: 50px;
+  left: 50px;
+  font-size: 21px;
   background-color: ${(props) => props.theme.lightGreen};
   color: ${(props) => props.theme.snow};
-  padding: 0.9375rem;
-  border-radius: 1.875rem;
+  padding: 15px;
+  border-radius: 30px;
   cursor: pointer;
 `;
 

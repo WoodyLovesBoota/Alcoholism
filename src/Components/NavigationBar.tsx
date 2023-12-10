@@ -6,12 +6,14 @@ import { motion } from "framer-motion";
 import { ReactComponent as Vector } from "../assets/vector.svg";
 import { ReactComponent as Menus } from "../assets/menus.svg";
 import { useRecoilState } from "recoil";
-import { searchState } from "../atoms";
+import { searchState, menuState } from "../atoms";
 import Search from "../Components/Search";
+import Menu from "./Menu";
 
 const NavigationBar = ({ isHome }: { isHome: boolean }) => {
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(searchState);
+  const [isMenu, setIsMenu] = useRecoilState(menuState);
 
   const onHomeClick = () => {
     navigate("/Cocktail");
@@ -19,6 +21,10 @@ const NavigationBar = ({ isHome }: { isHome: boolean }) => {
 
   const onSearchClick = () => {
     setIsSearch(true);
+  };
+
+  const onMenuClick = () => {
+    setIsMenu(true);
   };
 
   const onFavoriteClick = () => {
@@ -36,11 +42,12 @@ const NavigationBar = ({ isHome }: { isHome: boolean }) => {
         <Item onClick={onFavoriteClick}>
           <Vector width={14} height={18} />
         </Item>
-        <Item>
+        <Item onClick={onMenuClick}>
           <Menus width={24} height={24} />
         </Item>
       </Contents>
       {isSearch && <Search />}
+      {isMenu && <Menu />}
     </Wrapper>
   );
 };
@@ -49,13 +56,14 @@ export default NavigationBar;
 
 const Wrapper = styled.div`
   width: 100%;
-  padding: 10px 16px;
+  padding: 6px 16px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
+  height: 45px;
 `;
 
 const Logo = styled.h2`
@@ -63,6 +71,7 @@ const Logo = styled.h2`
   font-weight: 700;
   cursor: pointer;
   color: ${(props) => props.theme.accent};
+  line-height: 1;
 `;
 
 const Contents = styled.div`

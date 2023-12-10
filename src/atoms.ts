@@ -77,3 +77,13 @@ export const searchState = atom<boolean>({
   key: "searchOpen",
   default: false,
 });
+
+export const menuState = atom<boolean>({
+  key: "menuOpen",
+  default: false,
+});
+
+export const currentCateState = atom<number>({
+  key: "currentCategory",
+  default: 0,
+});

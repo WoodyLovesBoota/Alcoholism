@@ -72,3 +72,8 @@ export const likesState = atom<ICocktailSingle[]>({
     },
   ],
 });
+
+export const searchState = atom<boolean>({
+  key: "searchOpen",
+  default: false,
+});

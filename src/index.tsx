@@ -3,10 +3,8 @@ import App from "./App";
 import { createGlobalStyle } from "styled-components";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
-import "./assets/fonts/font.css";
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;500;600;700;800&display=swap');
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -25,25 +23,18 @@ const GlobalStyle = createGlobalStyle`
     border: 0;
     font-size: 16px;
     font-weight: 300;
-    font-family: "Noto sans KR", sans-serif;
     vertical-align: baseline;
-    font-weight: 300;
-    line-height: 1.2;
-    @media screen and (max-width: 1799px) {
-      font-size: 14px;
-    }
-    @media screen and (max-width: 1199px) {
+    line-height: 1.5;
+    letter-spacing: 1px;
+    font-family: 'roc-grotesk', 'Pretendard', sans-serif;
+    
+    color: white;
+
+    @media screen and (max-width: 1000px) {
       font-size: 12px;
     }
-    
-    @media screen and (max-width: 899px) {
-      font-size: 10px;
-    }
 
-    @media screen and (max-width: 599px) {
-      font-size: 8px;
-    }
-    /* color: #13140D; */
+
 
   }
   /* HTML5 display-role reset for older browsers */
@@ -53,6 +44,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body{
+    background-color: #141414;
   }
 
   /* HTML5 hidden-attribute fix for newer browsers */

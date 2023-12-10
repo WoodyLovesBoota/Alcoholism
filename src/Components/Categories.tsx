@@ -4,27 +4,19 @@ import { useEffect, useState } from "react";
 import { IGetCocktailResult, ICocktail } from "../api";
 import { Link, PathMatch, useMatch, useNavigate } from "react-router-dom";
 import GlassCard from "./GlassCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 const Categories = ({ name, data }: ICategoriesProps) => {
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(8);
   const [currentList, setCurrentList] = useState<ICocktail[]>([]);
   const [totalPage, setTotalPage] = useState<number[]>([]);
 
-  const cocktailMatch: PathMatch<string> | null = useMatch("/cocktails/:category");
+  const cocktailMatch: PathMatch<string> | null = useMatch("/:category");
 
   useEffect(() => {
-    data && setCurrentList(data?.drinks.slice(current, current + 8));
+    data && setCurrentList(data?.drinks.slice(0, current));
   }, [current]);
-
-  useEffect(() => {
-    if (data) {
-      let temp = [];
-      for (let i = 1; i <= Math.ceil(data?.drinks.length / 8); i++) {
-        temp.push(i);
-      }
-      setTotalPage(temp);
-    }
-  }, []);
 
   return (
     <Wrapper>
@@ -33,13 +25,12 @@ const Categories = ({ name, data }: ICategoriesProps) => {
           cocktailMatch.params.category === name &&
           currentList.map((cocktail) => <GlassCard key={"cocktail" + cocktail.idDrink} cocktail={cocktail} />)}
       </Menus>
-      <Pages>
-        {totalPage.map((e) => (
-          <Page isNow={current >= (e - 1) * 8 && current < e * 8} onClick={() => setCurrent((e - 1) * 8)}>
-            {e}
-          </Page>
-        ))}
-      </Pages>
+      <Page onClick={() => setCurrent((prev) => prev + 4)}>
+        더보기{" "}
+        <Icon>
+          <FontAwesomeIcon icon={faAngleDown} />
+        </Icon>
+      </Page>
     </Wrapper>
   );
 };
@@ -48,7 +39,6 @@ export default Categories;
 
 const Wrapper = styled.div`
   width: 100%;
-  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,31 +47,28 @@ const Wrapper = styled.div`
 const Menus = styled.div`
   display: grid;
   justify-content: space-between;
-  grid-template-columns: repeat(4, 1fr);
-  grid-row-gap: 3.125rem;
-  grid-column-gap: 0.9375rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 16px;
   width: 100%;
-  @media screen and (max-width: 1199px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media screen and (max-width: 599px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  padding-bottom: 16px;
 `;
 
-const Pages = styled.div`
-  display: flex;
-  width: 60%;
-  justify-content: space-between;
-  margin-top: 6.25rem;
-`;
-
-const Page = styled.button<{ isNow: boolean }>`
-  cursor: pointer;
-  font-size: 1.125rem;
-  font-weight: 500;
-  color: ${(props) => (props.isNow ? "black" : props.theme.gray)};
+const Page = styled.button`
+  width: 100%;
   background-color: transparent;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+`;
+
+const Icon = styled.span`
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 10px;
 `;
 
 interface ICategoriesProps {

@@ -7,6 +7,8 @@ import { useRecoilState } from "recoil";
 import { cockTailState, likesState } from "../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { ReactComponent as Vector } from "../assets/vector.svg";
+import { ReactComponent as Like } from "../assets/like.svg";
 
 const GlassCard = ({ cocktail }: IGlassCardProps) => {
   const navigate = useNavigate();
@@ -42,7 +44,6 @@ const GlassCard = ({ cocktail }: IGlassCardProps) => {
     for (let e of isLike) {
       if (e.idDrink === cocktail.idDrink) {
         setIsIn(true);
-        console.log(e.idDrink, cocktail.idDrink);
       }
     }
   });
@@ -51,17 +52,16 @@ const GlassCard = ({ cocktail }: IGlassCardProps) => {
     <Wrapper>
       {!isLoading && (
         <>
-          <Card onClick={onCardClick}>
-            <Photo bgPhoto={data?.drinks[0].strDrinkThumb ? data?.drinks[0].strDrinkThumb : ""} />
+          <Card onClick={onCardClick} bgPhoto={data?.drinks[0].strDrinkThumb ? data?.drinks[0].strDrinkThumb : ""}>
             <Title>{cocktail.strDrink}</Title>
           </Card>
           {isIn ? (
             <YellowStar onClick={onYellowStarClick}>
-              <FontAwesomeIcon icon={faStar} />
+              <Like width={"24"} height={"24"} />
             </YellowStar>
           ) : (
             <Star onClick={onStarClick}>
-              <FontAwesomeIcon icon={faStar} />
+              <Vector width={"14"} height={"18"} />
             </Star>
           )}
         </>
@@ -78,55 +78,42 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const Card = styled.div`
-  padding: 0 1.25rem;
-  padding-top: 4.375rem;
-  padding-bottom: 3.125rem;
+const Card = styled.div<{ bgPhoto: string }>`
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: ${(props) => props.theme.lightGray};
-  border-radius: 2.5rem;
-  width: 18.75rem;
-  height: 28.125rem;
+  justify-content: flex-end;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)),
+    url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center center;
+  border-radius: 20px;
+  width: 100%;
+  height: 55vw;
   cursor: pointer;
+
   &:hover {
     background-color: ${(props) => props.theme.gray};
   }
 `;
 
-const Photo = styled.div<{ bgPhoto: string }>`
-  width: 15.625rem;
-  height: 15.625rem;
-  border-radius: 50%;
-  background-image: url(${(props) => props.bgPhoto});
-  background-size: cover;
-  background-position: center center;
-  margin-bottom: 1.875rem;
-`;
-
 const Title = styled.h2`
-  font-size: 1.3125rem;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 500;
   display: flex;
-  justify-content: center;
-  text-align: center;
+  color: white;
 `;
 
 const Star = styled.h2`
-  color: white;
   position: absolute;
-  right: 18%;
-  top: 5%;
-  font-size: 1.3125rem;
+  right: 16px;
+  top: 16px;
 `;
 
 const YellowStar = styled.h2`
-  color: ${(props) => props.theme.yellow};
   position: absolute;
-  right: 18%;
-  top: 5%;
-  font-size: 1.3125rem;
+  right: 11px;
+  top: 13px;
 `;
 
 interface IGlassCardProps {

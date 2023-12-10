@@ -9,7 +9,7 @@ const Favorites = () => {
 
   return (
     <Wrapper>
-      <NavigationBar />
+      <NavigationBar isHome={false} />
       <Header>
         <Title>Favorites</Title>
       </Header>
@@ -50,6 +50,7 @@ const Title = styled.h2`
   margin: 8% 0;
   display: flex;
   justify-content: center;
+  color: white;
 `;
 
 const Main = styled.div`
@@ -61,10 +62,10 @@ const Main = styled.div`
   grid-row-gap: 3.125rem;
   grid-column-gap: 0.9375rem;
   width: 100%;
-  @media screen and (max-width: 1199px) {
+  @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
   }
-  @media screen and (max-width: 599px) {
+  @media screen and (max-width: 800px) {
     grid-template-columns: repeat(2, 1fr);
   }
 `;

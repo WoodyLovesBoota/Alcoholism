@@ -5,6 +5,10 @@ import { useRecoilState } from "recoil";
 import { cockTailState, likesState } from "../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLeftLong, faStar } from "@fortawesome/free-solid-svg-icons";
+import NavigationBar from "../Components/NavigationBar";
+import { AnimatePresence, motion } from "framer-motion";
+import { ReactComponent as Vector } from "../assets/vector.svg";
+import { ReactComponent as Like } from "../assets/like.svg";
 
 const Detail = () => {
   const [current, setCurrent] = useRecoilState(cockTailState);
@@ -14,7 +18,7 @@ const Detail = () => {
   const [isIn, setIsIn] = useState(false);
 
   const onBackClick = () => {
-    navigate("/cocktails/Cocktail");
+    navigate("/Cocktail");
   };
 
   const onYellowStarClick = () => {
@@ -41,67 +45,84 @@ const Detail = () => {
 
   return (
     <Wrapper>
-      <Main>
-        <Photo bgPhoto={cocktail?.strDrinkThumb ? cocktail?.strDrinkThumb : ""} />
-        <StarBox>
+      <NavigationBar isHome={false} />
+
+      <Photo variants={photoVar} initial="initial" animate="animate">
+        <Bg bgPhoto={cocktail?.strDrinkThumb ? cocktail?.strDrinkThumb : ""} />
+        <AnimatePresence>
           {isIn ? (
-            <YellowStar onClick={onYellowStarClick}>
-              <FontAwesomeIcon icon={faStar} />
-            </YellowStar>
+            <StarBox
+              key={cocktail.idDrink + "like"}
+              variants={likeVar}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              onClick={onYellowStarClick}
+            >
+              <Like width={62} height={62} />
+            </StarBox>
           ) : (
-            <Star onClick={onStarClick}>
-              <FontAwesomeIcon icon={faStar} />
-            </Star>
+            <StarBox
+              key={cocktail.idDrink + "vector"}
+              variants={vectorVar}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              onClick={onStarClick}
+            >
+              <Vector width={50} height={50} />
+            </StarBox>
           )}
-        </StarBox>
-        <Contents>
-          <Name>
-            {cocktail.strDrink}
-            <Cate>({cocktail.strCategory})</Cate>{" "}
-          </Name>
-          <ContentItem>
-            <ContentTitle>Glass</ContentTitle>
-            <ContentDesc>{cocktail.strGlass}</ContentDesc>
-          </ContentItem>
-          <ContentTitle>Ingradients</ContentTitle>
-          <Ingradients>
-            <IngItem>
-              <IngTitle>{cocktail.strIngredient1}</IngTitle>
-              <IngContent>{cocktail.strMeasure1}</IngContent>
-            </IngItem>
-            <IngItem>
-              <IngTitle>{cocktail.strIngredient2}</IngTitle>
-              <IngContent>{cocktail.strMeasure2}</IngContent>
-            </IngItem>
-            <IngItem>
-              <IngTitle>{cocktail.strIngredient3}</IngTitle>
-              <IngContent>{cocktail.strMeasure3}</IngContent>
-            </IngItem>
-            <IngItem>
-              <IngTitle>{cocktail.strIngredient4}</IngTitle>
-              <IngContent>{cocktail.strMeasure4}</IngContent>
-            </IngItem>
-            <IngItem>
-              <IngTitle>{cocktail.strIngredient5}</IngTitle>
-              <IngContent>{cocktail.strMeasure5}</IngContent>
-            </IngItem>
-          </Ingradients>
-          <ContentTitle>How to Make</ContentTitle>
-          <Description>
-            {cocktail.strInstructions?.split(".").map(
-              (e, i) =>
-                e !== "" && (
-                  <Desc>
-                    {i + 1}. {e}.
-                  </Desc>
-                )
-            )}
-          </Description>
-        </Contents>
-        <Button onClick={onBackClick}>
-          <FontAwesomeIcon icon={faLeftLong} />
-        </Button>
-      </Main>
+        </AnimatePresence>
+      </Photo>
+
+      <Contents>
+        <Name>
+          {cocktail.strDrink}
+          <Cate>({cocktail.strCategory})</Cate>{" "}
+        </Name>
+        <ContentItem>
+          <ContentTitle>Glass</ContentTitle>
+          <ContentDesc>{cocktail.strGlass}</ContentDesc>
+        </ContentItem>
+        <ContentTitle>Ingradients</ContentTitle>
+        <Ingradients>
+          <IngItem>
+            <IngTitle>{cocktail.strIngredient1}</IngTitle>
+            <IngContent>{cocktail.strMeasure1}</IngContent>
+          </IngItem>
+          <IngItem>
+            <IngTitle>{cocktail.strIngredient2}</IngTitle>
+            <IngContent>{cocktail.strMeasure2}</IngContent>
+          </IngItem>
+          <IngItem>
+            <IngTitle>{cocktail.strIngredient3}</IngTitle>
+            <IngContent>{cocktail.strMeasure3}</IngContent>
+          </IngItem>
+          <IngItem>
+            <IngTitle>{cocktail.strIngredient4}</IngTitle>
+            <IngContent>{cocktail.strMeasure4}</IngContent>
+          </IngItem>
+          <IngItem>
+            <IngTitle>{cocktail.strIngredient5}</IngTitle>
+            <IngContent>{cocktail.strMeasure5}</IngContent>
+          </IngItem>
+        </Ingradients>
+        <ContentTitle>How to Make</ContentTitle>
+        <Description>
+          {cocktail.strInstructions?.split(".").map(
+            (e, i) =>
+              e !== "" && (
+                <Desc>
+                  {i + 1}. {e}.
+                </Desc>
+              )
+          )}
+        </Description>
+      </Contents>
+      {/* <Button onClick={onBackClick}>
+        <FontAwesomeIcon icon={faLeftLong} />
+      </Button> */}
     </Wrapper>
   );
 };
@@ -109,43 +130,38 @@ const Detail = () => {
 export default Detail;
 
 const Wrapper = styled.div`
-  padding: 8% 12%;
   width: 100vw;
-  min-height: 100vh;
-  background-color: ${(props) => props.theme.lightGreen};
 `;
 
-const Main = styled.div`
+const Photo = styled(motion.div)<{ bgPhoto: string }>`
   width: 100%;
+  height: 120vw;
   display: flex;
-  align-items: center;
-  background-color: ${(props) => props.theme.snow};
-  border-radius: 1.875rem;
-  padding: 6.25rem;
-  position: relative;
-  @media screen and (max-width: 999px) {
-    flex-direction: column;
-  }
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-right: 40px;
 `;
 
-const Photo = styled.div<{ bgPhoto: string }>`
-  width: 18.75rem;
-  height: 18.75rem;
-  background-image: url(${(props) => props.bgPhoto});
+const Bg = styled.div<{ bgPhoto: string }>`
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), url(${(props) => props.bgPhoto});
   background-position: center center;
   background-size: cover;
-  border-radius: 9.375rem;
-  @media screen and (max-width: 999px) {
-    margin-bottom: 2.5rem;
-  }
+  width: 100%;
+  height: 120vw;
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  border-bottom-left-radius: 36px;
+  border-bottom-right-radius: 36px;
+`;
+
+const StarBox = styled(motion.div)`
+  cursor: pointer;
+  position: absolute;
 `;
 
 const Contents = styled.div`
   margin-left: 12.5rem;
-  @media screen and (max-width: 999px) {
-    margin-left: 0;
-    width: 50%;
-  }
 `;
 
 const Name = styled.h2`
@@ -162,10 +178,6 @@ const Ingradients = styled.div`
 const IngItem = styled.div`
   display: flex;
   margin-bottom: 0.9375rem;
-  @media screen and (max-width: 999px) {
-    width: 100%;
-    justify-content: space-between;
-  }
 `;
 
 const IngTitle = styled.h2`
@@ -184,10 +196,6 @@ const IngContent = styled.h2`
 const ContentItem = styled.div`
   display: flex;
   margin-bottom: 3.125rem;
-  @media screen and (max-width: 999px) {
-    width: 100%;
-    justify-content: space-between;
-  }
 `;
 
 const ContentTitle = styled.h2`
@@ -229,31 +237,19 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const StarBox = styled.div`
-  position: relative;
-  @media screen and (max-width: 999px) {
-  }
-`;
+const photoVar = {
+  initial: { y: "-120vw" },
+  animate: { y: 0, transition: { type: "spring", stiffness: 70, duration: 0.5 } },
+};
 
-const Star = styled.h2`
-  color: white;
-  font-size: 1.5rem;
-  position: absolute;
-  top: -10.625rem;
-  @media screen and (max-width: 999px) {
-    position: inherit;
-    top: 1.5625rem;
-    left: 7.5rem;
-    font-size: 1.2rem;
-  }
-`;
+const vectorVar = {
+  initial: { y: 0 },
+  animate: { y: 40, transition: { delay: 1.2, type: "spring", stiffness: 100 } },
+  exit: { y: 0 },
+};
 
-const YellowStar = styled.h2`
-  color: ${(props) => props.theme.yellow};
-  font-size: 1.5rem;
-  position: absolute;
-  top: -10.625rem;
-  @media screen and (max-width: 999px) {
-    position: inherit;
-  }
-`;
+const likeVar = {
+  initial: { y: 0 },
+  animate: { y: 60, transition: { delay: 1.2, type: "spring", stiffness: 100 } },
+  exit: { y: 0 },
+};

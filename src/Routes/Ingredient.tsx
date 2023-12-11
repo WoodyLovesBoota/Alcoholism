@@ -2,24 +2,15 @@ import styled from "styled-components";
 import NavigationBar from "../Components/NavigationBar";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import {
-  IIngredient,
-  getIngredient,
-  getAllCategoryResult,
-  getCategoryResult,
-  IGetCocktailResult,
-  ICocktail,
-} from "../api";
-import { Link, PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { IIngredient, getIngredient, getAllCategoryResult, getCategoryResult, IGetCocktailResult } from "../api";
+import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import GlassCard from "../Components/GlassCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 const Ingredient = () => {
-  const navigate = useNavigate();
   const nameMatch: PathMatch<string> | null = useMatch("/ingredient/:name");
   const [current, setCurrent] = useState(8);
-  const [currentList, setCurrentList] = useState<ICocktail[]>([]);
 
   const { data, isLoading } = useQuery<IIngredient>(
     ["ingradient", nameMatch?.params.name],
@@ -45,8 +36,10 @@ const Ingredient = () => {
               <HomeSubTitle>
                 {nameMatch.params.name === "All"
                   ? ""
-                  : data?.ingredients[0].strDescription !== null
-                  ? data?.ingredients[0].strDescription?.split(".")[0] + "."
+                  : data?.ingredients[0].strDescription !== null && data?.ingredients[0].strDescription !== undefined
+                  ? data?.ingredients[0].strDescription?.split(".")[0].length > 150
+                    ? data?.ingredients[0].strDescription?.split(".")[0].slice(0, 150) + ".."
+                    : data?.ingredients[0].strDescription?.split(".")[0] + "."
                   : ""}
               </HomeSubTitle>
             </HomeContent>

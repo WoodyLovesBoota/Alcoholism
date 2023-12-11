@@ -90,6 +90,10 @@ const Header = styled.div`
   background-position: center center;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 800px) {
+    padding: 0 16px;
+    padding-bottom: 16px;
+  }
 `;
 
 const HomeContent = styled.div`
@@ -110,9 +114,13 @@ const HomeSubTitle = styled.h2`
 
 const Main = styled.div`
   width: 100%;
-  padding: 44px 16px;
+  padding: 44px 72px;
   padding-bottom: 0;
   overflow: auto;
+  @media screen and (max-width: 800px) {
+    padding: 44px 16px;
+    padding-bottom: 0;
+  }
 `;
 
 const List = styled.div`
@@ -125,26 +133,33 @@ const Category = styled.h2<{ isNow: boolean }>`
   border: 1px solid ${(props) => (props.isNow ? "transparent" : props.theme.white)};
   color: ${(props) => (props.isNow ? props.theme.accent : props.theme.white)};
   background-color: ${(props) => (props.isNow ? props.theme.accent + "40" : "transparent")};
-  margin-right: 8px;
-  padding: 2px 8px;
+  margin-right: 12px;
+  padding: 4px 14px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 20px;
+  border-radius: 100px;
   font-weight: ${(props) => (props.isNow ? 700 : 400)};
-  font-size: 14px;
-  margin-right: 10px;
+  font-size: 22px;
   cursor: pointer;
   &:hover {
     background-color: ${(props) => (props.isNow ? props.theme.red : props.theme.gray)};
     color: ${(props) => props.theme.snow};
   }
+  @media screen and (max-width: 800px) {
+    padding: 2px 8px;
+    margin-right: 8px;
+    font-size: 14px;
+  }
 `;
 
 const Contents = styled.div`
-  padding: 24px 16px;
-  padding-bottom: 16px;
+  padding: 36px 72px;
   width: 100%;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 800px) {
+    padding: 24px 16px;
+    padding-bottom: 16px;
+  }
 `;

@@ -1,21 +1,26 @@
 import styled from "styled-components";
-import { useLocation, useNavigate } from "react-router-dom";
-import { IGetCocktailResult, getCocktailSearch, getAllCategoryResult } from "../api";
+import { IGetCocktailResult, getCocktailSearch, ICocktail } from "../api";
 import { useQuery } from "react-query";
-
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleXmark, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faMagnifyingGlass, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
 import { searchState } from "../atoms";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GlassCard from "./GlassCard";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Search = () => {
   const [isSearch, setIsSearch] = useRecoilState(searchState);
-  const [keyword, setKeyword] = useState<string>();
   const [currentKeyword, setCurrentKeyword] = useState<string>();
+  const [current, setCurrent] = useState(6);
+  const [currentList, setCurrentList] = useState<ICocktail[]>([]);
+
+  const mobileMatch = useMediaQuery("(max-width:800px)");
+  const midMatch = useMediaQuery("(max-width:1400px)");
+
+  const [screen, setScreen] = useState(0);
 
   const { register, handleSubmit, getValues, setValue } = useForm<IForm>();
 
@@ -32,13 +37,29 @@ const Search = () => {
     setIsSearch(false);
   };
 
-  const { data: tempData, isLoading: tempIsLoading } = useQuery<IGetCocktailResult>(
+  const { data, isLoading } = useQuery<IGetCocktailResult>(
     ["search", currentKeyword],
     () => getCocktailSearch(currentKeyword),
     {
       enabled: !!currentKeyword,
     }
   );
+
+  useEffect(() => {
+    data && setCurrentList(data?.drinks.slice(0, current));
+  }, [current, data]);
+
+  useEffect(() => {
+    if (!mobileMatch && !midMatch) setScreen(2);
+    else if (!mobileMatch && midMatch) setScreen(1);
+    else if (mobileMatch) setScreen(0);
+  }, [mobileMatch, midMatch]);
+
+  useEffect(() => {
+    if (screen === 0) setCurrent((prev) => Math.ceil(prev / 4) * 4);
+    else if (screen === 1) setCurrent((prev) => Math.ceil(prev / 3) * 3);
+    else setCurrent((prev) => Math.ceil(prev / 3) * 3);
+  }, [screen]);
 
   return (
     <Wrapper>
@@ -58,19 +79,27 @@ const Search = () => {
         />
         <Cancel onClick={onCancelClick}>취소</Cancel>
       </Form>
-      {tempIsLoading ? (
+      {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <Main>
-          <Menu>
-            {tempData?.drinks ? (
-              tempData?.drinks.map((cocktail) => (
-                <GlassCard key={"search" + cocktail.idDrink} cocktail={cocktail} isBookmark={false} />
-              ))
-            ) : (
-              <Loader>검색 결과가 없습니다.</Loader>
-            )}
-          </Menu>
+          {data?.drinks ? (
+            <>
+              <Menu>
+                {currentList.map((cocktail) => (
+                  <GlassCard key={"search" + cocktail.idDrink} cocktail={cocktail} isBookmark={false} />
+                ))}
+              </Menu>
+              <Page onClick={() => setCurrent((prev) => (screen === 0 ? prev + 4 : prev + 3))}>
+                See more
+                <MoreIcon>
+                  <FontAwesomeIcon icon={faAngleDown} />
+                </MoreIcon>
+              </Page>
+            </>
+          ) : (
+            <NoResult>검색 결과가 없습니다.</NoResult>
+          )}
         </Main>
       )}
     </Wrapper>
@@ -86,8 +115,11 @@ const Wrapper = styled(motion.div)`
   height: 100vh;
   background-color: #141414;
   z-index: 4;
-  padding: 16px;
+  padding: 16px 72px;
   overflow: auto;
+  @media screen and (max-width: 800px) {
+    padding: 16px;
+  }
 `;
 
 const Loader = styled.h2`
@@ -96,7 +128,17 @@ const Loader = styled.h2`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
+  height: 50vh;
+`;
+
+const NoResult = styled.h2`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
   height: 50vh;
 `;
 
@@ -104,15 +146,22 @@ const Main = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
 `;
 
 const Menu = styled.div`
   padding-top: 30px;
+  width: 100%;
   display: grid;
   justify-content: space-between;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 16px;
-  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 32px;
+
+  @media screen and (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px;
+    padding-top: 30px;
+  }
 `;
 
 const Form = styled(motion.form)`
@@ -120,6 +169,7 @@ const Form = styled(motion.form)`
   align-items: center;
   justify-content: space-between;
   position: relative;
+  width: 100%;
 `;
 
 const Input = styled(motion.input)`
@@ -134,32 +184,6 @@ const Input = styled(motion.input)`
   &:focus {
     outline: none;
   }
-`;
-
-const List = styled.div`
-  padding-top: 15px;
-  position: absolute;
-  background-color: #141414;
-  width: 100%;
-`;
-
-const Element = styled.div`
-  display: flex;
-  padding: 15px 52px;
-  cursor: pointer;
-`;
-
-const Word = styled.div``;
-
-const Normal = styled.span`
-  font-size: 16px;
-  font-weight: 500;
-`;
-
-const HighLight = styled.span`
-  color: ${(props) => props.theme.accent};
-  font-size: 16px;
-  font-weight: 500;
 `;
 
 const Icon = styled.button`
@@ -194,6 +218,34 @@ const Cancel = styled.button`
   padding: 10px 20px;
   padding-right: 4px;
   cursor: pointer;
+`;
+
+const Page = styled.button`
+  width: 100%;
+  background-color: transparent;
+  height: 210px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  font-weight: 500;
+  cursor: pointer;
+
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
+    height: 80px;
+  }
+`;
+
+const MoreIcon = styled.span`
+  font-size: 32px;
+  font-weight: 500;
+  margin-left: 20px;
+
+  @media screen and (max-width: 800px) {
+    margin-left: 10px;
+    font-size: 16px;
+  }
 `;
 
 const searchVar = {

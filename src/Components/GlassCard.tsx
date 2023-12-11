@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { cockTailState, likesState, searchState } from "../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { ReactComponent as Vector } from "../assets/vector.svg";
 import { ReactComponent as Like } from "../assets/like.svg";
 import { motion } from "framer-motion";
@@ -88,29 +88,38 @@ const Wrapper = styled.div`
 `;
 
 const Card = styled(motion.div)<{ bgPhoto: string }>`
-  padding: 16px 20px;
+  padding: 28px 32px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)),
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.1)),
     url(${(props) => props.bgPhoto});
   background-size: cover;
   background-position: center center;
   border-radius: 20px;
   width: 100%;
-  height: 55vw;
+  height: 35vw;
   cursor: pointer;
 
   &:hover {
     background-color: ${(props) => props.theme.gray};
   }
+
+  @media screen and (max-width: 800px) {
+    padding: 16px 20px;
+    border-radius: 20px;
+    height: 55vw;
+  }
 `;
 
 const Title = styled.h2`
-  font-size: 16px;
+  font-size: 28px;
   font-weight: 500;
   display: flex;
   color: white;
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
+  }
 `;
 
 const Star = styled.h2`

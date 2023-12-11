@@ -1,14 +1,10 @@
 import styled from "styled-components";
-import { Link, PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { cockTailState, likesState } from "../atoms";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLeftLong, faStar } from "@fortawesome/free-solid-svg-icons";
 import NavigationBar from "../Components/NavigationBar";
 import { AnimatePresence, motion } from "framer-motion";
-import { ReactComponent as Vector } from "../assets/vector.svg";
-import { ReactComponent as Like } from "../assets/like.svg";
 import { ReactComponent as VectorLong } from "../assets/vectorLong.svg";
 import { ReactComponent as LikeLong } from "../assets/likeLong.svg";
 
@@ -147,9 +143,6 @@ const Detail = () => {
           </Description>
         </ContentItem>
       </Contents>
-      {/* <Button onClick={onBackClick}>
-        <FontAwesomeIcon icon={faLeftLong} />
-      </Button> */}
     </Wrapper>
   );
 };

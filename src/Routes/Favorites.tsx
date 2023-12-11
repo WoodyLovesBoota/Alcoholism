@@ -37,11 +37,17 @@ const Wrapper = styled.div`
 `;
 
 const Main = styled.div`
-  padding: 16px;
-  padding-top: 60px;
   display: grid;
   justify-content: space-between;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 32px;
   width: 100%;
+  padding: 72px;
+  padding-top: 100px;
+  @media screen and (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px;
+    padding: 16px;
+    padding-top: 60px;
+  }
 `;

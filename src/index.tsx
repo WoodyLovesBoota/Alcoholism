@@ -79,17 +79,21 @@ const GlobalStyle = createGlobalStyle`
   }
 
   &::-webkit-scrollbar {
-    background-color: transparent;
-    width: 0;
+    background-color: purple;
+    width: 0;    
+    display: none;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: transparent;
+    background-color: black;
+    width: 2px;
+
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: transparent;
+    background-color: white;
     border-radius: 10px;
+    
   }
 `;
 const queryClient = new QueryClient();

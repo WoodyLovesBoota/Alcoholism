@@ -23,6 +23,14 @@ export const getIngredient = async (keyword: string | undefined) => {
   return await axios.get(`${BASE_URL}json/v1/1/search.php?i=${keyword}`).then((res) => res.data);
 };
 
+export const getIngredientList = async () => {
+  return await axios.get(`${BASE_URL}json/v1/1/list.php?i=list`).then((res) => res.data);
+};
+
+export interface ITotalIngredient {
+  drinks: { strIngredient1: string }[];
+}
+
 export interface IIngredient {
   ingredients: [
     {
@@ -51,7 +59,7 @@ export interface ICocktail {
 }
 
 export interface ICocktailSingle {
-  idDrink: string | null;
+  idDrink: string | undefined;
   strDrink: string | null;
   strDrinkAlternate: string | null;
   strCategory: string | null;

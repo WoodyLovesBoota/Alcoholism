@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useRecoilState } from "recoil";
-import { menuState, currentCateState } from "../atoms";
+import { menuState } from "../atoms";
 import { ReactComponent as Menus } from "../assets/menus.svg";
 
 const Menu = () => {
@@ -10,7 +10,23 @@ const Menu = () => {
 
   const navigate = useNavigate();
 
-  const sample = ["All", "Vodka", "Gin", "Rum", "Tequila", "Lime juice", "Triple Sec", "Brandy", "Bourbon"];
+  const sample = [
+    "Vodka",
+    "Gin",
+    "Rum",
+    "Tequila",
+    "Scotch",
+    "Brandy",
+    "Bourbon",
+    "Champagne",
+    "Tea",
+    "Coffee",
+    "Red wine",
+    "Cognac",
+    "Milk",
+    "Whiskey",
+    "Cider",
+  ];
 
   const onCategoryClick = (index: number) => {
     setIsMenu(false);
@@ -42,7 +58,6 @@ const Menu = () => {
 export default Menu;
 
 const Container = styled.div`
-  height: 100vh;
   display: flex;
   position: fixed;
   top: 0;
@@ -99,7 +114,7 @@ const Cate = styled.h2`
 
 const menuVar = {
   initial: { x: "100vw" },
-  animate: { x: "0vw", transition: { type: "spring", stiffness: 80, duration: 0.3 } },
+  animate: { x: "0vw", transition: { type: "spring", stiffness: 60, duration: 0.2 } },
 };
 
 const overVar = {

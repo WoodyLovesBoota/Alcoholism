@@ -23,7 +23,9 @@ const Categories = ({ name, data }: ICategoriesProps) => {
       <Menus>
         {cocktailMatch &&
           cocktailMatch.params.category === name &&
-          currentList.map((cocktail) => <GlassCard key={"cocktail" + cocktail.idDrink} cocktail={cocktail} />)}
+          currentList.map((cocktail) => (
+            <GlassCard key={"cocktail" + cocktail.idDrink} cocktail={cocktail} isBookmark={false} />
+          ))}
       </Menus>
       <Page onClick={() => setCurrent((prev) => prev + 4)}>
         더보기{" "}

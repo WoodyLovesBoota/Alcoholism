@@ -21,7 +21,6 @@ const Ingredient = () => {
   const [current, setCurrent] = useState(8);
   const [currentList, setCurrentList] = useState<ICocktail[]>([]);
 
-  const sample = ["", "Cocktail", "Vodka", "Gin", "Rum", "Tequila", "Lime juice", "Triple Sec", "Brandy", "Bourbon"];
   const { data, isLoading } = useQuery<IIngredient>(
     ["ingradient", nameMatch?.params.name],
     () => getIngredient(nameMatch?.params.name),
@@ -40,19 +39,26 @@ const Ingredient = () => {
       {nameMatch && !isLoading && !isCocktailLoading && (
         <Container>
           <Header>
-            <NavigationBar isHome={true} />
+            <NavigationBar isHome={false} />
             <HomeContent>
               <HomeTitle>{nameMatch.params.name === "All" ? "All" : data?.ingredients[0].strIngredient}</HomeTitle>
               <HomeSubTitle>
-                {nameMatch.params.name === "All" ? "" : data?.ingredients[0].strDescription?.split(".")[0] + "."}
+                {nameMatch.params.name === "All"
+                  ? ""
+                  : data?.ingredients[0].strDescription !== null
+                  ? data?.ingredients[0].strDescription?.split(".")[0] + "."
+                  : ""}
               </HomeSubTitle>
             </HomeContent>
           </Header>
           <Contents>
             <Menus>
-              {cocktailData?.drinks.slice(0, current).map((cocktail) => (
-                <GlassCard key={"cocktail" + cocktail.idDrink} cocktail={cocktail} />
-              ))}
+              {cocktailData &&
+                cocktailData?.drinks
+                  .slice(0, current)
+                  .map((cocktail) => (
+                    <GlassCard key={"cocktail" + cocktail.idDrink} cocktail={cocktail} isBookmark={false} />
+                  ))}
             </Menus>
             <Page onClick={() => setCurrent((prev) => prev + 4)}>
               더보기{" "}

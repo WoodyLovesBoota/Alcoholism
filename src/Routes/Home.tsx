@@ -32,9 +32,9 @@ const Home = () => {
         <HomeContent>
           <HomeTitle>Grab a Drink</HomeTitle>
           <HomeSubTitle>
-            당신의 취향에 맞는 칵테일을
+            Discover a cocktail
             <br />
-            지금 바로 찾아보세요.
+            that suits your taste right now.
           </HomeSubTitle>
         </HomeContent>
       </Header>
@@ -56,10 +56,10 @@ const Home = () => {
             TEQUILA
           </Category>
           <Category isNow={current === 6} onClick={() => handleCateClick(6)}>
-            LIME_JUICE
+            LIMEJUICE
           </Category>
           <Category isNow={current === 7} onClick={() => handleCateClick(7)}>
-            TRIPLE_SEC
+            TRIPLESEC
           </Category>
           <Category isNow={current === 8} onClick={() => handleCateClick(8)}>
             BRANDY
@@ -94,6 +94,7 @@ const Header = styled.div`
 
 const HomeContent = styled.div`
   margin-top: auto;
+  width: 80vw;
 `;
 
 const HomeTitle = styled.h2`

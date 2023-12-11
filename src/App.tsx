@@ -1,10 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ThemeProvider, createGlobalStyle } from "styled-components";
+import { ThemeProvider } from "styled-components";
 import { mainTheme } from "./theme";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 import Home from "./Routes/Home";
-import Cocktails from "./Routes/Home";
 import Categories from "./Components/Categories";
 import Detail from "./Routes/Detail";
 import Favorites from "./Routes/Favorites";

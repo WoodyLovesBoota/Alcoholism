@@ -1,16 +1,17 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { ICocktail, ICocktailDetail, getCocktailDetail, getCategoryResult, getAllCategoryResult } from "../api";
+import { ICocktail, ICocktailDetail, getCocktailDetail, ICocktailSingle, getAllCategoryResult } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { cockTailState, likesState, searchState } from "../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { ReactComponent as Vector } from "../assets/vector.svg";
 import { ReactComponent as Like } from "../assets/like.svg";
+import { motion } from "framer-motion";
 
-const GlassCard = ({ cocktail }: IGlassCardProps) => {
+const GlassCard = ({ cocktail, isBookmark }: IGlassCardProps) => {
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(searchState);
   const [current, setCurrent] = useRecoilState(cockTailState);
@@ -54,12 +55,18 @@ const GlassCard = ({ cocktail }: IGlassCardProps) => {
     <Wrapper>
       {!isLoading && (
         <>
-          <Card onClick={onCardClick} bgPhoto={data?.drinks[0].strDrinkThumb ? data?.drinks[0].strDrinkThumb : ""}>
+          <Card
+            variants={cardVar}
+            initial="initial"
+            animate="animate"
+            onClick={onCardClick}
+            bgPhoto={data?.drinks[0].strDrinkThumb ? data?.drinks[0].strDrinkThumb : ""}
+          >
             <Title>{cocktail.strDrink}</Title>
           </Card>
           {isIn ? (
-            <YellowStar onClick={onYellowStarClick}>
-              <Like width={"24"} height={"24"} />
+            <YellowStar isBook={isBookmark} onClick={onYellowStarClick}>
+              {isBookmark ? <FontAwesomeIcon icon={faXmark} /> : <Like width={"24"} height={"24"} />}
             </YellowStar>
           ) : (
             <Star onClick={onStarClick}>
@@ -80,7 +87,7 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const Card = styled.div<{ bgPhoto: string }>`
+const Card = styled(motion.div)<{ bgPhoto: string }>`
   padding: 16px 20px;
   display: flex;
   flex-direction: column;
@@ -113,13 +120,20 @@ const Star = styled.h2`
   cursor: pointer;
 `;
 
-const YellowStar = styled.h2`
+const YellowStar = styled.h2<{ isBook: boolean }>`
   position: absolute;
   right: 11px;
-  top: 13px;
+  top: ${(props) => (props.isBook ? "11px" : "13px")};
+  font-size: 14px;
   cursor: pointer;
 `;
 
+const cardVar = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+};
+
 interface IGlassCardProps {
-  cocktail: ICocktail;
+  cocktail: ICocktail | ICocktailSingle;
+  isBookmark: boolean;
 }

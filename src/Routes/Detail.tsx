@@ -9,6 +9,8 @@ import NavigationBar from "../Components/NavigationBar";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReactComponent as Vector } from "../assets/vector.svg";
 import { ReactComponent as Like } from "../assets/like.svg";
+import { ReactComponent as VectorLong } from "../assets/vectorLong.svg";
+import { ReactComponent as LikeLong } from "../assets/likeLong.svg";
 
 const Detail = () => {
   const [current, setCurrent] = useRecoilState(cockTailState);
@@ -41,6 +43,7 @@ const Detail = () => {
     for (let e of isLike) {
       if (e.idDrink === cocktail.idDrink) setIsIn(true);
     }
+    window.scrollTo(0, 0);
   });
 
   return (
@@ -59,7 +62,7 @@ const Detail = () => {
               exit="exit"
               onClick={onYellowStarClick}
             >
-              <Like width={62} height={62} />
+              <LikeLong width={24} height={126} />
             </StarBox>
           ) : (
             <StarBox
@@ -70,7 +73,7 @@ const Detail = () => {
               exit="exit"
               onClick={onStarClick}
             >
-              <Vector width={50} height={50} />
+              <VectorLong width={24} height={126} />
             </StarBox>
           )}
         </AnimatePresence>
@@ -275,18 +278,18 @@ const Button = styled.button`
 `;
 
 const photoVar = {
-  initial: { y: "-120vw" },
-  animate: { y: 0, transition: { type: "spring", stiffness: 70, duration: 0.5 } },
+  initial: { y: "-60vw" },
+  animate: { y: 0, transition: { type: "spring", stiffness: 50, duration: 0.3 } },
 };
 
 const vectorVar = {
   initial: { y: 0 },
-  animate: { y: 40, transition: { delay: 1.2, type: "spring", stiffness: 100 } },
+  animate: { y: 40, transition: { delay: 0.7, type: "spring", stiffness: 100 } },
   exit: { y: 0 },
 };
 
 const likeVar = {
   initial: { y: 0 },
-  animate: { y: 60, transition: { delay: 1.2, type: "spring", stiffness: 100 } },
+  animate: { y: 60, transition: { delay: 0.7, type: "spring", stiffness: 100 } },
   exit: { y: 0 },
 };

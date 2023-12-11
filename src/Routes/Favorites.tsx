@@ -21,6 +21,7 @@ const Favorites = () => {
                   strDrinkThumb: cocktail.strDrinkThumb ? cocktail.strDrinkThumb : "",
                   idDrink: cocktail.idDrink ? cocktail.idDrink : "",
                 }}
+                isBookmark={true}
               />
             )
         )}

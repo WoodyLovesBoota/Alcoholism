@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
 import { searchState } from "../atoms";
 import { useState } from "react";
@@ -15,58 +15,64 @@ import GlassCard from "./GlassCard";
 const Search = () => {
   const [isSearch, setIsSearch] = useRecoilState(searchState);
   const [keyword, setKeyword] = useState<string>();
+  const [currentKeyword, setCurrentKeyword] = useState<string>();
 
-  const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<IForm>();
+  const { register, handleSubmit, getValues, setValue } = useForm<IForm>();
 
   const onValid = (data: IForm) => {
-    setKeyword(data.keyword);
+    setCurrentKeyword(data.keyword);
+  };
+
+  const handleChange = () => {
+    const values = getValues("keyword");
+    setCurrentKeyword(values);
   };
 
   const onCancelClick = () => {
     setIsSearch(false);
   };
 
-  const { data, isLoading } = useQuery<IGetCocktailResult>(["search", keyword], () => getCocktailSearch(keyword), {
-    enabled: !!keyword,
-  });
+  const { data: tempData, isLoading: tempIsLoading } = useQuery<IGetCocktailResult>(
+    ["search", currentKeyword],
+    () => getCocktailSearch(currentKeyword),
+    {
+      enabled: !!currentKeyword,
+    }
+  );
 
   return (
     <Wrapper>
-      {/* <Main>
-          <Title>
-            Search results for <Keyword>"{keyword}"</Keyword>
-          </Title>
-
-          <Menu>
-            {data?.drinks.map((cocktail) => (
-              <GlassCard key={"search" + cocktail.idDrink} cocktail={cocktail} />
-            ))}
-          </Menu>
-        </Main> */}
       <Form variants={searchVar} initial="initial" animate="animate" onSubmit={handleSubmit(onValid)}>
         <Icon type="submit">
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </Icon>
-        <Reset type="reset">X</Reset>
+        <Reset type="reset">
+          <FontAwesomeIcon icon={faCircleXmark} />
+        </Reset>
         <Input
           {...register("keyword", { required: true, minLength: 1 })}
           placeholder="Search Alcohol"
           autoComplete="off"
+          onKeyDown={handleChange}
+          onKeyUp={handleChange}
         />
         <Cancel onClick={onCancelClick}>취소</Cancel>
       </Form>
-      <Main>
-        {isLoading ? (
-          <Loader>Loading...</Loader>
-        ) : (
+      {tempIsLoading ? (
+        <Loader>Loading...</Loader>
+      ) : (
+        <Main>
           <Menu>
-            {data?.drinks.map((cocktail) => (
-              <GlassCard key={"search" + cocktail.idDrink} cocktail={cocktail} />
-            ))}
+            {tempData?.drinks ? (
+              tempData?.drinks.map((cocktail) => (
+                <GlassCard key={"search" + cocktail.idDrink} cocktail={cocktail} isBookmark={false} />
+              ))
+            ) : (
+              <Loader>검색 결과가 없습니다.</Loader>
+            )}
           </Menu>
-        )}
-      </Main>
+        </Main>
+      )}
     </Wrapper>
   );
 };
@@ -84,7 +90,15 @@ const Wrapper = styled(motion.div)`
   overflow: auto;
 `;
 
-const Loader = styled.h2``;
+const Loader = styled.h2`
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 50vh;
+`;
 
 const Main = styled.div`
   display: flex;
@@ -99,21 +113,6 @@ const Menu = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 16px;
   width: 100%;
-`;
-
-const Title = styled.h2`
-  color: ${(props) => props.theme.snow};
-  font-size: 1.3125rem;
-  font-weight: 500;
-  margin-bottom: 3.125rem;
-  margin-left: 3.125rem;
-`;
-
-const Keyword = styled.span`
-  color: ${(props) => props.theme.lightGreen};
-  font-size: 1.3125rem;
-  font-weight: 500;
-  margin-bottom: 3.125rem;
 `;
 
 const Form = styled(motion.form)`
@@ -131,9 +130,36 @@ const Input = styled(motion.input)`
   border-radius: 12px;
   width: 85%;
   color: ${(props) => props.theme.black};
+  text-transform: uppercase;
   &:focus {
     outline: none;
   }
+`;
+
+const List = styled.div`
+  padding-top: 15px;
+  position: absolute;
+  background-color: #141414;
+  width: 100%;
+`;
+
+const Element = styled.div`
+  display: flex;
+  padding: 15px 52px;
+  cursor: pointer;
+`;
+
+const Word = styled.div``;
+
+const Normal = styled.span`
+  font-size: 16px;
+  font-weight: 500;
+`;
+
+const HighLight = styled.span`
+  color: ${(props) => props.theme.accent};
+  font-size: 16px;
+  font-weight: 500;
 `;
 
 const Icon = styled.button`
@@ -147,20 +173,15 @@ const Icon = styled.button`
 `;
 
 const Reset = styled.button`
-  font-size: 8px;
+  font-size: 16px;
   position: absolute;
   left: calc(85% - 25px);
   top: 13px;
   cursor: pointer;
-  background-color: rgba(179, 179, 179, 1);
-  width: 16px;
-  height: 16px;
+  color: rgba(179, 179, 179, 1);
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100px;
-  font-weight: 900;
-  vertical-align: center;
 `;
 
 const Cancel = styled.button`

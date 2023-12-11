@@ -178,11 +178,14 @@ const Input = styled(motion.input)`
   font-weight: 500;
   padding: 10px 50px;
   border-radius: 12px;
-  width: 85%;
+  width: 90%;
   color: ${(props) => props.theme.black};
-  text-transform: uppercase;
   &:focus {
     outline: none;
+  }
+
+  @media screen and (max-width: 800px) {
+    width: 85%;
   }
 `;
 
@@ -197,15 +200,18 @@ const Icon = styled.button`
 `;
 
 const Reset = styled.button`
-  font-size: 16px;
+  font-size: 18px;
   position: absolute;
-  left: calc(85% - 25px);
+  left: calc(90% - 40px);
   top: 13px;
   cursor: pointer;
   color: rgba(179, 179, 179, 1);
   display: flex;
   justify-content: center;
   align-items: center;
+  @media screen and (max-width: 800px) {
+    left: calc(85% - 30px);
+  }
 `;
 
 const Cancel = styled.button`

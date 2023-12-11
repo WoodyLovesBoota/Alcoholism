@@ -44,7 +44,7 @@ const NavigationBar = ({ isHome }: { isHome: boolean }) => {
   return (
     <Wrapper>
       <Logo isHome={isHome} onClick={onHomeClick}>
-        Grab a Drink
+        ALCOHOLISM
       </Logo>
 
       <Contents>
@@ -69,7 +69,6 @@ const Wrapper = styled.div`
   padding: 28px 72px;
   display: flex;
   align-items: flex-end;
-  position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
@@ -77,10 +76,15 @@ const Wrapper = styled.div`
   background-color: #141414;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.25);
+  position: fixed;
+
   @media screen and (max-width: 800px) {
+    position: absolute;
     padding: 6px 16px;
     height: 45px;
     background-color: transparent;
+    box-shadow: 0 0 0 0 transparent;
   }
 `;
 
@@ -119,6 +123,7 @@ const Item = styled.h2`
     width: 24px;
     height: 24px;
     margin-right: 12px;
+    margin-left: 0px;
   }
 `;
 

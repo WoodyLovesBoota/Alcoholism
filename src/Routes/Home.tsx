@@ -34,11 +34,9 @@ const Home = () => {
           <HomeSubTitle>
             Discover a cocktail
             <br />
-            that suits your taste right now.
+            that suits your taste.
           </HomeSubTitle>
         </HomeContent>
-      </Header>
-      <Main>
         <List>
           <Category isNow={current === 1} onClick={() => handleCateClick(1)}>
             ALL
@@ -68,7 +66,7 @@ const Home = () => {
             BOURBON
           </Category>
         </List>
-      </Main>
+      </Header>
       <Contents>{!isLoading && <Categories key={current} name={sample[current]} data={data} />}</Contents>
     </Wrapper>
   );
@@ -82,44 +80,51 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   width: 100vw;
-  height: 100vw;
-  padding: 0 16px;
-  padding-bottom: 16px;
-  background-image: linear-gradient(to top, #141414, rgba(0, 0, 0, 0)), url("/bg.png");
+  height: 66vw;
+  padding: 0 72px;
+  background-image: linear-gradient(180deg, rgba(20, 20, 20, 0.15) 0%, #141414 76.29%), url("/bg2.png");
   background-size: cover;
   background-position: center center;
   display: flex;
   flex-direction: column;
+  margin-top: 10vh;
   @media screen and (max-width: 800px) {
+    background-image: linear-gradient(to top, #141414, rgba(0, 0, 0, 0)), url("/bg.png");
     padding: 0 16px;
     padding-bottom: 16px;
+    height: 100vw;
+    margin-top: 0;
   }
 `;
 
 const HomeContent = styled.div`
   margin-top: auto;
-  width: 80vw;
+  width: 100%;
+  @media screen and (max-width: 800px) {
+    width: 80%;
+  }
 `;
 
 const HomeTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 700;
+  font-size: 100px;
+  font-weight: 500;
   color: ${(props) => props.theme.accent};
+  @media screen and (max-width: 800px) {
+    font-size: 36px;
+    font-weight: 700;
+  }
 `;
 
 const HomeSubTitle = styled.h2`
-  font-size: 16px;
-  font-weight: 300;
-`;
-
-const Main = styled.div`
-  width: 100%;
-  padding: 44px 72px;
-  padding-bottom: 0;
-  overflow: auto;
+  text-align: end;
+  font-size: 48px;
+  font-weight: 500;
+  margin-top: 50px;
   @media screen and (max-width: 800px) {
-    padding: 44px 16px;
-    padding-bottom: 0;
+    font-size: 16px;
+    font-weight: 300;
+    margin-top: 0px;
+    text-align: start;
   }
 `;
 
@@ -127,6 +132,10 @@ const List = styled.div`
   display: flex;
   align-items: center;
   overflow-x: auto;
+  margin-top: 160px;
+  @media screen and (max-width: 800px) {
+    margin-top: 60px;
+  }
 `;
 
 const Category = styled.h2<{ isNow: boolean }>`
@@ -154,7 +163,7 @@ const Category = styled.h2<{ isNow: boolean }>`
 `;
 
 const Contents = styled.div`
-  padding: 36px 72px;
+  padding: 40px 72px;
   width: 100%;
   display: flex;
   align-items: center;

@@ -40,7 +40,7 @@ const Detail = () => {
       if (e.idDrink === cocktail.idDrink) setIsIn(true);
     }
     window.scrollTo(0, 0);
-  });
+  }, []);
 
   return (
     <Wrapper>
@@ -79,22 +79,7 @@ const Detail = () => {
         <Name>{cocktail.strDrink}</Name>
         <Cates>
           {cocktail.strCategory && (
-            <Cate>{cocktail.strCategory.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
-          )}
-          {cocktail.strIngredient1 && (
-            <Cate>{cocktail.strIngredient1.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
-          )}
-          {cocktail.strIngredient2 && (
-            <Cate>{cocktail.strIngredient2.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
-          )}
-          {cocktail.strIngredient3 && (
-            <Cate>{cocktail.strIngredient3.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
-          )}
-          {cocktail.strIngredient4 && (
-            <Cate>{cocktail.strIngredient4.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
-          )}
-          {cocktail.strIngredient5 && (
-            <Cate>{cocktail.strIngredient5.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}</Cate>
+            <Cate>{cocktail.strCategory.replaceAll(" ", "").replaceAll("-", "").toUpperCase()}</Cate>
           )}
         </Cates>
 
@@ -104,7 +89,7 @@ const Detail = () => {
         </ContentItem>
 
         <ContentItem>
-          <ContentTitle>Ingradients</ContentTitle>
+          <ContentTitle>INGREDIENTS</ContentTitle>
           <Ingradients>
             <IngItem>
               <IngTitle>{cocktail.strIngredient1}</IngTitle>
@@ -130,7 +115,7 @@ const Detail = () => {
         </ContentItem>
 
         <ContentItem>
-          <ContentTitle>How to Make</ContentTitle>
+          <ContentTitle>HOW TO MAKE</ContentTitle>
           <Description>
             {cocktail.strInstructions?.split(".").map(
               (e, i) =>
@@ -151,15 +136,30 @@ export default Detail;
 
 const Wrapper = styled.div`
   width: 100vw;
+  display: flex;
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 const Photo = styled(motion.div)<{ bgPhoto: string }>`
-  width: 100%;
-  height: 120vw;
+  width: 50%;
+  height: 100vh;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  padding-right: 40px;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  @media screen and (max-width: 800px) {
+    position: inherit;
+    width: 100%;
+    height: 120vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-right: 40px;
+  }
 `;
 
 const Bg = styled.div<{ bgPhoto: string }>`
@@ -167,12 +167,16 @@ const Bg = styled.div<{ bgPhoto: string }>`
   background-position: center center;
   background-size: cover;
   width: 100%;
-  height: 120vw;
-  position: absolute;
+  height: 100vh;
+  position: fixed;
   left: 0;
   z-index: 1;
-  border-bottom-left-radius: 36px;
-  border-bottom-right-radius: 36px;
+  @media screen and (max-width: 800px) {
+    position: absolute;
+    height: 120vw;
+    border-bottom-left-radius: 36px;
+    border-bottom-right-radius: 36px;
+  }
 `;
 
 const StarBox = styled(motion.div)`
@@ -181,52 +185,88 @@ const StarBox = styled(motion.div)`
 `;
 
 const Contents = styled.div`
-  padding: 16px;
+  padding: 40px 72px;
+  padding-top: 124px;
   width: 100%;
+  padding-left: calc(50vw + 72px);
+  background: linear-gradient(180deg, ${(props) => props.theme.accent}, rgba(20, 20, 20, 0), rgba(20, 20, 20, 0));
+  @media screen and (max-width: 800px) {
+    padding: 16px;
+    width: 100%;
+    background: ${(props) => props.theme.black};
+  }
 `;
 
 const Name = styled.h2`
-  margin-top: 16px;
-  font-size: 32px;
+  font-size: 42px;
   font-weight: 700;
-  margin-right: 80px;
-  color: ${(props) => props.theme.accent};
+  color: ${(props) => props.theme.black};
+  @media screen and (max-width: 800px) {
+    margin-top: 16px;
+    font-size: 32px;
+    font-weight: 700;
+    margin-right: 80px;
+    color: ${(props) => props.theme.accent};
+  }
 `;
 
 const Cates = styled.div`
-  display: flex;
   margin-top: 20px;
-  margin-bottom: 50px;
-  overflow-x: auto;
-  width: 100%;
+  margin-bottom: 67px;
+  display: flex;
+  @media screen and (max-width: 800px) {
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: 50px;
+    width: 100%;
+  }
 `;
 
-const Cate = styled.span`
+const Cate = styled.p`
   font-weight: 400;
   font-size: 14px;
   padding: 2px 8px;
   border-radius: 100px;
   border: 1px solid white;
   margin-right: 8px;
+
+  @media screen and (max-width: 800px) {
+    font-weight: 400;
+    font-size: 14px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    border: 1px solid white;
+    margin-right: 8px;
+  }
 `;
 
 const ContentItem = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 36px;
+  margin-bottom: 48px;
+  @media screen and (max-width: 800px) {
+    margin-bottom: 36px;
+  }
 `;
 
 const ContentTitle = styled.h2`
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 500;
   border-bottom: 2px solid white;
-  height: 40px;
+  height: 46px;
+  @media screen and (max-width: 800px) {
+    font-size: 24px;
+    height: 40px;
+  }
 `;
 
 const ContentDesc = styled.h2`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   margin-top: 10px;
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
+  }
 `;
 
 const Ingradients = styled.div`
@@ -241,33 +281,30 @@ const IngItem = styled.div`
 `;
 
 const IngTitle = styled.h2`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
+  }
 `;
 
 const IngContent = styled.h2`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
+  }
 `;
 
 const Description = styled.div``;
 
 const Desc = styled.h2`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   margin-top: 10px;
-`;
-
-const Button = styled.button`
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  font-size: 21px;
-  background-color: ${(props) => props.theme.lightGreen};
-  color: ${(props) => props.theme.snow};
-  padding: 15px;
-  border-radius: 30px;
-  cursor: pointer;
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
+  }
 `;
 
 const photoVar = {

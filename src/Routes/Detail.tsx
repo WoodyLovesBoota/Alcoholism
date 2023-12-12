@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { cockTailState, likesState } from "../atoms";
@@ -39,10 +38,10 @@ const Detail = () => {
 
   return (
     <Wrapper>
-      <NavigationBar isHome={false} isSticky={true} />
+      <NavigationBar ishome={false} issticky={true} />
 
       <Photo variants={photoVar} initial="initial" animate="animate">
-        <Bg bgPhoto={cocktail?.strDrinkThumb ? cocktail?.strDrinkThumb : ""} />
+        <Bg bgphoto={cocktail?.strDrinkThumb ? cocktail?.strDrinkThumb : ""} />
         <AnimatePresence>
           {isIn ? (
             <StarBox
@@ -115,7 +114,7 @@ const Detail = () => {
             {cocktail.strInstructions?.split(".").map(
               (e, i) =>
                 e !== "" && (
-                  <Desc>
+                  <Desc key={i}>
                     {i + 1}. {e}.
                   </Desc>
                 )
@@ -139,7 +138,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Photo = styled(motion.div)<{ bgPhoto: string }>`
+const Photo = styled(motion.div)<{ bgphoto: string }>`
   width: 50%;
   height: 100vh;
   display: flex;
@@ -160,8 +159,8 @@ const Photo = styled(motion.div)<{ bgPhoto: string }>`
   }
 `;
 
-const Bg = styled.div<{ bgPhoto: string }>`
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), url(${(props) => props.bgPhoto});
+const Bg = styled.div<{ bgphoto: string }>`
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), url(${(props) => props.bgphoto});
   background-position: center center;
   background-size: cover;
   width: 100%;

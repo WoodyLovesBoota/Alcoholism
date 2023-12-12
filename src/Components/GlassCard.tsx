@@ -62,12 +62,12 @@ const GlassCard = ({ cocktail, isBookmark }: IGlassCardProps) => {
             initial="initial"
             animate="animate"
             onClick={onCardClick}
-            bgPhoto={data?.drinks[0].strDrinkThumb ? data?.drinks[0].strDrinkThumb : ""}
+            bgphoto={data?.drinks[0].strDrinkThumb ? data?.drinks[0].strDrinkThumb : ""}
           >
             <Title>{cocktail.strDrink}</Title>
           </Card>
           {isIn ? (
-            <YellowStar isBook={isBookmark} onClick={onYellowStarClick}>
+            <YellowStar isbook={isBookmark.toString()} onClick={onYellowStarClick}>
               {isBookmark ? (
                 <FontAwesomeIcon icon={faXmark} />
               ) : (
@@ -93,13 +93,13 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const Card = styled(motion.div)<{ bgPhoto: string }>`
+const Card = styled(motion.div)<{ bgphoto: string }>`
   padding: 28px 32px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.1)),
-    url(${(props) => props.bgPhoto});
+    url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
   border-radius: 20px;
@@ -139,15 +139,15 @@ const Star = styled.h2`
   }
 `;
 
-const YellowStar = styled.h2<{ isBook: boolean }>`
+const YellowStar = styled.h2<{ isbook: string }>`
   position: absolute;
   right: 15px;
-  top: ${(props) => (props.isBook ? "13px" : "15px")};
+  top: ${(props) => (props.isbook === "true" ? "13px" : "15px")};
   font-size: 18px;
   cursor: pointer;
   @media screen and (max-width: 800px) {
     font-size: 14px;
-    top: ${(props) => (props.isBook ? "11px" : "13px")};
+    top: ${(props) => (props.isbook === "true" ? "11px" : "13px")};
     right: 11px;
   }
 `;

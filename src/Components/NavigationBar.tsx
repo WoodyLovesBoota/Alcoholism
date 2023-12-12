@@ -15,11 +15,11 @@ import { motion } from "framer-motion";
 import { faCircleXmark, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import SearchBox from "./SearchBox";
 
-const NavigationBar = ({ isHome, isSticky }: { isHome: boolean; isSticky: boolean }) => {
+const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolean }) => {
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(searchState);
-  const [isMenu, setIsMenu] = useRecoilState(menuState);
-  const [isFav, setIsFav] = useRecoilState(favoriteState);
+  const [ismenu, setIsMenu] = useRecoilState(menuState);
+  const [isfav, setIsFav] = useRecoilState(favoriteState);
 
   const [screen, setScreen] = useRecoilState(screenState);
   const [currentKeyword, setCurrentKeyword] = useRecoilState(currentKeywordState);
@@ -82,12 +82,12 @@ const NavigationBar = ({ isHome, isSticky }: { isHome: boolean; isSticky: boolea
   }, [screen]);
 
   return (
-    <Wrapper sticky={isSticky || isSearch}>
+    <Wrapper sticky={(issticky || isSearch).toString()}>
       {isSearch && screen === 0 && <Search />}
       {isSearch && screen !== 0 && <SearchBox isLoading={isLoading} data={data} />}
-      {isMenu && <Menu />}
-      <Container isMenu={isMenu}>
-        <Logo isHome={isHome} onClick={onHomeClick}>
+      {ismenu && <Menu />}
+      <Container ismenu={ismenu.toString()}>
+        <Logo ishome={ishome.toString()} onClick={onHomeClick}>
           ALCOHOLISM
         </Logo>
 
@@ -115,13 +115,13 @@ const NavigationBar = ({ isHome, isSticky }: { isHome: boolean; isSticky: boolea
               />
             </Form>
           )}
-          <SearchItem onClick={onSearchClick} isFavorite={false}>
+          <SearchItem onClick={onSearchClick} isfavorite={"false"}>
             {screen === 0 ? <FontAwesomeIcon icon={faMagnifyingGlass} /> : !isSearch && <Word>SEARCH</Word>}
           </SearchItem>
-          <FavoriteItem onClick={onFavoriteClick} isFavorite={isFav}>
+          <FavoriteItem onClick={onFavoriteClick} isfavorite={isfav.toString()}>
             {screen === 0 ? <Vector width={14} height={18} /> : <Word>BOOKMARK</Word>}
           </FavoriteItem>
-          <MenuItem onClick={onMenuClick} isFavorite={isMenu}>
+          <MenuItem onClick={onMenuClick} isfavorite={ismenu.toString()}>
             {screen === 0 ? <Menus width={24} height={24} /> : <Word>MENU</Word>}
           </MenuItem>
         </Contents>
@@ -132,18 +132,18 @@ const NavigationBar = ({ isHome, isSticky }: { isHome: boolean; isSticky: boolea
 
 export default NavigationBar;
 
-const Wrapper = styled.div<{ sticky: boolean }>`
-  position: ${(props) => (props.sticky ? "fixed" : "absolute")};
+const Wrapper = styled.div<{ sticky: string }>`
+  position: ${(props) => (props.sticky === "true" ? "fixed" : "absolute")};
   top: 0;
   left: 0;
   width: 100%;
-  z-index: ${(props) => props.sticky && 1};
+  z-index: ${(props) => props.sticky === "true" && 1};
   @media screen and (max-width: 800px) {
     position: absolute;
   }
 `;
 
-const Container = styled.div<{ isMenu: boolean }>`
+const Container = styled.div<{ ismenu: string }>`
   background-color: #141414;
   position: absolute;
   display: flex;
@@ -153,7 +153,7 @@ const Container = styled.div<{ isMenu: boolean }>`
   height: 84px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  box-shadow: ${(props) => !props.isMenu && `0px 4px 8px 2px rgba(0, 0, 0, 0.25)`};
+  box-shadow: ${(props) => props.ismenu === "false" && `0px 4px 8px 2px rgba(0, 0, 0, 0.25)`};
   z-index: 10;
   @media screen and (max-width: 800px) {
     align-items: flex-end;
@@ -164,13 +164,13 @@ const Container = styled.div<{ isMenu: boolean }>`
   }
 `;
 
-const Logo = styled.h2<{ isHome: boolean }>`
+const Logo = styled.h2<{ ishome: string }>`
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
   color: ${(props) => props.theme.accent};
   @media screen and (max-width: 800px) {
-    ${(props) => props.isHome && { display: "none" }}
+    ${(props) => props.ishome === "true" && { display: "none" }}
     line-height: 1;
   }
 `;
@@ -181,7 +181,7 @@ const Contents = styled.div`
   align-items: center;
 `;
 
-const SearchItem = styled.h2<{ isFavorite: boolean }>`
+const SearchItem = styled.h2<{ isfavorite: string }>`
   margin-left: 26px;
   font-size: 18px;
   font-weight: 500;
@@ -190,14 +190,14 @@ const SearchItem = styled.h2<{ isFavorite: boolean }>`
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.accent};
-  background-color: ${(props) => (props.isFavorite ? props.theme.accent : "transparent")};
+  background-color: ${(props) => (props.isfavorite === "true" ? props.theme.accent : "transparent")};
   border-radius: 100px;
   padding: 4px 12px;
   &:last-child {
     margin-right: 0;
   }
   span {
-    color: ${(props) => (props.isFavorite ? props.theme.black : props.theme.accent)};
+    color: ${(props) => (props.isfavorite === "true" ? props.theme.black : props.theme.accent)};
   }
 
   @media screen and (max-width: 800px) {
@@ -213,7 +213,7 @@ const SearchItem = styled.h2<{ isFavorite: boolean }>`
   }
 `;
 
-const MenuItem = styled.h2<{ isFavorite: boolean }>`
+const MenuItem = styled.h2<{ isfavorite: string }>`
   margin-left: 26px;
   font-size: 18px;
   font-weight: 500;
@@ -222,14 +222,14 @@ const MenuItem = styled.h2<{ isFavorite: boolean }>`
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.accent};
-  background-color: ${(props) => (props.isFavorite ? props.theme.accent : "transparent")};
+  background-color: ${(props) => (props.isfavorite === "true" ? props.theme.accent : "transparent")};
   border-radius: 100px;
   padding: 4px 12px;
   &:last-child {
     margin-right: 0;
   }
   span {
-    color: ${(props) => (props.isFavorite ? props.theme.black : props.theme.accent)};
+    color: ${(props) => (props.isfavorite === "true" ? props.theme.black : props.theme.accent)};
   }
 
   @media screen and (max-width: 800px) {
@@ -245,7 +245,7 @@ const MenuItem = styled.h2<{ isFavorite: boolean }>`
   }
 `;
 
-const FavoriteItem = styled.h2<{ isFavorite: boolean }>`
+const FavoriteItem = styled.h2<{ isfavorite: string }>`
   margin-left: 26px;
   font-size: 18px;
   font-weight: 500;
@@ -254,14 +254,14 @@ const FavoriteItem = styled.h2<{ isFavorite: boolean }>`
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.accent};
-  background-color: ${(props) => (props.isFavorite ? props.theme.accent : "transparent")};
+  background-color: ${(props) => (props.isfavorite === "true" ? props.theme.accent : "transparent")};
   border-radius: 100px;
   padding: 4px 12px;
   &:last-child {
     margin-right: 0;
   }
   span {
-    color: ${(props) => (props.isFavorite ? props.theme.black : props.theme.accent)};
+    color: ${(props) => (props.isfavorite === "true" ? props.theme.black : props.theme.accent)};
   }
 
   @media screen and (max-width: 800px) {

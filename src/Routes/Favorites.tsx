@@ -14,7 +14,7 @@ const Favorites = () => {
 
   return (
     <Wrapper>
-      <NavigationBar isHome={false} isSticky={false} />
+      <NavigationBar ishome={false} issticky={false} />
       <Main>
         {likes.map(
           (cocktail, ind) =>

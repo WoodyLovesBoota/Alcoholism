@@ -32,7 +32,7 @@ const Home = () => {
   return (
     <Wrapper>
       <Header>
-        <NavigationBar isHome={true} isSticky={false} />
+        <NavigationBar ishome={true} issticky={false} />
         <HomeContent>
           <HomeTitle>Grab a Drink</HomeTitle>
           <HomeSubTitle>
@@ -42,31 +42,31 @@ const Home = () => {
           </HomeSubTitle>
         </HomeContent>
         <List>
-          <Category isNow={current === 1} onClick={() => handleCateClick(1)}>
+          <Category isnow={(current === 1).toString()} onClick={() => handleCateClick(1)}>
             ALL
           </Category>
-          <Category isNow={current === 2} onClick={() => handleCateClick(2)}>
+          <Category isnow={(current === 2).toString()} onClick={() => handleCateClick(2)}>
             VODKA
           </Category>
-          <Category isNow={current === 3} onClick={() => handleCateClick(3)}>
+          <Category isnow={(current === 3).toString()} onClick={() => handleCateClick(3)}>
             GIN
           </Category>
-          <Category isNow={current === 4} onClick={() => handleCateClick(4)}>
+          <Category isnow={(current === 4).toString()} onClick={() => handleCateClick(4)}>
             RUM
           </Category>
-          <Category isNow={current === 5} onClick={() => handleCateClick(5)}>
+          <Category isnow={(current === 5).toString()} onClick={() => handleCateClick(5)}>
             TEQUILA
           </Category>
-          <Category isNow={current === 6} onClick={() => handleCateClick(6)}>
+          <Category isnow={(current === 6).toString()} onClick={() => handleCateClick(6)}>
             LIMEJUICE
           </Category>
-          <Category isNow={current === 7} onClick={() => handleCateClick(7)}>
+          <Category isnow={(current === 7).toString()} onClick={() => handleCateClick(7)}>
             TRIPLESEC
           </Category>
-          <Category isNow={current === 8} onClick={() => handleCateClick(8)}>
+          <Category isnow={(current === 8).toString()} onClick={() => handleCateClick(8)}>
             BRANDY
           </Category>
-          <Category isNow={current === 9} onClick={() => handleCateClick(9)}>
+          <Category isnow={(current === 9).toString()} onClick={() => handleCateClick(9)}>
             BOURBON
           </Category>
         </List>
@@ -145,21 +145,21 @@ const List = styled.div`
   }
 `;
 
-const Category = styled.h2<{ isNow: boolean }>`
-  border: 1px solid ${(props) => (props.isNow ? "transparent" : props.theme.white)};
-  color: ${(props) => (props.isNow ? props.theme.accent : props.theme.white)};
-  background-color: ${(props) => (props.isNow ? props.theme.accent + "40" : "transparent")};
+const Category = styled.h2<{ isnow: string }>`
+  border: 1px solid ${(props) => (props.isnow === "true" ? "transparent" : props.theme.white)};
+  color: ${(props) => (props.isnow === "true" ? props.theme.accent : props.theme.white)};
+  background-color: ${(props) => (props.isnow === "true" ? props.theme.accent + "40" : "transparent")};
   margin-right: 12px;
   padding: 4px 14px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 100px;
-  font-weight: ${(props) => (props.isNow ? 700 : 400)};
+  font-weight: ${(props) => (props.isnow === "true" ? 700 : 400)};
   font-size: 22px;
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => (props.isNow ? props.theme.red : props.theme.gray)};
+    background-color: ${(props) => (props.isnow === "true" ? props.theme.red : props.theme.gray)};
     color: ${(props) => props.theme.snow};
   }
   @media screen and (max-width: 800px) {

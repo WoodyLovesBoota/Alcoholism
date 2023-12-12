@@ -39,7 +39,7 @@ const Ingredient = () => {
       {nameMatch && !isLoading && !isCocktailLoading && (
         <Container>
           <Header>
-            <NavigationBar isHome={false} isSticky={false} />
+            <NavigationBar ishome={false} issticky={false} />
             <HomeContent>
               <HomeTitle>{nameMatch.params.name === "All" ? "All" : data?.ingredients[0].strIngredient}</HomeTitle>
               <HomeSubTitle>

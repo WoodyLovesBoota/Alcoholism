@@ -47,7 +47,7 @@ const Menu = () => {
         </Item>
         <Cates>
           {sample.map((e, i) => (
-            <Cate onClick={() => onCategoryClick(i + 1)}>
+            <Cate key={i} onClick={() => onCategoryClick(i + 1)}>
               {e.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}
             </Cate>
           ))}

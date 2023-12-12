@@ -8,7 +8,7 @@ import { searchState, menuState, screenState, currentSearchList, currentKeywordS
 import Search from "../Components/Search";
 import Menu from "./Menu";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { IGetCocktailResult, getCocktailSearch } from "../api";
 import { motion } from "framer-motion";
@@ -28,7 +28,7 @@ const NavigationBar = ({ isHome, isSticky }: { isHome: boolean; isSticky: boolea
   const { register, handleSubmit, getValues, setValue } = useForm<IForm>();
 
   const onHomeClick = () => {
-    navigate("/Cocktail");
+    navigate("/");
     setIsFav(false);
     setIsMenu(false);
     setIsSearch(false);

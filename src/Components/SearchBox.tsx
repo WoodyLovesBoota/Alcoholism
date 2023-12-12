@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
-import { screenState, searchState, currentSearchList } from "../atoms";
+import { screenState, currentSearchList } from "../atoms";
 import { useEffect, useState } from "react";
 import GlassCard from "./GlassCard";
 

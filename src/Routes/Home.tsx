@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import NavigationBar from "../Components/NavigationBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Categories from "../Components/Categories";
 import { useQuery } from "react-query";
 import { IGetCocktailResult, getCategoryResult, getAllCategoryResult } from "../api";
@@ -10,7 +10,7 @@ import { currentCateState } from "../atoms";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(1);
   const [currentCate, setCurrentCate] = useRecoilState(currentCateState);
   const sample = ["", "Cocktail", "Vodka", "Gin", "Rum", "Tequila", "Lime juice", "Triple Sec", "Brandy", "Bourbon"];
   const { data, isLoading } = useQuery<IGetCocktailResult>(
@@ -24,6 +24,10 @@ const Home = () => {
     setCurrentCate(num);
     navigate(`/${sample[num]}`);
   };
+
+  useEffect(() => {
+    navigate(`/${sample[current]}`);
+  }, []);
 
   return (
     <Wrapper>

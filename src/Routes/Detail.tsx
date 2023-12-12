@@ -44,7 +44,7 @@ const Detail = () => {
 
   return (
     <Wrapper>
-      <NavigationBar isHome={false} />
+      <NavigationBar isHome={false} isSticky={true} />
 
       <Photo variants={photoVar} initial="initial" animate="animate">
         <Bg bgPhoto={cocktail?.strDrinkThumb ? cocktail?.strDrinkThumb : ""} />
@@ -137,8 +137,10 @@ export default Detail;
 const Wrapper = styled.div`
   width: 100vw;
   display: flex;
+  position: relative;
   @media screen and (max-width: 800px) {
     flex-direction: column;
+    position: inherit;
   }
 `;
 
@@ -150,6 +152,7 @@ const Photo = styled(motion.div)<{ bgPhoto: string }>`
   align-items: flex-end;
   position: fixed;
   top: 50px;
+
   left: 0;
   @media screen and (max-width: 800px) {
     position: inherit;
@@ -182,6 +185,16 @@ const Bg = styled.div<{ bgPhoto: string }>`
 const StarBox = styled(motion.div)`
   cursor: pointer;
   position: absolute;
+  top: -100px;
+  left: calc(100vw - 90px);
+
+  @media screen and (max-width: 800px) {
+    position: absolute;
+    top: auto;
+    top: initial;
+    left: auto;
+    left: initial;
+  }
 `;
 
 const Contents = styled.div`
@@ -189,24 +202,23 @@ const Contents = styled.div`
   padding-top: 124px;
   width: 100%;
   padding-left: calc(50vw + 72px);
-  background: linear-gradient(180deg, ${(props) => props.theme.accent}, rgba(20, 20, 20, 0), rgba(20, 20, 20, 0));
+  background: ${(props) => props.theme.black};
   @media screen and (max-width: 800px) {
     padding: 16px;
     width: 100%;
-    background: ${(props) => props.theme.black};
   }
 `;
 
 const Name = styled.h2`
   font-size: 42px;
   font-weight: 700;
-  color: ${(props) => props.theme.black};
+  margin-right: 68px;
+  color: ${(props) => props.theme.accent};
   @media screen and (max-width: 800px) {
     margin-top: 16px;
     font-size: 32px;
     font-weight: 700;
     margin-right: 80px;
-    color: ${(props) => props.theme.accent};
   }
 `;
 

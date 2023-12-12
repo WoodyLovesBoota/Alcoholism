@@ -28,7 +28,7 @@ const Home = () => {
   return (
     <Wrapper>
       <Header>
-        <NavigationBar isHome={true} />
+        <NavigationBar isHome={true} isSticky={false} />
         <HomeContent>
           <HomeTitle>Grab a Drink</HomeTitle>
           <HomeSubTitle>

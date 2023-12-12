@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { ICocktailDetail, ICocktailSingle } from "./api";
+import { ICocktailDetail, ICocktailSingle, ICocktail } from "./api";
 
 export const cockTailState = atom<ICocktailDetail>({
   key: "currentCocktail",
@@ -78,12 +78,37 @@ export const searchState = atom<boolean>({
   default: false,
 });
 
+export const pcSearchState = atom<boolean>({
+  key: "pcSearchOpen",
+  default: false,
+});
+
 export const menuState = atom<boolean>({
   key: "menuOpen",
+  default: false,
+});
+
+export const favoriteState = atom<boolean>({
+  key: "favoriteOpen",
   default: false,
 });
 
 export const currentCateState = atom<number>({
   key: "currentCategory",
   default: 0,
+});
+
+export const screenState = atom<number>({
+  key: "screenWidth",
+  default: 0,
+});
+
+export const currentSearchList = atom<ICocktail[]>({
+  key: "currentSearchList",
+  default: [],
+});
+
+export const currentKeywordState = atom<string>({
+  key: "currentSearchKeyword",
+  default: "",
 });

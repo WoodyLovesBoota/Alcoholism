@@ -6,28 +6,19 @@ import { Link, PathMatch, useMatch, useNavigate } from "react-router-dom";
 import GlassCard from "./GlassCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { useRecoilState } from "recoil";
+import { screenState } from "../atoms";
 
 const Categories = ({ name, data }: ICategoriesProps) => {
-  const mobileMatch = useMediaQuery("(max-width:800px)");
-  const midMatch = useMediaQuery("(max-width:1400px)");
-
-  const [screen, setScreen] = useState(0);
-
   const [current, setCurrent] = useState(6);
   const [currentList, setCurrentList] = useState<ICocktail[]>([]);
+  const [screen, setScreen] = useRecoilState(screenState);
 
   const cocktailMatch: PathMatch<string> | null = useMatch("/:category");
 
   useEffect(() => {
     data && setCurrentList(data?.drinks.slice(0, current));
   }, [current]);
-
-  useEffect(() => {
-    if (!mobileMatch && !midMatch) setScreen(2);
-    else if (!mobileMatch && midMatch) setScreen(1);
-    else if (mobileMatch) setScreen(0);
-  }, [mobileMatch, midMatch]);
 
   useEffect(() => {
     if (screen === 0) setCurrent((prev) => Math.ceil(prev / 4) * 4);

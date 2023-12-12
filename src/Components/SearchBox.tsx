@@ -6,74 +6,35 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faMagnifyingGlass, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
-import { currentSearchList, screenState, searchState, currentKeywordState } from "../atoms";
+import { screenState, searchState, currentSearchList } from "../atoms";
 import { useEffect, useState } from "react";
 import GlassCard from "./GlassCard";
 
-const Search = () => {
+const SearchBox = ({ isLoading, data }: ISearchBoxProps) => {
   const [isSearch, setIsSearch] = useRecoilState(searchState);
-  const [currentKeyword, setCurrentKeyword] = useRecoilState(currentKeywordState);
+  const [currentKeyword, setCurrentKeyword] = useState<string>();
   const [current, setCurrent] = useState(6);
   const [currentList, setCurrentList] = useRecoilState(currentSearchList);
-  const [nowList, setNowList] = useState<ICocktail[]>([]);
 
   const [screen, setScreen] = useRecoilState(screenState);
-
-  const { register, handleSubmit, getValues, setValue } = useForm<IForm>();
-
-  const onValid = (data: IForm) => {
-    setCurrentKeyword(data.keyword);
-    setValue("keyword", "");
-  };
-
-  const handleChange = () => {
-    const values = getValues("keyword");
-    setCurrentKeyword(values);
-  };
-
-  const onCancelClick = () => {
-    setIsSearch(false);
-  };
-
-  const { data, isLoading } = useQuery<IGetCocktailResult>(
-    ["search", currentKeyword],
-    () => getCocktailSearch(currentKeyword),
-    {
-      enabled: !!currentKeyword,
-    }
-  );
 
   useEffect(() => {
     data && data?.drinks && setCurrentList(data?.drinks.slice(0, current));
   }, [current, data]);
 
   useEffect(() => {
-    setValue("keyword", currentKeyword);
-  }, []);
+    if (screen === 0) setCurrent((prev) => Math.ceil(prev / 4) * 4);
+    else if (screen === 1) setCurrent((prev) => Math.ceil(prev / 3) * 3);
+    else setCurrent((prev) => Math.ceil(prev / 3) * 3);
+  }, [screen]);
 
   return (
     <Wrapper>
-      <Form variants={searchVar} initial="initial" animate="animate" onSubmit={handleSubmit(onValid)}>
-        <Icon type="submit">
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </Icon>
-        <Reset type="reset">
-          <FontAwesomeIcon icon={faCircleXmark} />
-        </Reset>
-        <Input
-          {...register("keyword", { required: true, minLength: 1 })}
-          placeholder="Search Alcohol"
-          autoComplete="off"
-          onKeyDown={handleChange}
-          onKeyUp={handleChange}
-        />
-        <Cancel onClick={onCancelClick}>취소</Cancel>
-      </Form>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <Main>
-          {currentList ? (
+          {data?.drinks ? (
             <>
               <Menu>
                 {currentList.map((cocktail) => (
@@ -95,21 +56,18 @@ const Search = () => {
     </Wrapper>
   );
 };
-export default Search;
+export default SearchBox;
 
 const Wrapper = styled(motion.div)`
   position: fixed;
-  top: 0;
+  top: 70px;
   left: 0;
   width: 100vw;
   height: 100vh;
   background-color: #141414;
-  z-index: 11;
-  padding: 16px 72px;
+  z-index: 4;
+  padding: 0px 72px;
   overflow: auto;
-  @media screen and (max-width: 800px) {
-    padding: 16px;
-  }
 `;
 
 const Loader = styled.h2`
@@ -119,7 +77,7 @@ const Loader = styled.h2`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 50vh;
+  height: 70vh;
 `;
 
 const NoResult = styled.h2`
@@ -129,7 +87,7 @@ const NoResult = styled.h2`
   width: 100%;
   font-size: 16px;
   font-weight: 500;
-  height: 50vh;
+  height: 70vh;
 `;
 
 const Main = styled.div`
@@ -152,66 +110,6 @@ const Menu = styled.div`
     grid-gap: 16px;
     padding-top: 30px;
   }
-`;
-
-const Form = styled(motion.form)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  width: 100%;
-`;
-
-const Input = styled(motion.input)`
-  border: none;
-  font-size: 16px;
-  font-weight: 500;
-  padding: 10px 50px;
-  border-radius: 12px;
-  width: 90%;
-  color: ${(props) => props.theme.black};
-  &:focus {
-    outline: none;
-  }
-
-  @media screen and (max-width: 800px) {
-    width: 85%;
-  }
-`;
-
-const Icon = styled.button`
-  font-size: 18px;
-  color: ${(props) => props.theme.black};
-  position: absolute;
-  left: 15px;
-  top: 10px;
-  cursor: pointer;
-  background-color: transparent;
-`;
-
-const Reset = styled.button`
-  font-size: 18px;
-  position: absolute;
-  top: 13px;
-  cursor: pointer;
-  color: rgba(179, 179, 179, 1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
-  left: calc(85% - 30px);
-`;
-
-const Cancel = styled.button`
-  font-size: 16px;
-  font-weight: 500;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
-  padding: 10px 20px;
-  padding-right: 4px;
-  cursor: pointer;
 `;
 
 const Page = styled.button`
@@ -242,11 +140,7 @@ const MoreIcon = styled.span`
   }
 `;
 
-const searchVar = {
-  initial: { y: "-100" },
-  animate: { y: 0, transition: { duration: 0.4 } },
-};
-
-interface IForm {
-  keyword: string;
+interface ISearchBoxProps {
+  data: IGetCocktailResult | undefined;
+  isLoading: boolean;
 }

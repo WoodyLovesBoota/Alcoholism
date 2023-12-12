@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { ICocktail, ICocktailDetail, getCocktailDetail, ICocktailSingle, getAllCategoryResult } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { cockTailState, likesState, searchState } from "../atoms";
+import { cockTailState, likesState, screenState, searchState } from "../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { ReactComponent as Vector } from "../assets/vector.svg";
@@ -16,6 +16,8 @@ const GlassCard = ({ cocktail, isBookmark }: IGlassCardProps) => {
   const [isSearch, setIsSearch] = useRecoilState(searchState);
   const [current, setCurrent] = useRecoilState(cockTailState);
   const [isLike, setIsLike] = useRecoilState(likesState);
+  const [screen, setScreen] = useRecoilState(screenState);
+
   const [isIn, setIsIn] = useState(false);
   const { data, isLoading } = useQuery<ICocktailDetail>(["cocktails", cocktail.idDrink], () =>
     getCocktailDetail(cocktail.idDrink)
@@ -66,11 +68,15 @@ const GlassCard = ({ cocktail, isBookmark }: IGlassCardProps) => {
           </Card>
           {isIn ? (
             <YellowStar isBook={isBookmark} onClick={onYellowStarClick}>
-              {isBookmark ? <FontAwesomeIcon icon={faXmark} /> : <Like width={"24"} height={"24"} />}
+              {isBookmark ? (
+                <FontAwesomeIcon icon={faXmark} />
+              ) : (
+                <Like width={screen === 0 ? "24" : "36"} height={screen === 0 ? "24" : "36"} />
+              )}
             </YellowStar>
           ) : (
             <Star onClick={onStarClick}>
-              <Vector width={"14"} height={"18"} />
+              <Vector width={screen === 0 ? "14" : "21"} height={screen === 0 ? "18" : "27"} />
             </Star>
           )}
         </>
@@ -124,17 +130,26 @@ const Title = styled.h2`
 
 const Star = styled.h2`
   position: absolute;
-  right: 16px;
-  top: 16px;
+  right: 22px;
+  top: 19px;
   cursor: pointer;
+  @media screen and (max-width: 800px) {
+    right: 16px;
+    top: 16px;
+  }
 `;
 
 const YellowStar = styled.h2<{ isBook: boolean }>`
   position: absolute;
-  right: 11px;
-  top: ${(props) => (props.isBook ? "11px" : "13px")};
-  font-size: 14px;
+  right: 15px;
+  top: ${(props) => (props.isBook ? "13px" : "15px")};
+  font-size: 18px;
   cursor: pointer;
+  @media screen and (max-width: 800px) {
+    font-size: 14px;
+    top: ${(props) => (props.isBook ? "11px" : "13px")};
+    right: 11px;
+  }
 `;
 
 const cardVar = {

@@ -11,13 +11,8 @@ import { ReactComponent as LikeLong } from "../assets/likeLong.svg";
 const Detail = () => {
   const [current, setCurrent] = useRecoilState(cockTailState);
   const cocktail = current.drinks[0];
-  const navigate = useNavigate();
   const [isLike, setIsLike] = useRecoilState(likesState);
   const [isIn, setIsIn] = useState(false);
-
-  const onBackClick = () => {
-    navigate("/Cocktail");
-  };
 
   const onYellowStarClick = () => {
     setIsLike((prev) => {

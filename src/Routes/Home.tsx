@@ -10,7 +10,7 @@ import { currentCateState } from "../atoms";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [current, setCurrent] = useState(1);
+  const [current, setCurrent] = useState(0);
   const [currentCate, setCurrentCate] = useRecoilState(currentCateState);
   const sample = ["", "Cocktail", "Vodka", "Gin", "Rum", "Tequila", "Lime juice", "Triple Sec", "Brandy", "Bourbon"];
   const { data, isLoading } = useQuery<IGetCocktailResult>(
@@ -80,14 +80,15 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   width: 100vw;
-  height: 66vw;
+  min-height: 60vw;
   padding: 0 72px;
-  background-image: linear-gradient(180deg, rgba(20, 20, 20, 0.15) 0%, #141414 76.29%), url("/bg2.png");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), #141414),
+    url("/bg2.png");
   background-size: cover;
   background-position: center center;
   display: flex;
   flex-direction: column;
-  margin-top: 10vh;
+  margin-top: 2vh;
   @media screen and (max-width: 800px) {
     background-image: linear-gradient(to top, #141414, rgba(0, 0, 0, 0)), url("/bg.png");
     padding: 0 16px;
@@ -98,9 +99,9 @@ const Header = styled.div`
 `;
 
 const HomeContent = styled.div`
-  margin-top: auto;
   width: 100%;
   @media screen and (max-width: 800px) {
+    margin-top: auto;
     width: 80%;
   }
 `;
@@ -109,7 +110,9 @@ const HomeTitle = styled.h2`
   font-size: 100px;
   font-weight: 500;
   color: ${(props) => props.theme.accent};
+  margin-top: 30vw;
   @media screen and (max-width: 800px) {
+    margin: 0;
     font-size: 36px;
     font-weight: 700;
   }

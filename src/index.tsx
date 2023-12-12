@@ -33,9 +33,6 @@ const GlobalStyle = createGlobalStyle`
     @media screen and (max-width: 1000px) {
       font-size: 12px;
     }
-
-
-
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,
@@ -79,21 +76,17 @@ const GlobalStyle = createGlobalStyle`
   }
 
   &::-webkit-scrollbar {
-    background-color: purple;
     width: 0;    
     display: none;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: black;
     width: 2px;
 
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: white;
     border-radius: 10px;
-    
   }
 `;
 const queryClient = new QueryClient();

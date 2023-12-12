@@ -1,18 +1,14 @@
 import styled from "styled-components";
-import { IGetCocktailResult, getCocktailSearch, ICocktail } from "../api";
-import { useQuery } from "react-query";
-import { useForm } from "react-hook-form";
+import { IGetCocktailResult } from "../api";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleXmark, faMagnifyingGlass, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
 import { screenState, searchState, currentSearchList } from "../atoms";
 import { useEffect, useState } from "react";
 import GlassCard from "./GlassCard";
 
 const SearchBox = ({ isLoading, data }: ISearchBoxProps) => {
-  const [isSearch, setIsSearch] = useRecoilState(searchState);
-  const [currentKeyword, setCurrentKeyword] = useState<string>();
   const [current, setCurrent] = useState(6);
   const [currentList, setCurrentList] = useRecoilState(currentSearchList);
 
@@ -49,7 +45,7 @@ const SearchBox = ({ isLoading, data }: ISearchBoxProps) => {
               </Page>
             </>
           ) : (
-            <NoResult>검색 결과가 없습니다.</NoResult>
+            <NoResult>No search results found.</NoResult>
           )}
         </Main>
       )}
@@ -71,7 +67,7 @@ const Wrapper = styled(motion.div)`
 `;
 
 const Loader = styled.h2`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   display: flex;
   justify-content: center;
@@ -85,7 +81,7 @@ const NoResult = styled.h2`
   justify-content: center;
   align-items: center;
   width: 100%;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   height: 70vh;
 `;
@@ -95,6 +91,7 @@ const Main = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+  padding-bottom: 100px;
 `;
 
 const Menu = styled.div`
@@ -104,12 +101,6 @@ const Menu = styled.div`
   justify-content: space-between;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 32px;
-
-  @media screen and (max-width: 800px) {
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 16px;
-    padding-top: 30px;
-  }
 `;
 
 const Page = styled.button`
@@ -122,22 +113,12 @@ const Page = styled.button`
   font-size: 32px;
   font-weight: 500;
   cursor: pointer;
-
-  @media screen and (max-width: 800px) {
-    font-size: 16px;
-    height: 80px;
-  }
 `;
 
 const MoreIcon = styled.span`
   font-size: 32px;
   font-weight: 500;
   margin-left: 20px;
-
-  @media screen and (max-width: 800px) {
-    margin-left: 10px;
-    font-size: 16px;
-  }
 `;
 
 interface ISearchBoxProps {

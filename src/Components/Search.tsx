@@ -15,7 +15,6 @@ const Search = () => {
   const [currentKeyword, setCurrentKeyword] = useRecoilState(currentKeywordState);
   const [current, setCurrent] = useState(6);
   const [currentList, setCurrentList] = useRecoilState(currentSearchList);
-  const [nowList, setNowList] = useState<ICocktail[]>([]);
 
   const [screen, setScreen] = useRecoilState(screenState);
 
@@ -88,7 +87,7 @@ const Search = () => {
               </Page>
             </>
           ) : (
-            <NoResult>검색 결과가 없습니다.</NoResult>
+            <NoResult>No search results found.</NoResult>
           )}
         </Main>
       )}

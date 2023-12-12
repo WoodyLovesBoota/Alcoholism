@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { ICocktail, ICocktailDetail, getCocktailDetail, ICocktailSingle, getAllCategoryResult } from "../api";
+import { ICocktail, ICocktailDetail, getCocktailDetail, ICocktailSingle } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { cockTailState, likesState, screenState, searchState } from "../atoms";

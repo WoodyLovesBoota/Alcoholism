@@ -3,9 +3,14 @@ import NavigationBar from "../Components/NavigationBar";
 import { useRecoilState } from "recoil";
 import { likesState } from "../atoms";
 import GlassCard from "../Components/GlassCard";
+import { useEffect } from "react";
 
 const Favorites = () => {
   const [likes, setLikes] = useRecoilState(likesState);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Wrapper>

@@ -10,9 +10,9 @@ import Menu from "./Menu";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { IGetCocktailResult, getCocktailSearch, ICocktail } from "../api";
-import { AnimatePresence, motion } from "framer-motion";
-import { faCircleXmark, faMagnifyingGlass, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { IGetCocktailResult, getCocktailSearch } from "../api";
+import { motion } from "framer-motion";
+import { faCircleXmark, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import SearchBox from "./SearchBox";
 
 const NavigationBar = ({ isHome, isSticky }: { isHome: boolean; isSticky: boolean }) => {

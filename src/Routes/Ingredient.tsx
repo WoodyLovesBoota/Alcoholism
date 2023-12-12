@@ -3,7 +3,7 @@ import NavigationBar from "../Components/NavigationBar";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { IIngredient, getIngredient, getAllCategoryResult, getCategoryResult, IGetCocktailResult } from "../api";
-import { PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { PathMatch, useMatch } from "react-router-dom";
 import GlassCard from "../Components/GlassCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";

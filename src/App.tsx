@@ -2,17 +2,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { mainTheme } from "./theme";
 import { ReactQueryDevtools } from "react-query/devtools";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { screenState } from "./atoms";
 
 import Home from "./Routes/Home";
 import Categories from "./Components/Categories";
 import Detail from "./Routes/Detail";
 import Favorites from "./Routes/Favorites";
 import Ingredient from "./Routes/Ingredient";
-
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { screenState } from "./atoms";
 
 const App = () => {
   const mobileMatch = useMediaQuery("(max-width:800px)");

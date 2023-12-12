@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import NavigationBar from "./NavigationBar";
 import { useEffect, useState } from "react";
 import { IGetCocktailResult, ICocktail } from "../api";
-import { Link, PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { PathMatch, useMatch } from "react-router-dom";
 import GlassCard from "./GlassCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";

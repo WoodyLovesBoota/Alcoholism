@@ -82,11 +82,11 @@ const NavigationBar = ({ isHome, isSticky }: { isHome: boolean; isSticky: boolea
   }, [screen]);
 
   return (
-    <Wrapper sticky={isSticky}>
+    <Wrapper sticky={isSticky || isSearch}>
       {isSearch && screen === 0 && <Search />}
       {isSearch && screen !== 0 && <SearchBox isLoading={isLoading} data={data} />}
       {isMenu && <Menu />}
-      <Container>
+      <Container isMenu={isMenu}>
         <Logo isHome={isHome} onClick={onHomeClick}>
           ALCOHOLISM
         </Logo>
@@ -143,7 +143,7 @@ const Wrapper = styled.div<{ sticky: boolean }>`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ isMenu: boolean }>`
   background-color: #141414;
   position: absolute;
   display: flex;
@@ -153,7 +153,7 @@ const Container = styled.div`
   height: 84px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: ${(props) => !props.isMenu && `0px 4px 8px 2px rgba(0, 0, 0, 0.25)`};
   z-index: 10;
   @media screen and (max-width: 800px) {
     align-items: flex-end;

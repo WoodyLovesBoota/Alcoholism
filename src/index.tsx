@@ -30,6 +30,12 @@ const GlobalStyle = createGlobalStyle`
     
     color: white;
 
+    -webkit-touch-callout: none;
+     user-select: none;
+     -moz-user-select: none;
+     -ms-user-select: none;
+     -webkit-user-select: none;
+
     @media screen and (max-width: 1000px) {
       font-size: 12px;
     }

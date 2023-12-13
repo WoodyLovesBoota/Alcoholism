@@ -45,7 +45,7 @@ const Main = styled.div`
   display: grid;
   justify-content: space-between;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 32px;
+  grid-gap: 24px;
   width: 100%;
   padding: 72px;
   padding-top: 100px;

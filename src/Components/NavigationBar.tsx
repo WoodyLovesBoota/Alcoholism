@@ -300,8 +300,8 @@ const Form = styled(motion.form)`
   align-items: center;
   justify-content: space-between;
   position: relative;
-  width: 240px;
-  left: 30px;
+  width: 260px;
+  left: 40px;
   transform-origin: center right;
 `;
 
@@ -313,7 +313,7 @@ const Input = styled(motion.input)`
   padding-left: 44px;
   border-radius: 100px;
   color: ${(props) => props.theme.black};
-  width: 240px;
+  width: 260px;
   height: 34px;
   background-color: ${(props) => props.theme.accent};
   &:focus {

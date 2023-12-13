@@ -87,7 +87,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100vw;
-  padding: 184px 72px;
+  padding: 200px 72px;
   padding-bottom: 0;
   display: flex;
   flex-direction: column;
@@ -110,24 +110,23 @@ const HomeContent = styled.div`
 `;
 
 const HomeTitle = styled.h2`
-  text-align: center;
-  font-size: 60px;
-  font-weight: 500;
+  font-size: 56px;
+  font-weight: 700;
   color: ${(props) => props.theme.accent};
-  margin-bottom: 90px;
+  margin-bottom: 36px;
   @media screen and (max-width: 800px) {
     font-size: 36px;
     font-weight: 700;
-    text-align: start;
     margin-bottom: 0;
   }
 `;
 
 const HomeSubTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 300;
-  word-break: break-all;
+  font-size: 24px;
+  font-weight: 500;
+  word-break: normal;
   margin-top: auto;
+  width: 70%;
   @media screen and (max-width: 800px) {
     font-size: 16px;
     font-weight: 300;
@@ -137,7 +136,7 @@ const HomeSubTitle = styled.h2`
 `;
 
 const Contents = styled.div`
-  padding: 40px 72px;
+  padding: 80px 72px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -152,7 +151,7 @@ const Menus = styled.div`
   display: grid;
   justify-content: space-between;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 32px;
+  grid-gap: 24px;
   width: 100%;
   padding-bottom: 16px;
   @media screen and (max-width: 800px) {

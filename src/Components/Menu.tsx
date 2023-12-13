@@ -27,6 +27,14 @@ const Menu = () => {
     "Milk",
     "Whiskey",
     "Cider",
+    "Bitters",
+    "Sugar",
+    "Yoghurt",
+    "Lime juice",
+    "Ginger",
+    "Tomato juice",
+    "Water",
+    "Orange",
   ];
 
   const onCategoryClick = (index: number) => {
@@ -48,7 +56,8 @@ const Menu = () => {
         <Cates>
           {sample.map((e, i) => (
             <Cate key={i} onClick={() => onCategoryClick(i + 1)}>
-              {e.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()}
+              {/* {e.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()} */}
+              {e.toUpperCase()}
             </Cate>
           ))}
         </Cates>
@@ -92,7 +101,6 @@ const Wrapper = styled(motion.div)`
   right: 0;
   top: 70px;
   box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.25);
-
   @media screen and (max-width: 800px) {
     width: 80vw;
     height: 100vh;
@@ -100,7 +108,6 @@ const Wrapper = styled(motion.div)`
     top: 0;
     z-index: 4;
     position: fixed;
-
     box-shadow: 0 12px 50px 50px rgba(0, 0, 0, 0.5);
     border-top-left-radius: 36px;
     border-bottom-left-radius: 36px;
@@ -124,10 +131,10 @@ const Item = styled.h2`
 `;
 
 const Cates = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(auto, 230px));
-  justify-content: space-between;
-  grid-row-gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-start;
   @media screen and (max-width: 800px) {
     display: flex;
     flex-direction: column;
@@ -143,7 +150,8 @@ const Cate = styled.h2`
   cursor: pointer;
   font-size: 32px;
   font-weight: 700;
-  width: 200px;
+  flex-grow: 0;
+  margin-bottom: 16px;
   &:hover {
     text-decoration: underline;
   }

@@ -12,7 +12,21 @@ const Home = () => {
   const navigate = useNavigate();
   const [current, setCurrent] = useState(1);
   const [currentCate, setCurrentCate] = useRecoilState(currentCateState);
-  const sample = ["", "Cocktail", "Vodka", "Gin", "Rum", "Tequila", "Lime juice", "Triple Sec", "Brandy", "Bourbon"];
+  const sample = [
+    "",
+    "Cocktail",
+    "Vodka",
+    "Gin",
+    "Rum",
+    "Tequila",
+    "Lime juice",
+    "Triple Sec",
+    "Brandy",
+    "Bourbon",
+    "Milk",
+    "Coffee",
+    "Lemon",
+  ];
   const { data, isLoading } = useQuery<IGetCocktailResult>(
     ["cocktails", sample[current]],
     () => (current === 1 ? getAllCategoryResult(sample[current]) : getCategoryResult(sample[current])),
@@ -36,9 +50,8 @@ const Home = () => {
         <HomeContent>
           <HomeTitle>Grab a Drink</HomeTitle>
           <HomeSubTitle>
-            Discover a cocktail
-            <br />
-            that suits your taste.
+            Discover a cocktail that suits your taste. <br />
+            Explore our diverse range of cocktail recipes.
           </HomeSubTitle>
         </HomeContent>
         <List>
@@ -69,6 +82,15 @@ const Home = () => {
           <Category isnow={(current === 9).toString()} onClick={() => handleCateClick(9)}>
             BOURBON
           </Category>
+          <Category isnow={(current === 10).toString()} onClick={() => handleCateClick(10)}>
+            MILK
+          </Category>
+          <Category isnow={(current === 11).toString()} onClick={() => handleCateClick(11)}>
+            COFFEE
+          </Category>
+          <Category isnow={(current === 12).toString()} onClick={() => handleCateClick(12)}>
+            LEMON
+          </Category>
         </List>
       </Header>
       <Contents>{!isLoading && <Categories key={current} name={sample[current]} data={data} />}</Contents>
@@ -84,15 +106,13 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   width: 100vw;
-  min-height: 60vw;
+  min-height: 40vw;
   padding: 0 72px;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), #141414),
-    url("/bg2.png");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), #141414a0, #141414), url("/bg2.png");
   background-size: cover;
   background-position: center center;
   display: flex;
   flex-direction: column;
-  margin-top: 2vh;
   @media screen and (max-width: 800px) {
     background-image: linear-gradient(to top, #141414, rgba(0, 0, 0, 0)), url("/bg.png");
     padding: 0 16px;
@@ -111,8 +131,8 @@ const HomeContent = styled.div`
 `;
 
 const HomeTitle = styled.h2`
-  font-size: 100px;
-  font-weight: 500;
+  font-size: 56px;
+  font-weight: 700;
   color: ${(props) => props.theme.accent};
   margin-top: 30vw;
   @media screen and (max-width: 800px) {
@@ -123,10 +143,10 @@ const HomeTitle = styled.h2`
 `;
 
 const HomeSubTitle = styled.h2`
-  text-align: end;
-  font-size: 48px;
+  font-size: 24px;
   font-weight: 500;
-  margin-top: 50px;
+  margin-top: 16px;
+  width: 60%;
   @media screen and (max-width: 800px) {
     font-size: 16px;
     font-weight: 300;
@@ -138,10 +158,12 @@ const HomeSubTitle = styled.h2`
 const List = styled.div`
   display: flex;
   align-items: center;
-  overflow-x: auto;
-  margin-top: 160px;
+  flex-wrap: wrap;
+  margin-top: 100px;
   @media screen and (max-width: 800px) {
     margin-top: 60px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
   }
 `;
 
@@ -150,6 +172,7 @@ const Category = styled.h2<{ isnow: string }>`
   color: ${(props) => (props.isnow === "true" ? props.theme.accent : props.theme.white)};
   background-color: ${(props) => (props.isnow === "true" ? props.theme.accent + "40" : "transparent")};
   margin-right: 12px;
+  margin-bottom: 12px;
   padding: 4px 14px;
   display: flex;
   justify-content: center;
@@ -166,11 +189,12 @@ const Category = styled.h2<{ isnow: string }>`
     padding: 2px 8px;
     margin-right: 8px;
     font-size: 14px;
+    margin-bottom: 0;
   }
 `;
 
 const Contents = styled.div`
-  padding: 40px 72px;
+  padding: 24px 72px;
   width: 100%;
   display: flex;
   align-items: center;

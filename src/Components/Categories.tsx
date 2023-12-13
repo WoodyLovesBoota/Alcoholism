@@ -57,7 +57,7 @@ const Menus = styled.div`
   display: grid;
   justify-content: space-between;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 32px;
+  grid-gap: 24px;
   width: 100%;
   padding-bottom: 16px;
   @media screen and (max-width: 800px) {

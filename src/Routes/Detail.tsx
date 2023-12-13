@@ -211,7 +211,7 @@ const Contents = styled.div`
 const Name = styled.h2`
   font-size: 42px;
   font-weight: 700;
-  margin-right: 68px;
+  margin-right: 12vw;
   color: ${(props) => props.theme.accent};
   @media screen and (max-width: 800px) {
     margin-top: 16px;
@@ -235,8 +235,8 @@ const Cates = styled.div`
 
 const Cate = styled.p`
   font-weight: 400;
-  font-size: 14px;
-  padding: 2px 8px;
+  font-size: 18px;
+  padding: 4px 14px;
   border-radius: 100px;
   border: 1px solid white;
   margin-right: 8px;

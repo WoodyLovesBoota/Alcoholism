@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { cockTailState, likesState } from "../atoms";
+import { cockTailState, likesState, screenState } from "../atoms";
 import NavigationBar from "../Components/NavigationBar";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReactComponent as VectorLong } from "../assets/vectorLong.svg";
@@ -12,6 +12,7 @@ const Detail = () => {
   const cocktail = current.drinks[0];
   const [isLike, setIsLike] = useRecoilState(likesState);
   const [isIn, setIsIn] = useState(false);
+  const [screen, setScreen] = useRecoilState(screenState);
 
   const onYellowStarClick = () => {
     setIsLike((prev) => {
@@ -39,14 +40,18 @@ const Detail = () => {
   return (
     <Wrapper>
       <NavigationBar ishome={false} issticky={true} />
-
-      <Photo variants={photoVar} initial="initial" animate="animate">
+      <Photo
+        key={cocktail.idDrink + "small"}
+        variants={screen === 0 ? photoVar : defaultVar}
+        initial="initial"
+        animate="animate"
+      >
         <Bg bgphoto={cocktail?.strDrinkThumb ? cocktail?.strDrinkThumb : ""} />
         <AnimatePresence>
           {isIn ? (
             <StarBox
               key={cocktail.idDrink + "like"}
-              variants={likeVar}
+              variants={screen === 0 ? likeVar : likeLongVar}
               initial="initial"
               animate="animate"
               exit="exit"
@@ -57,7 +62,7 @@ const Detail = () => {
           ) : (
             <StarBox
               key={cocktail.idDrink + "vector"}
-              variants={vectorVar}
+              variants={screen === 0 ? vectorVar : vectorLongVar}
               initial="initial"
               animate="animate"
               exit="exit"
@@ -139,15 +144,15 @@ const Wrapper = styled.div`
 `;
 
 const Photo = styled(motion.div)<{ bgphoto: string }>`
-  width: 50%;
+  width: 50vw;
   height: 100vh;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   position: fixed;
   top: 50px;
-
   left: 0;
+
   @media screen and (max-width: 800px) {
     position: inherit;
     width: 100%;
@@ -318,14 +323,31 @@ const photoVar = {
   animate: { y: 0, transition: { type: "spring", stiffness: 50, duration: 0.3 } },
 };
 
+const defaultVar = {
+  initial: { y: "-0vw" },
+  animate: { y: 0 },
+};
+
 const vectorVar = {
   initial: { y: 0 },
   animate: { y: 40, transition: { delay: 0.7, type: "spring", stiffness: 100 } },
   exit: { y: 0 },
 };
 
+const vectorLongVar = {
+  initial: { y: 0 },
+  animate: { y: 70, transition: { delay: 0.5, type: "spring", stiffness: 100 } },
+  exit: { y: 0 },
+};
+
 const likeVar = {
   initial: { y: 0 },
   animate: { y: 60, transition: { delay: 0.7, type: "spring", stiffness: 100 } },
+  exit: { y: 0 },
+};
+
+const likeLongVar = {
+  initial: { y: 0 },
+  animate: { y: 100, transition: { delay: 0.5, type: "spring", stiffness: 100 } },
   exit: { y: 0 },
 };

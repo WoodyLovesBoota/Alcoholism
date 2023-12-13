@@ -83,7 +83,7 @@ const Page = styled.button`
 `;
 
 const Icon = styled.span`
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 500;
   margin-left: 20px;
   @media screen and (max-width: 800px) {

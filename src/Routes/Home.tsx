@@ -156,7 +156,7 @@ const Category = styled.h2<{ isnow: string }>`
   align-items: center;
   border-radius: 100px;
   font-weight: ${(props) => (props.isnow === "true" ? 700 : 400)};
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
   &:hover {
     background-color: ${(props) => (props.isnow === "true" ? props.theme.red : props.theme.gray)};

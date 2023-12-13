@@ -168,7 +168,7 @@ const Page = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 500;
   cursor: pointer;
   @media screen and (max-width: 800px) {
@@ -178,7 +178,7 @@ const Page = styled.button`
 `;
 
 const Icon = styled.span`
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 500;
   margin-left: 20px;
   @media screen and (max-width: 800px) {

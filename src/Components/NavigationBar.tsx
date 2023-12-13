@@ -14,6 +14,8 @@ import { IGetCocktailResult, getCocktailSearch } from "../api";
 import { motion } from "framer-motion";
 import { faCircleXmark, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import SearchBox from "./SearchBox";
+import { ReactComponent as Like } from "../assets/like.svg";
+import { PathMatch, useMatch } from "react-router-dom";
 
 const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolean }) => {
   const navigate = useNavigate();
@@ -26,6 +28,8 @@ const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolea
   const [currentList, setCurrentList] = useRecoilState(currentSearchList);
 
   const { register, handleSubmit, getValues, setValue } = useForm<IForm>();
+
+  const favMatch: PathMatch<string> | null = useMatch("/favorites");
 
   const onHomeClick = () => {
     navigate("/");
@@ -118,8 +122,16 @@ const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolea
           <SearchItem onClick={onSearchClick} isfavorite={"false"}>
             {screen === 0 ? <FontAwesomeIcon icon={faMagnifyingGlass} /> : !isSearch && <Word>SEARCH</Word>}
           </SearchItem>
-          <FavoriteItem onClick={onFavoriteClick} isfavorite={isfav.toString()}>
-            {screen === 0 ? <Vector width={14} height={18} /> : <Word>BOOKMARK</Word>}
+          <FavoriteItem onClick={onFavoriteClick} isfavorite={favMatch ? "true" : "false"}>
+            {screen === 0 ? (
+              favMatch ? (
+                <Like width={24} height={24} />
+              ) : (
+                <Vector width={14} height={18} />
+              )
+            ) : (
+              <Word>BOOKMARK</Word>
+            )}
           </FavoriteItem>
           <MenuItem onClick={onMenuClick} isfavorite={ismenu.toString()}>
             {screen === 0 ? <Menus width={24} height={24} /> : <Word>MENU</Word>}
@@ -309,6 +321,7 @@ const Input = styled(motion.input)`
   }
   &::placeholder {
     font-size: 16px;
+    color: ${(props) => props.theme.black};
   }
 `;
 
@@ -329,7 +342,7 @@ const Reset = styled.button`
   top: 9px;
   background-color: transparent;
   cursor: pointer;
-  color: rgba(179, 179, 179, 1);
+  color: ${(props) => props.theme.black};
   display: flex;
   justify-content: center;
   align-items: center;

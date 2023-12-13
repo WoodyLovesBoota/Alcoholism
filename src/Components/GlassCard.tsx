@@ -64,7 +64,11 @@ const GlassCard = ({ cocktail, isBookmark }: IGlassCardProps) => {
             onClick={onCardClick}
             bgphoto={data?.drinks[0].strDrinkThumb ? data?.drinks[0].strDrinkThumb : ""}
           >
-            <Title>{cocktail.strDrink}</Title>
+            {cocktail.strDrink?.split(" ").some((word) => word.length > 10) ? (
+              <Title>{cocktail.strDrink}</Title>
+            ) : (
+              <TitleSplit>{cocktail.strDrink}</TitleSplit>
+            )}
           </Card>
           {isIn ? (
             <YellowStar isbook={isBookmark.toString()} onClick={onYellowStarClick}>
@@ -119,10 +123,22 @@ const Card = styled(motion.div)<{ bgphoto: string }>`
 `;
 
 const Title = styled.h2`
-  font-size: 28px;
+  word-break: break-all;
+  font-size: 24px;
   font-weight: 500;
-  display: flex;
   color: white;
+  margin-right: 5px;
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
+  }
+`;
+
+const TitleSplit = styled.span`
+  font-size: 24px;
+  font-weight: 500;
+  color: white;
+  margin-right: 5px;
+  word-break: normal;
   @media screen and (max-width: 800px) {
     font-size: 16px;
   }

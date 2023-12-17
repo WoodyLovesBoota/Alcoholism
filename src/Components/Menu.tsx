@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { menuState, screenState } from "../atoms";
 import { ReactComponent as Menus } from "../assets/menus.svg";
+import { useQuery } from "react-query";
+import { getIngredientList, ITotalIngredient } from "../api";
+import { useEffect, useState } from "react";
 
 const Menu = () => {
   const [isMenu, setIsMenu] = useRecoilState(menuState);
@@ -13,28 +16,23 @@ const Menu = () => {
 
   const sample = [
     "Vodka",
-    "Gin",
     "Rum",
-    "Tequila",
-    "Scotch",
+    "Gin",
+    "Vermouth",
     "Brandy",
-    "Bourbon",
-    "Champagne",
-    "Tea",
-    "Coffee",
-    "Red wine",
-    "Cognac",
-    "Milk",
     "Whiskey",
+    "Coffee",
+    "Bourbon",
+    "Tequila",
+    "Sugar",
+    "Juice",
+    "Chocolate",
+    "Lime",
     "Cider",
     "Bitters",
-    "Sugar",
-    "Yoghurt",
-    "Lime juice",
+    "Scotch",
+    "Tea",
     "Ginger",
-    "Tomato juice",
-    "Water",
-    "Orange",
   ];
 
   const onCategoryClick = (index: number) => {
@@ -48,20 +46,27 @@ const Menu = () => {
 
   return (
     <Container>
-      <Overlay onClick={onOverlayClick} />
-      <Wrapper variants={screen === 0 ? menuVar : menuPcVar} initial="initial" animate="animate">
-        <Item onClick={onOverlayClick}>
-          <Menus width={24} height={24} />
-        </Item>
-        <Cates>
-          {sample.map((e, i) => (
-            <Cate key={i} onClick={() => onCategoryClick(i + 1)}>
-              {/* {e.replaceAll(" ", "_").replaceAll("-", "_").toUpperCase()} */}
-              {e.toUpperCase()}
-            </Cate>
-          ))}
-        </Cates>
-      </Wrapper>
+      <AnimatePresence>
+        <Overlay key={"menu" + new Date() + 100} onClick={onOverlayClick} />
+        <Wrapper
+          key={"menu" + new Date()}
+          variants={screen === 0 ? menuVar : menuPcVar}
+          initial="initial"
+          animate="animate"
+          exit={"exit"}
+        >
+          <Item onClick={onOverlayClick}>
+            <Menus width={24} height={24} />
+          </Item>
+          <Cates>
+            {sample.map((e, i) => (
+              <Cate key={i} onClick={() => onCategoryClick(i + 1)}>
+                {e.toUpperCase()}
+              </Cate>
+            ))}
+          </Cates>
+        </Wrapper>
+      </AnimatePresence>
     </Container>
   );
 };
@@ -166,11 +171,12 @@ const Cate = styled.h2`
 const menuVar = {
   initial: { x: "50vw" },
   animate: { x: "0vw", transition: { type: "spring", stiffness: 100 } },
+  exit: { x: "50vw" },
 };
 
 const menuPcVar = {
   initial: { y: -200 },
-  animate: { y: 0, transition: { type: "spring", stiffness: 50, duration: 0.2 } },
+  animate: { y: 0, transition: { type: "spring", duration: 0.5 } },
 };
 
 interface IForm {

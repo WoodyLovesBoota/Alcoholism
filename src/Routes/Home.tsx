@@ -27,6 +27,7 @@ const Home = () => {
     "Coffee",
     "Lemon",
   ];
+
   const { data, isLoading } = useQuery<IGetCocktailResult>(
     ["cocktails", sample[current]],
     () => (current === 1 ? getAllCategoryResult(sample[current]) : getCategoryResult(sample[current])),
@@ -49,48 +50,18 @@ const Home = () => {
         <NavigationBar ishome={true} issticky={false} />
         <HomeContent>
           <HomeTitle>Grab a Drink</HomeTitle>
-          <HomeSubTitle>
-            Discover a cocktail that suits your taste. <br />
-            Explore our diverse range of cocktail recipes.
-          </HomeSubTitle>
+          <HomeSubTitle>Discover a cocktail that suits your taste. </HomeSubTitle>
+          <HomeSubTitle>Explore our diverse range of cocktail recipes.</HomeSubTitle>
         </HomeContent>
         <List>
-          <Category isnow={(current === 1).toString()} onClick={() => handleCateClick(1)}>
-            ALL
-          </Category>
-          <Category isnow={(current === 2).toString()} onClick={() => handleCateClick(2)}>
-            VODKA
-          </Category>
-          <Category isnow={(current === 3).toString()} onClick={() => handleCateClick(3)}>
-            GIN
-          </Category>
-          <Category isnow={(current === 4).toString()} onClick={() => handleCateClick(4)}>
-            RUM
-          </Category>
-          <Category isnow={(current === 5).toString()} onClick={() => handleCateClick(5)}>
-            TEQUILA
-          </Category>
-          <Category isnow={(current === 6).toString()} onClick={() => handleCateClick(6)}>
-            LIMEJUICE
-          </Category>
-          <Category isnow={(current === 7).toString()} onClick={() => handleCateClick(7)}>
-            TRIPLESEC
-          </Category>
-          <Category isnow={(current === 8).toString()} onClick={() => handleCateClick(8)}>
-            BRANDY
-          </Category>
-          <Category isnow={(current === 9).toString()} onClick={() => handleCateClick(9)}>
-            BOURBON
-          </Category>
-          <Category isnow={(current === 10).toString()} onClick={() => handleCateClick(10)}>
-            MILK
-          </Category>
-          <Category isnow={(current === 11).toString()} onClick={() => handleCateClick(11)}>
-            COFFEE
-          </Category>
-          <Category isnow={(current === 12).toString()} onClick={() => handleCateClick(12)}>
-            LEMON
-          </Category>
+          {sample.map(
+            (e, i) =>
+              i !== 0 && (
+                <Category isnow={current === i ? "true" : "false"} onClick={() => handleCateClick(i)}>
+                  {i === 1 ? "ALL" : e.replaceAll(" ", "").toUpperCase()}
+                </Category>
+              )
+          )}
         </List>
       </Header>
       <Contents>{!isLoading && <Categories key={current} name={sample[current]} data={data} />}</Contents>
@@ -146,12 +117,17 @@ const HomeSubTitle = styled.h2`
   font-size: 24px;
   font-weight: 500;
   margin-top: 16px;
-  width: 60%;
+  &:last-child {
+    margin: 0;
+  }
   @media screen and (max-width: 800px) {
     font-size: 16px;
     font-weight: 300;
     margin-top: 0px;
     text-align: start;
+    &:last-child {
+      display: none;
+    }
   }
 `;
 

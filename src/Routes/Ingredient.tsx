@@ -2,7 +2,14 @@ import styled from "styled-components";
 import NavigationBar from "../Components/NavigationBar";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { IIngredient, getIngredient, getAllCategoryResult, getCategoryResult, IGetCocktailResult } from "../api";
+import {
+  IIngredient,
+  getIngredient,
+  ITotalIngredient,
+  getCategoryResult,
+  IGetCocktailResult,
+  getIngredientList,
+} from "../api";
 import { PathMatch, useMatch } from "react-router-dom";
 import GlassCard from "../Components/GlassCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,19 +21,39 @@ const Ingredient = () => {
   const nameMatch: PathMatch<string> | null = useMatch("/ingredient/:name");
   const [current, setCurrent] = useState(6);
   const [screen, setScreen] = useRecoilState(screenState);
+  const [total, setTotal] = useState<{ strIngredient1: string }[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data: totalList, isLoading: isTotalLoading } = useQuery<ITotalIngredient>(
+    ["ingradientList", "list"],
+    () => getIngredientList(),
+    { enabled: !!nameMatch?.params.name }
+  );
 
   const { data, isLoading } = useQuery<IIngredient>(
     ["ingradient", nameMatch?.params.name],
     () => getIngredient(nameMatch?.params.name),
-    { enabled: !!nameMatch }
+    { enabled: !!totalList }
   );
 
   const { data: cocktailData, isLoading: isCocktailLoading } = useQuery<IGetCocktailResult>(
-    ["cocktailData", nameMatch?.params.name],
-    () =>
-      nameMatch?.params.name === "All" ? getAllCategoryResult("Cocktail") : getCategoryResult(nameMatch?.params.name),
-    { enabled: !!data }
+    ["cocktailData", total[currentPage - 1]?.strIngredient1],
+    () => getCategoryResult(total[currentPage - 1].strIngredient1),
+    { enabled: !!currentPage }
   );
+
+  useEffect(() => {
+    let sample =
+      totalList &&
+      totalList.drinks.filter((e) =>
+        e.strIngredient1
+          .toLowerCase()
+          .split(" ")
+          .some((e) => e === (nameMatch && nameMatch.params.name ? nameMatch.params.name.toLowerCase() : ""))
+      );
+    sample && setTotal(sample);
+    setCurrentPage(1);
+  }, [nameMatch?.params.name, totalList]);
 
   useEffect(() => {
     if (screen === 0) setCurrent((prev) => Math.ceil(prev / 4) * 4);
@@ -36,23 +63,35 @@ const Ingredient = () => {
 
   return (
     <Wrapper>
-      {nameMatch && !isLoading && !isCocktailLoading && (
+      {nameMatch && !isLoading && !isCocktailLoading && !isTotalLoading && (
         <Container>
           <Header>
             <NavigationBar ishome={false} issticky={false} />
             <HomeContent>
-              <HomeTitle>{nameMatch.params.name === "All" ? "All" : data?.ingredients[0].strIngredient}</HomeTitle>
+              <HomeTitle>{data?.ingredients ? data?.ingredients[0].strIngredient : nameMatch.params.name}</HomeTitle>
               <HomeSubTitle>
-                {nameMatch.params.name === "All"
-                  ? ""
-                  : data?.ingredients[0].strDescription !== null && data?.ingredients[0].strDescription !== undefined
-                  ? data?.ingredients[0].strDescription?.split(".")[0].length > (screen === 0 ? 150 : 400)
-                    ? data?.ingredients[0].strDescription?.split(".")[0].slice(0, screen === 0 ? 150 : 400) + ".."
-                    : data?.ingredients[0].strDescription?.split(".")[0] + "."
+                {data?.ingredients
+                  ? data?.ingredients[0].strDescription !== null && data?.ingredients[0].strDescription !== undefined
+                    ? data?.ingredients[0].strDescription?.split(".")[0].length > (screen === 0 ? 150 : 400)
+                      ? data?.ingredients[0].strDescription?.split(".")[0].slice(0, screen === 0 ? 150 : 400) + ".."
+                      : data?.ingredients[0].strDescription?.split(".")[0] + "."
+                    : ""
                   : ""}
               </HomeSubTitle>
             </HomeContent>
           </Header>
+          <Lists>
+            {total.map((e, i) => (
+              <List
+                isnow={(currentPage === i + 1).toString()}
+                onClick={() => {
+                  setCurrentPage(i + 1);
+                }}
+              >
+                {e.strIngredient1}
+              </List>
+            ))}
+          </Lists>
           <Contents>
             <Menus>
               {cocktailData &&
@@ -136,7 +175,7 @@ const HomeSubTitle = styled.h2`
 `;
 
 const Contents = styled.div`
-  padding: 80px 72px;
+  padding: 20px 72px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -144,6 +183,45 @@ const Contents = styled.div`
   @media screen and (max-width: 800px) {
     padding: 24px 16px;
     padding-bottom: 16px;
+  }
+`;
+
+const Lists = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 100px;
+  padding: 0 72px;
+  @media screen and (max-width: 800px) {
+    margin-top: 60px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+`;
+
+const List = styled.h2<{ isnow: string }>`
+  border: 1px solid ${(props) => (props.isnow === "true" ? "transparent" : props.theme.white)};
+  color: ${(props) => (props.isnow === "true" ? props.theme.accent : props.theme.white)};
+  background-color: ${(props) => (props.isnow === "true" ? props.theme.accent + "40" : "transparent")};
+  margin-right: 12px;
+  margin-bottom: 12px;
+  padding: 4px 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  font-weight: ${(props) => (props.isnow === "true" ? 700 : 400)};
+  font-size: 18px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => (props.isnow === "true" ? props.theme.red : props.theme.gray)};
+    color: ${(props) => props.theme.snow};
+  }
+  @media screen and (max-width: 800px) {
+    padding: 2px 8px;
+    margin-right: 8px;
+    font-size: 14px;
+    margin-bottom: 0;
   }
 `;
 

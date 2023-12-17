@@ -212,6 +212,10 @@ const SearchItem = styled.h2<{ isfavorite: string }>`
     color: ${(props) => (props.isfavorite === "true" ? props.theme.black : props.theme.accent)};
   }
 
+  &:hover {
+    background-color: ${(props) => props.isfavorite !== "true" && props.theme.accent + "40"};
+  }
+
   @media screen and (max-width: 800px) {
     width: 24px;
     height: 24px;
@@ -221,6 +225,9 @@ const SearchItem = styled.h2<{ isfavorite: string }>`
     padding: 0;
     span {
       color: ${(props) => props.theme.accent};
+    }
+    &:hover {
+      background-color: transparent;
     }
   }
 `;
@@ -243,7 +250,9 @@ const MenuItem = styled.h2<{ isfavorite: string }>`
   span {
     color: ${(props) => (props.isfavorite === "true" ? props.theme.black : props.theme.accent)};
   }
-
+  &:hover {
+    background-color: ${(props) => props.isfavorite !== "true" && props.theme.accent + "40"};
+  }
   @media screen and (max-width: 800px) {
     width: 24px;
     height: 24px;
@@ -253,6 +262,9 @@ const MenuItem = styled.h2<{ isfavorite: string }>`
     padding: 0;
     span {
       color: ${(props) => props.theme.accent};
+    }
+    &:hover {
+      background-color: transparent;
     }
   }
 `;
@@ -275,7 +287,9 @@ const FavoriteItem = styled.h2<{ isfavorite: string }>`
   span {
     color: ${(props) => (props.isfavorite === "true" ? props.theme.black : props.theme.accent)};
   }
-
+  &:hover {
+    background-color: ${(props) => props.isfavorite !== "true" && props.theme.accent + "40"};
+  }
   @media screen and (max-width: 800px) {
     width: 24px;
     height: 24px;
@@ -285,6 +299,9 @@ const FavoriteItem = styled.h2<{ isfavorite: string }>`
     padding: 0;
     span {
       color: ${(props) => props.theme.accent};
+    }
+    &:hover {
+      background-color: transparent;
     }
   }
 `;

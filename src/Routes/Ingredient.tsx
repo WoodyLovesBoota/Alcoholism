@@ -49,7 +49,10 @@ const Ingredient = () => {
         e.strIngredient1
           .toLowerCase()
           .split(" ")
-          .some((e) => e === (nameMatch && nameMatch.params.name ? nameMatch.params.name.toLowerCase() : ""))
+          .some(
+            (e) =>
+              e === (nameMatch && nameMatch.params.name ? nameMatch.params.name.toLowerCase() : "")
+          )
       );
     sample && setTotal(sample);
     setCurrentPage(1);
@@ -68,12 +71,18 @@ const Ingredient = () => {
           <Header>
             <NavigationBar ishome={false} issticky={false} />
             <HomeContent>
-              <HomeTitle>{data?.ingredients ? data?.ingredients[0].strIngredient : nameMatch.params.name}</HomeTitle>
+              <HomeTitle>
+                {data?.ingredients ? data?.ingredients[0].strIngredient : nameMatch.params.name}
+              </HomeTitle>
               <HomeSubTitle>
                 {data?.ingredients
-                  ? data?.ingredients[0].strDescription !== null && data?.ingredients[0].strDescription !== undefined
-                    ? data?.ingredients[0].strDescription?.split(".")[0].length > (screen === 0 ? 150 : 400)
-                      ? data?.ingredients[0].strDescription?.split(".")[0].slice(0, screen === 0 ? 150 : 400) + ".."
+                  ? data?.ingredients[0].strDescription !== null &&
+                    data?.ingredients[0].strDescription !== undefined
+                    ? data?.ingredients[0].strDescription?.split(".")[0].length >
+                      (screen === 0 ? 150 : 400)
+                      ? data?.ingredients[0].strDescription
+                          ?.split(".")[0]
+                          .slice(0, screen === 0 ? 150 : 400) + ".."
                       : data?.ingredients[0].strDescription?.split(".")[0] + "."
                     : ""
                   : ""}
@@ -98,7 +107,11 @@ const Ingredient = () => {
                 cocktailData?.drinks
                   .slice(0, current)
                   .map((cocktail) => (
-                    <GlassCard key={"cocktail" + cocktail.idDrink} cocktail={cocktail} isBookmark={false} />
+                    <GlassCard
+                      key={"cocktail" + cocktail.idDrink}
+                      cocktail={cocktail}
+                      isBookmark={false}
+                    />
                   ))}
             </Menus>
             <Page onClick={() => setCurrent((prev) => (screen === 0 ? prev + 4 : prev + 3))}>
@@ -196,13 +209,15 @@ const Lists = styled.div`
     margin-top: 60px;
     overflow-x: auto;
     flex-wrap: nowrap;
+    padding: 0 16px;
   }
 `;
 
 const List = styled.h2<{ isnow: string }>`
   border: 1px solid ${(props) => (props.isnow === "true" ? "transparent" : props.theme.white)};
   color: ${(props) => (props.isnow === "true" ? props.theme.accent : props.theme.white)};
-  background-color: ${(props) => (props.isnow === "true" ? props.theme.accent + "40" : "transparent")};
+  background-color: ${(props) =>
+    props.isnow === "true" ? props.theme.accent + "40" : "transparent"};
   margin-right: 12px;
   margin-bottom: 12px;
   padding: 4px 14px;

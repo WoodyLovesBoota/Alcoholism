@@ -30,7 +30,8 @@ const Home = () => {
 
   const { data, isLoading } = useQuery<IGetCocktailResult>(
     ["cocktails", sample[current]],
-    () => (current === 1 ? getAllCategoryResult(sample[current]) : getCategoryResult(sample[current])),
+    () =>
+      current === 1 ? getAllCategoryResult(sample[current]) : getCategoryResult(sample[current]),
     { enabled: !!current }
   );
 
@@ -57,14 +58,19 @@ const Home = () => {
           {sample.map(
             (e, i) =>
               i !== 0 && (
-                <Category isnow={current === i ? "true" : "false"} onClick={() => handleCateClick(i)}>
+                <Category
+                  isnow={current === i ? "true" : "false"}
+                  onClick={() => handleCateClick(i)}
+                >
                   {i === 1 ? "ALL" : e.replaceAll(" ", "").toUpperCase()}
                 </Category>
               )
           )}
         </List>
       </Header>
-      <Contents>{!isLoading && <Categories key={current} name={sample[current]} data={data} />}</Contents>
+      <Contents>
+        {!isLoading && <Categories key={current} name={sample[current]} data={data} />}
+      </Contents>
     </Wrapper>
   );
 };
@@ -79,13 +85,14 @@ const Header = styled.div`
   width: 100vw;
   min-height: 40vw;
   padding: 0 72px;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), #141414a0, #141414), url("/bg2.png");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), #141414a0, #141414),
+    url("/bg2.webp");
   background-size: cover;
   background-position: center center;
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 800px) {
-    background-image: linear-gradient(to top, #141414, rgba(0, 0, 0, 0)), url("/bg.png");
+    background-image: linear-gradient(to top, #141414, rgba(0, 0, 0, 0)), url("/bg.webp");
     padding: 0 16px;
     padding-bottom: 16px;
     height: 100vw;
@@ -146,7 +153,8 @@ const List = styled.div`
 const Category = styled.h2<{ isnow: string }>`
   border: 1px solid ${(props) => (props.isnow === "true" ? "transparent" : props.theme.white)};
   color: ${(props) => (props.isnow === "true" ? props.theme.accent : props.theme.white)};
-  background-color: ${(props) => (props.isnow === "true" ? props.theme.accent + "40" : "transparent")};
+  background-color: ${(props) =>
+    props.isnow === "true" ? props.theme.accent + "40" : "transparent"};
   margin-right: 12px;
   margin-bottom: 12px;
   padding: 4px 14px;

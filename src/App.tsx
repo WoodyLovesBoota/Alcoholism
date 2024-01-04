@@ -36,7 +36,7 @@ const App = () => {
           </Route>
         </Routes>
       </Router>
-      <ReactQueryDevtools initialIsOpen={true} />
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
     </ThemeProvider>
   );
 };

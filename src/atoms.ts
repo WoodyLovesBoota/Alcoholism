@@ -220,17 +220,6 @@ export const enrolledCocktailState = atom<IEnrolledCocktails>({
       },
     ],
   },
-  effects: [
-    ({ setSelf, onSet }: any) => {
-      const savedValue = localStorage.getItem("enroll");
-      if (savedValue !== null) setSelf(JSON.parse(savedValue));
-      onSet((newValue: any, _: any, isReset: boolean) => {
-        isReset
-          ? localStorage.removeItem("enroll")
-          : localStorage.setItem("enroll", JSON.stringify(newValue));
-      });
-    },
-  ],
 });
 
 export interface IEnrolledCocktails {

@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const Enroll = () => {
-  const { register, control, handleSubmit, setValue } = useForm<IForm>({
+  const { register, control, handleSubmit, reset } = useForm<IForm>({
     defaultValues: {
       ingredients: [{ ingredient: "", measure: "" }],
     },
@@ -29,10 +29,10 @@ const Enroll = () => {
         target[0].strDrink === ""
           ? [
               {
-                idDrink: "enrolled" + target.length,
+                idDrink: "enrolled" + 0,
                 strDrink: data.name,
                 strDrinkAlternate: "",
-                strCategory: data.category,
+                strCategory: data.category.toUpperCase(),
                 strAlcoholic: "",
                 strGlass: data.glass,
                 strInstructions: data.desc,
@@ -59,7 +59,7 @@ const Enroll = () => {
                 idDrink: "enrolled" + target.length,
                 strDrink: data.name,
                 strDrinkAlternate: "",
-                strCategory: data.category,
+                strCategory: data.category.toUpperCase(),
                 strAlcoholic: "",
                 strGlass: data.glass,
                 strInstructions: data.desc,
@@ -82,19 +82,15 @@ const Enroll = () => {
             ];
       return { ...current, ["cocktails"]: newArr };
     });
-    setValue("name", "");
-    setValue("category", "");
-    setValue("ingredients", [{ ingredient: "", measure: "" }]);
-    setValue("image", "");
-    setValue("glass", "");
-    setValue("desc", "");
+    reset();
 
     alert("등록이 완료되었습니다");
   };
 
-  // useEffect(() => {
-  //   DBHandler.addUserInfoPost("cocktails", "enrolled", enrolled);
-  // }, [enrolled]);
+  useEffect(() => {
+    DBHandler.addUserInfoPost("cocktails", "enrolled", enrolled);
+    console.log("write");
+  }, [enrolled]);
 
   return (
     <Wrapper>

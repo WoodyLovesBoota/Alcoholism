@@ -6,19 +6,20 @@ import GlassCard from "./GlassCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
-import { screenState } from "../atoms";
+import { enrolledCocktailState, screenState } from "../atoms";
 import { motion } from "framer-motion";
+import EnrollGlassCard from "./EnrollGlassCard";
 
 const Categories = ({ name, data }: ICategoriesProps) => {
   const [current, setCurrent] = useState(6);
   const [currentList, setCurrentList] = useState<ICocktail[]>([]);
   const [screen, setScreen] = useRecoilState(screenState);
-
+  const [enrolled, setEnrolled] = useRecoilState(enrolledCocktailState);
   const cocktailMatch: PathMatch<string> | null = useMatch("/:category");
 
   useEffect(() => {
     data && setCurrentList(data?.drinks.slice(0, current));
-  }, [current]);
+  }, [current, enrolled]);
 
   useEffect(() => {
     if (screen === 0) setCurrent((prev) => Math.ceil(prev / 4) * 4);
@@ -29,6 +30,20 @@ const Categories = ({ name, data }: ICategoriesProps) => {
   return (
     <Wrapper>
       <Menus>
+        {enrolled.cocktails &&
+          enrolled.cocktails
+            .filter(
+              (cocktail) =>
+                cocktail.strCategory && cocktail.strCategory.toUpperCase() === name.toUpperCase()
+            )
+            .map((cocktail) => (
+              <EnrollGlassCard
+                key={"cocktail" + cocktail.idDrink + "category"}
+                cocktail={cocktail}
+                isBookmark={false}
+              />
+            ))}
+
         {cocktailMatch &&
           cocktailMatch.params.category === name &&
           currentList.map((cocktail) => (

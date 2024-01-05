@@ -25,19 +25,20 @@ const App = () => {
   const [screen, setScreen] = useRecoilState(screenState);
   const [enrolled, setEnrolled] = useRecoilState(enrolledCocktailState);
 
-  // useEffect(() => {
-  //   onSnapshot(collection(firebaseDB, "cocktails"), (snapshot) => {
-  //     const postsArr = snapshot.docs.map((eachDoc) => {
-  //       return Object.assign(eachDoc.data(), { id: eachDoc.id });
-  //     });
-  //     const sortedArr = postsArr.sort((a: any, b: any) => {
-  //       return b.timestamp - a.timestamp;
-  //     });
-  //     return setEnrolled({
-  //       cocktails: sortedArr[sortedArr.findIndex((e) => e.id === "enrolled")].cocktails,
-  //     });
-  //   });
-  // }, []);
+  useEffect(() => {
+    onSnapshot(collection(firebaseDB, "cocktails"), (snapshot) => {
+      const postsArr = snapshot.docs.map((eachDoc) => {
+        return Object.assign(eachDoc.data(), { id: eachDoc.id });
+      });
+      const sortedArr = postsArr.sort((a: any, b: any) => {
+        return b.timestamp - a.timestamp;
+      });
+      return setEnrolled({
+        cocktails: sortedArr[sortedArr.findIndex((e) => e.id === "enrolled")].cocktails,
+      });
+    });
+    console.log("b");
+  }, []);
 
   useEffect(() => {
     if (!mobileMatch && !midMatch) setScreen(2);
@@ -50,6 +51,7 @@ const App = () => {
       <Router basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path="/ingredient/:name" element={<Ingredient />}></Route>
+
           <Route path="/enroll" element={<Enroll />}></Route>
           <Route path="/favorites" element={<Favorites />}></Route>
           <Route path="/edetails/:id" element={<DetailEnrolled />}></Route>

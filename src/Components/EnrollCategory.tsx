@@ -33,13 +33,16 @@ const EnrollCategory = ({ name, data }: ICategoriesProps) => {
       <Menus>
         {cocktailMatch &&
           cocktailMatch.params.category === name &&
-          currentList.map((cocktail) => (
-            <EnrollGlassCard
-              key={"cocktail" + cocktail.idDrink}
-              cocktail={cocktail}
-              isBookmark={false}
-            />
-          ))}
+          currentList.map(
+            (cocktail) =>
+              cocktail.strDrink !== "" && (
+                <EnrollGlassCard
+                  key={"cocktail" + cocktail.idDrink + "category"}
+                  cocktail={cocktail}
+                  isBookmark={false}
+                />
+              )
+          )}
       </Menus>
       <Page onClick={() => setCurrent((prev) => (screen === 0 ? prev + 4 : prev + 3))}>
         <Ment variants={hoverVar} animate="animate" whileHover={"hover"}>

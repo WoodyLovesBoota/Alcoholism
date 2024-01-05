@@ -229,8 +229,9 @@ const List = styled.h2<{ isnow: string }>`
   font-size: 18px;
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => (props.isnow === "true" ? props.theme.red : props.theme.gray)};
-    color: ${(props) => props.theme.snow};
+    background-color: ${(props) => props.theme.accent + "40"};
+    color: ${(props) => props.theme.accent};
+    border: 1px solid transparent;
   }
   @media screen and (max-width: 800px) {
     padding: 2px 8px;

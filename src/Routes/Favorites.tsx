@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import NavigationBar from "../Components/NavigationBar";
 import { useRecoilState } from "recoil";
-import { likesState } from "../atoms";
+import { likesState, likesEnrolledState } from "../atoms";
 import GlassCard from "../Components/GlassCard";
 import { useEffect } from "react";
+import EnrollGlassCard from "../Components/EnrollGlassCard";
 
 const Favorites = () => {
   const [likes, setLikes] = useRecoilState(likesState);
+  const [elikes, setELikes] = useRecoilState(likesEnrolledState);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -16,6 +18,16 @@ const Favorites = () => {
     <Wrapper>
       <NavigationBar ishome={false} issticky={false} />
       <Main>
+        {elikes.map(
+          (cocktail, ind) =>
+            ind !== 0 && (
+              <EnrollGlassCard
+                key={"efavorite" + cocktail.idDrink}
+                cocktail={cocktail}
+                isBookmark={true}
+              />
+            )
+        )}
         {likes.map(
           (cocktail, ind) =>
             ind !== 0 && (

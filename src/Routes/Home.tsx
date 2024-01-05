@@ -6,12 +6,14 @@ import { useQuery } from "react-query";
 import { IGetCocktailResult, getCategoryResult, getAllCategoryResult } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { currentCateState } from "../atoms";
+import { currentCateState, enrolledCocktailState } from "../atoms";
+import EnrollCategory from "../Components/EnrollCategory";
 
 const Home = () => {
   const navigate = useNavigate();
   const [current, setCurrent] = useState(1);
   const [currentCate, setCurrentCate] = useRecoilState(currentCateState);
+  const [enroll, setEnroll] = useRecoilState(enrolledCocktailState);
   const sample = [
     "",
     "Cocktail",
@@ -26,6 +28,7 @@ const Home = () => {
     "Milk",
     "Coffee",
     "Lemon",
+    "Custom",
   ];
 
   const { data, isLoading } = useQuery<IGetCocktailResult>(
@@ -43,7 +46,7 @@ const Home = () => {
 
   useEffect(() => {
     navigate(`/${sample[current]}`);
-  }, []);
+  }, [current]);
 
   return (
     <Wrapper>
@@ -59,6 +62,7 @@ const Home = () => {
             (e, i) =>
               i !== 0 && (
                 <Category
+                  key={e + i}
                   isnow={current === i ? "true" : "false"}
                   onClick={() => handleCateClick(i)}
                 >
@@ -69,7 +73,12 @@ const Home = () => {
         </List>
       </Header>
       <Contents>
-        {!isLoading && <Categories key={current} name={sample[current]} data={data} />}
+        {!isLoading &&
+          (currentCate !== sample.length - 1 ? (
+            <Categories key={current} name={sample[current]} data={data} />
+          ) : (
+            <EnrollCategory key={current + "e"} name={sample[current]} data={enroll} />
+          ))}
       </Contents>
     </Wrapper>
   );
@@ -166,8 +175,9 @@ const Category = styled.h2<{ isnow: string }>`
   font-size: 18px;
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => (props.isnow === "true" ? props.theme.red : props.theme.gray)};
-    color: ${(props) => props.theme.snow};
+    background-color: ${(props) => props.theme.accent + "40"};
+    color: ${(props) => props.theme.accent};
+    border: 1px solid ${(props) => "transparent"};
   }
   @media screen and (max-width: 800px) {
     padding: 2px 8px;

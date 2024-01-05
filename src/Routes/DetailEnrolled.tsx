@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { cockTailState, likesState, screenState } from "../atoms";
+import { enrollSingleCocktailState, likesEnrolledState, screenState } from "../atoms";
 import NavigationBar from "../Components/NavigationBar";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReactComponent as VectorLong } from "../assets/vectorLong.svg";
 import { ReactComponent as LikeLong } from "../assets/likeLong.svg";
 
-const Detail = () => {
-  const [current, setCurrent] = useRecoilState(cockTailState);
-  const cocktail = current.drinks[0];
-  const [isLike, setIsLike] = useRecoilState(likesState);
+const DetailEnrolled = () => {
+  const [cocktail, setCurrent] = useRecoilState(enrollSingleCocktailState);
+  const [isLike, setIsLike] = useRecoilState(likesEnrolledState);
   const [isIn, setIsIn] = useState(false);
   const [screen, setScreen] = useRecoilState(screenState);
 
@@ -133,7 +132,7 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default DetailEnrolled;
 
 const Wrapper = styled.div`
   width: 100vw;

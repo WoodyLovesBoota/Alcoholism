@@ -4,9 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { menuState, screenState } from "../atoms";
 import { ReactComponent as Menus } from "../assets/menus.svg";
-import { useQuery } from "react-query";
-import { getIngredientList, ITotalIngredient } from "../api";
-import { useEffect, useState } from "react";
 
 const Menu = () => {
   const [isMenu, setIsMenu] = useRecoilState(menuState);

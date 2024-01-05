@@ -33,6 +33,34 @@ export const cockTailState = atom<ICocktailDetail>({
   },
 });
 
+export const enrollSingleCocktailState = atom<ICocktailSingle>({
+  key: "enrollSingleCocktail",
+  default: {
+    idDrink: "",
+    strDrink: "",
+    strDrinkAlternate: "",
+    strCategory: "",
+    strAlcoholic: "",
+    strGlass: "",
+    strInstructions: "",
+    strDrinkThumb: "",
+    strIngredient1: "",
+    strIngredient2: "",
+    strIngredient3: "",
+    strIngredient4: "",
+    strIngredient5: "",
+
+    strMeasure1: "",
+    strMeasure2: "",
+    strMeasure3: "",
+    strMeasure4: "",
+    strMeasure5: "",
+
+    strImageSource: "",
+    strImageAttribution: "",
+  },
+});
+
 export const likesState = atom<ICocktailSingle[]>({
   key: "likeCocktail",
   default: [
@@ -67,7 +95,51 @@ export const likesState = atom<ICocktailSingle[]>({
       const savedValue = localStorage.getItem("likes");
       if (savedValue !== null) setSelf(JSON.parse(savedValue));
       onSet((newValue: any, _: any, isReset: boolean) => {
-        isReset ? localStorage.removeItem("likes") : localStorage.setItem("likes", JSON.stringify(newValue));
+        isReset
+          ? localStorage.removeItem("likes")
+          : localStorage.setItem("likes", JSON.stringify(newValue));
+      });
+    },
+  ],
+});
+
+export const likesEnrolledState = atom<ICocktailSingle[]>({
+  key: "likeEnrolledCocktail",
+  default: [
+    {
+      idDrink: "",
+      strDrink: "",
+      strDrinkAlternate: "",
+      strCategory: "",
+      strAlcoholic: "",
+      strGlass: "",
+      strInstructions: "",
+      strDrinkThumb: "",
+      strIngredient1: "",
+      strIngredient2: "",
+      strIngredient3: "",
+      strIngredient4: "",
+      strIngredient5: "",
+
+      strMeasure1: "",
+      strMeasure2: "",
+      strMeasure3: "",
+      strMeasure4: "",
+      strMeasure5: "",
+
+      strImageSource: "",
+      strImageAttribution: "",
+    },
+  ],
+
+  effects: [
+    ({ setSelf, onSet }: any) => {
+      const savedValue = localStorage.getItem("elikes");
+      if (savedValue !== null) setSelf(JSON.parse(savedValue));
+      onSet((newValue: any, _: any, isReset: boolean) => {
+        isReset
+          ? localStorage.removeItem("elikes")
+          : localStorage.setItem("elikes", JSON.stringify(newValue));
       });
     },
   ],
@@ -75,6 +147,11 @@ export const likesState = atom<ICocktailSingle[]>({
 
 export const searchState = atom<boolean>({
   key: "searchOpen",
+  default: false,
+});
+
+export const enrollState = atom<boolean>({
+  key: "enrollOpen",
   default: false,
 });
 
@@ -112,3 +189,50 @@ export const currentKeywordState = atom<string>({
   key: "currentSearchKeyword",
   default: "",
 });
+
+export const enrolledCocktailState = atom<IEnrolledCocktails>({
+  key: "enrolledCocktail",
+  default: {
+    cocktails: [
+      {
+        idDrink: "",
+        strDrink: "",
+        strDrinkAlternate: "",
+        strCategory: "",
+        strAlcoholic: "",
+        strGlass: "",
+        strInstructions: "",
+        strDrinkThumb: "",
+        strIngredient1: "",
+        strIngredient2: "",
+        strIngredient3: "",
+        strIngredient4: "",
+        strIngredient5: "",
+
+        strMeasure1: "",
+        strMeasure2: "",
+        strMeasure3: "",
+        strMeasure4: "",
+        strMeasure5: "",
+
+        strImageSource: "",
+        strImageAttribution: "",
+      },
+    ],
+  },
+  effects: [
+    ({ setSelf, onSet }: any) => {
+      const savedValue = localStorage.getItem("enroll");
+      if (savedValue !== null) setSelf(JSON.parse(savedValue));
+      onSet((newValue: any, _: any, isReset: boolean) => {
+        isReset
+          ? localStorage.removeItem("enroll")
+          : localStorage.setItem("enroll", JSON.stringify(newValue));
+      });
+    },
+  ],
+});
+
+export interface IEnrolledCocktails {
+  cocktails: ICocktailSingle[];
+}

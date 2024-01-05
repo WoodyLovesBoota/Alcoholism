@@ -4,7 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as Vector } from "../assets/vector.svg";
 import { ReactComponent as Menus } from "../assets/menus.svg";
 import { useRecoilState } from "recoil";
-import { searchState, menuState, screenState, currentSearchList, currentKeywordState, favoriteState } from "../atoms";
+import {
+  searchState,
+  menuState,
+  screenState,
+  currentSearchList,
+  currentKeywordState,
+  favoriteState,
+  currentCateState,
+  enrollState,
+} from "../atoms";
 import Search from "../Components/Search";
 import Menu from "./Menu";
 import { useForm } from "react-hook-form";
@@ -21,7 +30,9 @@ const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolea
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(searchState);
   const [ismenu, setIsMenu] = useRecoilState(menuState);
+  const [isEnroll, setIsEnroll] = useRecoilState(enrollState);
   const [isfav, setIsFav] = useRecoilState(favoriteState);
+  const [currentCate, setCurrentCate] = useRecoilState(currentCateState);
 
   const [screen, setScreen] = useRecoilState(screenState);
   const [currentKeyword, setCurrentKeyword] = useRecoilState(currentKeywordState);
@@ -30,22 +41,28 @@ const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolea
   const { register, handleSubmit, getValues, setValue } = useForm<IForm>();
 
   const favMatch: PathMatch<string> | null = useMatch("/favorites");
+  const enrollMatch: PathMatch<string> | null = useMatch("/enroll");
 
   const onHomeClick = () => {
-    navigate("/");
+    navigate("/Cocktail");
     setIsFav(false);
     setIsMenu(false);
     setIsSearch(false);
+    setCurrentCate(1);
+    setIsEnroll(false);
   };
 
   const onSearchClick = () => {
     setIsMenu(false);
     setIsSearch(true);
+    setIsEnroll(false);
   };
 
   const onMenuClick = () => {
     setIsFav(false);
     setIsSearch(false);
+    setIsEnroll(false);
+
     setIsMenu((current) => !current);
   };
 
@@ -53,7 +70,17 @@ const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolea
     setIsSearch(false);
     setIsMenu(false);
     setIsFav(true);
+    setIsEnroll(false);
+
     navigate("/favorites");
+  };
+
+  const onEnrollClick = () => {
+    setIsSearch(false);
+    setIsMenu(false);
+    setIsFav(false);
+    setIsEnroll(true);
+    navigate("/enroll");
   };
 
   const onValid = (data: IForm) => {
@@ -120,7 +147,11 @@ const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolea
             </Form>
           )}
           <SearchItem onClick={onSearchClick} isfavorite={"false"}>
-            {screen === 0 ? <FontAwesomeIcon icon={faMagnifyingGlass} /> : !isSearch && <Word>SEARCH</Word>}
+            {screen === 0 ? (
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            ) : (
+              !isSearch && <Word>SEARCH</Word>
+            )}
           </SearchItem>
           <FavoriteItem onClick={onFavoriteClick} isfavorite={favMatch ? "true" : "false"}>
             {screen === 0 ? (
@@ -133,6 +164,9 @@ const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolea
               <Word>BOOKMARK</Word>
             )}
           </FavoriteItem>
+          <EnrollItem onClick={onEnrollClick} isenroll={enrollMatch ? "true" : "false"}>
+            <Word>ENROLL</Word>
+          </EnrollItem>
           <MenuItem onClick={onMenuClick} isfavorite={ismenu.toString()}>
             {screen === 0 ? <Menus width={24} height={24} /> : <Word>MENU</Word>}
           </MenuItem>
@@ -202,7 +236,8 @@ const SearchItem = styled.h2<{ isfavorite: string }>`
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.accent};
-  background-color: ${(props) => (props.isfavorite === "true" ? props.theme.accent : "transparent")};
+  background-color: ${(props) =>
+    props.isfavorite === "true" ? props.theme.accent : "transparent"};
   border-radius: 100px;
   padding: 4px 12px;
   &:last-child {
@@ -241,7 +276,8 @@ const MenuItem = styled.h2<{ isfavorite: string }>`
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.accent};
-  background-color: ${(props) => (props.isfavorite === "true" ? props.theme.accent : "transparent")};
+  background-color: ${(props) =>
+    props.isfavorite === "true" ? props.theme.accent : "transparent"};
   border-radius: 100px;
   padding: 4px 12px;
   &:last-child {
@@ -278,7 +314,8 @@ const FavoriteItem = styled.h2<{ isfavorite: string }>`
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.accent};
-  background-color: ${(props) => (props.isfavorite === "true" ? props.theme.accent : "transparent")};
+  background-color: ${(props) =>
+    props.isfavorite === "true" ? props.theme.accent : "transparent"};
   border-radius: 100px;
   padding: 4px 12px;
   &:last-child {
@@ -289,6 +326,43 @@ const FavoriteItem = styled.h2<{ isfavorite: string }>`
   }
   &:hover {
     background-color: ${(props) => props.isfavorite !== "true" && props.theme.accent + "40"};
+  }
+  @media screen and (max-width: 800px) {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    margin-left: 0px;
+    background-color: transparent;
+    padding: 0;
+    span {
+      color: ${(props) => props.theme.accent};
+    }
+    &:hover {
+      background-color: transparent;
+    }
+  }
+`;
+
+const EnrollItem = styled.h2<{ isenroll: string }>`
+  margin-left: 26px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) => props.theme.accent};
+  background-color: ${(props) => (props.isenroll === "true" ? props.theme.accent : "transparent")};
+  border-radius: 100px;
+  padding: 4px 12px;
+  &:last-child {
+    margin-right: 0;
+  }
+  span {
+    color: ${(props) => (props.isenroll === "true" ? props.theme.black : props.theme.accent)};
+  }
+  &:hover {
+    background-color: ${(props) => props.isenroll !== "true" && props.theme.accent + "40"};
   }
   @media screen and (max-width: 800px) {
     width: 24px;

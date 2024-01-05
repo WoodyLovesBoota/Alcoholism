@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { IGetCocktailResult, ICocktail } from "../api";
+import { IGetCocktailResult, ICocktail, ICocktailSingle } from "../api";
 import { PathMatch, useMatch } from "react-router-dom";
 import GlassCard from "./GlassCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,16 +8,18 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
 import { screenState } from "../atoms";
 import { motion } from "framer-motion";
+import { IEnrolledCocktails } from "../atoms";
+import EnrollGlassCard from "./EnrollGlassCard";
 
-const Categories = ({ name, data }: ICategoriesProps) => {
+const EnrollCategory = ({ name, data }: ICategoriesProps) => {
   const [current, setCurrent] = useState(6);
-  const [currentList, setCurrentList] = useState<ICocktail[]>([]);
+  const [currentList, setCurrentList] = useState<ICocktailSingle[]>([]);
   const [screen, setScreen] = useRecoilState(screenState);
 
   const cocktailMatch: PathMatch<string> | null = useMatch("/:category");
 
   useEffect(() => {
-    data && setCurrentList(data?.drinks.slice(0, current));
+    setCurrentList(data.cocktails.slice(0, current));
   }, [current]);
 
   useEffect(() => {
@@ -32,7 +34,11 @@ const Categories = ({ name, data }: ICategoriesProps) => {
         {cocktailMatch &&
           cocktailMatch.params.category === name &&
           currentList.map((cocktail) => (
-            <GlassCard key={"cocktail" + cocktail.idDrink} cocktail={cocktail} isBookmark={false} />
+            <EnrollGlassCard
+              key={"cocktail" + cocktail.idDrink}
+              cocktail={cocktail}
+              isBookmark={false}
+            />
           ))}
       </Menus>
       <Page onClick={() => setCurrent((prev) => (screen === 0 ? prev + 4 : prev + 3))}>
@@ -47,7 +53,7 @@ const Categories = ({ name, data }: ICategoriesProps) => {
   );
 };
 
-export default Categories;
+export default EnrollCategory;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -107,5 +113,5 @@ const hoverVar = {
 
 interface ICategoriesProps {
   name: string;
-  data: IGetCocktailResult | undefined;
+  data: IEnrolledCocktails;
 }

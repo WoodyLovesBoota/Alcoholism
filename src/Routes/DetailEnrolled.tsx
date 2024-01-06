@@ -277,6 +277,7 @@ const ContentDesc = styled.h2`
   font-size: 18px;
   font-weight: 400;
   margin-top: 10px;
+  text-transform: uppercase;
   @media screen and (max-width: 800px) {
     font-size: 16px;
   }

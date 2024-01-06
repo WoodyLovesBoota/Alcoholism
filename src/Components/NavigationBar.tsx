@@ -21,7 +21,7 @@ import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { IGetCocktailResult, getCocktailSearch } from "../api";
 import { motion } from "framer-motion";
-import { faCircleXmark, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import SearchBox from "./SearchBox";
 import { ReactComponent as Like } from "../assets/like.svg";
 import { PathMatch, useMatch } from "react-router-dom";
@@ -165,7 +165,19 @@ const NavigationBar = ({ ishome, issticky }: { ishome: boolean; issticky: boolea
             )}
           </FavoriteItem>
           <EnrollItem onClick={onEnrollClick} isenroll={enrollMatch ? "true" : "false"}>
-            <Word>ENROLL</Word>
+            {screen === 0 ? (
+              enrollMatch ? (
+                <IconNow>
+                  <FontAwesomeIcon icon={faPlus} />
+                </IconNow>
+              ) : (
+                <IconNotNow>
+                  <FontAwesomeIcon icon={faPlus} />
+                </IconNotNow>
+              )
+            ) : (
+              <Word>ENROLL</Word>
+            )}
           </EnrollItem>
           <MenuItem onClick={onMenuClick} isfavorite={ismenu.toString()}>
             {screen === 0 ? <Menus width={24} height={24} /> : <Word>MENU</Word>}
@@ -437,6 +449,28 @@ const Reset = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const IconNow = styled.h2`
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  background-color: ${(props) => props.theme.accent};
+  padding: 3px;
+  color: black;
+`;
+
+const IconNotNow = styled.h2`
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.theme.accent};
+  border: 2px solid ${(props) => props.theme.accent};
+  border-radius: 100px;
+  padding: 3px;
 `;
 
 const searchVar = {

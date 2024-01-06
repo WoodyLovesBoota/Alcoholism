@@ -37,7 +37,7 @@ const App = () => {
         cocktails: sortedArr[sortedArr.findIndex((e) => e.id === "enrolled")].cocktails,
       });
     });
-    console.log("b");
+    console.log("read");
   }, []);
 
   useEffect(() => {

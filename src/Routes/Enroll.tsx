@@ -169,7 +169,12 @@ export default Enroll;
 const Wrapper = styled.div`
   padding: 0 72px;
   padding-top: 220px;
-  padding-bottom: 120px;
+  padding-bottom: 100px;
+  @media screen and (max-width: 1200px) {
+    padding: 0 16px;
+    padding-top: 120px;
+    padding-bottom: 100px;
+  }
 `;
 
 const Title = styled.h2`
@@ -177,44 +182,62 @@ const Title = styled.h2`
   font-weight: 700;
   color: ${(props) => props.theme.accent};
   margin-bottom: 36px;
+  @media screen and (max-width: 800px) {
+    font-size: 36px;
+  }
 `;
 
 const Description = styled.h2`
   font-size: 24px;
   font-weight: 500;
-  width: 50%;
   margin-bottom: 80px;
+  @media screen and (max-width: 800px) {
+    margin-bottom: 50px;
+    font-size: 16px;
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  padding: 100px;
-  padding-bottom: 50px;
+  padding: 50px;
+  padding-bottom: 30px;
   border-radius: 20px;
   box-shadow: 0 -4px 8px 0 ${(props) => props.theme.snow};
+  width: 1080px;
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    padding: 30px;
+  }
 `;
 
 const UpperRow = styled.div`
   display: flex;
+  justify-content: space-between;
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 `;
 
 const InputBox = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   width: 100%;
 `;
 
 const InputTitle = styled.h2`
-  margin-right: 20px;
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 400;
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
+  }
 `;
 
 const Input = styled.input`
   border: 2px solid white;
   background-color: transparent;
   padding: 10px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   border-radius: 8px;
   width: 100%;
@@ -227,30 +250,47 @@ const Input = styled.input`
 const InputCol = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
-  margin-right: 50px;
+  width: 48%;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 const IngredientBox = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 const IngredientRow = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
   align-items: flex-end;
+  @media screen and (max-width: 580px) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
 `;
 
 const IngredientCol = styled.div`
-  margin-right: 50px;
+  margin-right: 30px;
   width: 50%;
+  @media screen and (max-width: 800px) {
+    margin-right: 20px;
+  }
+  @media screen and (max-width: 580px) {
+    width: 100%;
+    margin-right: 0;
+  }
 `;
 
 const IngredientTitle = styled.h2`
   margin-right: 20px;
-  font-size: 18px;
-  font-weight: 500;
-  width: 200px;
+  font-size: 16px;
+  font-weight: 400;
+  @media screen and (max-width: 580px) {
+    margin-right: 0;
+    margin-top: 10px;
+  }
 `;
 
 const AddRowButton = styled.button`
@@ -273,27 +313,31 @@ const IconWrapper = styled.h2`
     color: ${(props) => props.theme.accent};
     border: 1px solid ${(props) => props.theme.accent};
   }
+  @media screen and (max-width: 800px) {
+    font-size: 16px;
+  }
 `;
 
 const DeleteRowButton = styled.button`
   background-color: transparent;
   cursor: pointer;
   margin-bottom: 5px;
+  @media screen and (max-width: 580px) {
+    margin-bottom: 0px;
+    margin-top: 10px;
+  }
 `;
 
 const BoxTitle = styled.h2`
-  font-size: 24px;
-  font-weight: 500;
-  width: 100%;
-  border-bottom: 2px solid white;
-  padding-bottom: 10px;
+  font-size: 18px;
+  font-weight: 400;
 `;
 
 const Ingredient = styled.input`
   border: 2px solid white;
   background-color: transparent;
   padding: 10px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   width: 100%;
   border-radius: 8px;
@@ -303,19 +347,17 @@ const Ingredient = styled.input`
   }
 `;
 
-const DescriptionBox = styled.div`
-  margin-right: 50px;
-`;
+const DescriptionBox = styled.div``;
 
 const CocktailDescription = styled.textarea`
   border: 2px solid white;
   background-color: transparent;
   padding: 10px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   border-radius: 8px;
   width: 100%;
-  min-height: 200px;
+  min-height: 150px;
   &:focus {
     outline: none;
     border: 2px solid ${(props) => props.theme.accent};
@@ -325,12 +367,13 @@ const CocktailDescription = styled.textarea`
 const Button = styled.button`
   color: black;
   background-color: ${(props) => props.theme.accent};
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   font-weight: 500;
   font-size: 24px;
-  margin-top: 80px;
+  margin-top: 50px;
   cursor: pointer;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.5);
 `;
 
 interface IForm {

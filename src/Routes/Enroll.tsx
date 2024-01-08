@@ -158,10 +158,10 @@ const Enroll = () => {
     alert("등록이 완료되었습니다");
   };
 
-  // useEffect(() => {
-  //   DBHandler.addUserInfoPost("cocktails", "enrolled", enrolled);
-  //   console.log("write");
-  // }, [enrolled]);
+  useEffect(() => {
+    DBHandler.addUserInfoPost("cocktails", "enrolled", enrolled);
+    console.log("write");
+  }, [enrolled]);
 
   return (
     <Wrapper>
@@ -454,6 +454,10 @@ const Select = styled.select`
   width: 100%;
   color: white;
   cursor: pointer;
+  -o-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   &:focus {
     outline: none;
     border: 2px solid ${(props) => props.theme.accent};

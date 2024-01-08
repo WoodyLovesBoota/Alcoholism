@@ -2,11 +2,13 @@ import { useForm, useFieldArray } from "react-hook-form";
 import styled from "styled-components";
 import NavigationBar from "../Components/NavigationBar";
 import DBHandler from "../firebase/DBHandler";
-import { useEffect } from "react";
+import { useEffect, ChangeEvent, useState } from "react";
 import { useRecoilState } from "recoil";
 import { enrolledCocktailState } from "../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { storage } from "../firebase/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const Enroll = () => {
   const { register, control, handleSubmit, reset } = useForm<IForm>({
@@ -17,80 +19,149 @@ const Enroll = () => {
 
   const [enrolled, setEnrolled] = useRecoilState(enrolledCocktailState);
 
+  const [image, setImage] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<string>("");
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "ingredients",
   });
 
-  const onValid = (data: IForm) => {
-    setEnrolled((current) => {
-      let target = [...current.cocktails];
-      let newArr =
-        target[0].strDrink === ""
-          ? [
-              {
-                idDrink: "enrolled" + 0,
-                strDrink: data.name,
-                strDrinkAlternate: "",
-                strCategory: data.category.toUpperCase(),
-                strAlcoholic: "",
-                strGlass: data.glass,
-                strInstructions: data.desc,
-                strDrinkThumb: data.image,
-                strIngredient1: data.ingredients[0] ? data.ingredients[0].ingredient : "",
-                strIngredient2: data.ingredients[1] ? data.ingredients[1].ingredient : "",
-                strIngredient3: data.ingredients[2] ? data.ingredients[2].ingredient : "",
-                strIngredient4: data.ingredients[3] ? data.ingredients[3].ingredient : "",
-                strIngredient5: data.ingredients[4] ? data.ingredients[4].ingredient : "",
+  const categories = [
+    "Ordinary Drink",
+    "Cocktail",
+    "Shake",
+    "Other / Unknown",
+    "Cocoa",
+    "Shot",
+    "Coffee / Tea",
+    "Homemade Liqueur",
+    "Punch / Party Drink",
+    "Beer",
+    "Soft Drink",
+  ];
 
-                strMeasure1: data.ingredients[0] ? data.ingredients[0].measure : "",
-                strMeasure2: data.ingredients[1] ? data.ingredients[1].measure : "",
-                strMeasure3: data.ingredients[2] ? data.ingredients[2].measure : "",
-                strMeasure4: data.ingredients[3] ? data.ingredients[3].measure : "",
-                strMeasure5: data.ingredients[4] ? data.ingredients[4].measure : "",
+  const glasses = [
+    "Highball glass",
+    "Cocktail glass",
+    "Old-fashioned glass",
+    "Whiskey Glass",
+    "Collins glass",
+    "Pousse cafe glass",
+    "Champagne flute",
+    "Whiskey sour glass",
+    "Cordial glass",
+    "Brandy snifter",
+    "White wine glass",
+    "Nick and Nora Glass",
+    "Hurricane glass",
+    "Coffee mug",
+    "Shot glass",
+    "Jar",
+    "Irish coffee cup",
+    "Punch bowl",
+    "Pitcher",
+    "Pint glass",
+    "Copper Mug",
+    "Wine Glass",
+    "Beer mug",
+    "Margarita/Coupette glass",
+    "Beer pilsner",
+    "Beer Glass",
+    "Parfait glass",
+    "Mason jar",
+    "Margarita glass",
+    "Martini Glass",
+    "Balloon Glass",
+    "Coupe Glass",
+  ];
 
-                strImageSource: data.image,
-                strImageAttribution: "",
-              },
-            ]
-          : [
-              ...target,
-              {
-                idDrink: "enrolled" + target.length,
-                strDrink: data.name,
-                strDrinkAlternate: "",
-                strCategory: data.category.toUpperCase(),
-                strAlcoholic: "",
-                strGlass: data.glass,
-                strInstructions: data.desc,
-                strDrinkThumb: data.image,
-                strIngredient1: data.ingredients[0] ? data.ingredients[0].ingredient : "",
-                strIngredient2: data.ingredients[1] ? data.ingredients[1].ingredient : "",
-                strIngredient3: data.ingredients[2] ? data.ingredients[2].ingredient : "",
-                strIngredient4: data.ingredients[3] ? data.ingredients[3].ingredient : "",
-                strIngredient5: data.ingredients[4] ? data.ingredients[4].ingredient : "",
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImage(e.target.files[0]);
+    }
+  };
 
-                strMeasure1: data.ingredients[0] ? data.ingredients[0].measure : "",
-                strMeasure2: data.ingredients[1] ? data.ingredients[1].measure : "",
-                strMeasure3: data.ingredients[2] ? data.ingredients[2].measure : "",
-                strMeasure4: data.ingredients[3] ? data.ingredients[3].measure : "",
-                strMeasure5: data.ingredients[4] ? data.ingredients[4].measure : "",
+  const onValid = async (data: IForm) => {
+    const imageFile = data.image[0];
+    const storageRef = ref(storage, `images/${imageFile.name}`);
+    try {
+      const snapshot = await uploadBytes(storageRef, imageFile);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      setEnrolled((current) => {
+        let target = [...current.cocktails];
+        let newArr =
+          target[0].strDrink === ""
+            ? [
+                {
+                  idDrink: "enrolled" + 0,
+                  strDrink: data.name,
+                  strDrinkAlternate: "",
+                  strCategory: data.category.toUpperCase(),
+                  strAlcoholic: "",
+                  strGlass: data.glass,
+                  strInstructions: data.desc,
+                  strDrinkThumb: downloadURL,
+                  strIngredient1: data.ingredients[0] ? data.ingredients[0].ingredient : "",
+                  strIngredient2: data.ingredients[1] ? data.ingredients[1].ingredient : "",
+                  strIngredient3: data.ingredients[2] ? data.ingredients[2].ingredient : "",
+                  strIngredient4: data.ingredients[3] ? data.ingredients[3].ingredient : "",
+                  strIngredient5: data.ingredients[4] ? data.ingredients[4].ingredient : "",
 
-                strImageSource: data.image,
-                strImageAttribution: "",
-              },
-            ];
-      return { ...current, ["cocktails"]: newArr };
-    });
+                  strMeasure1: data.ingredients[0] ? data.ingredients[0].measure : "",
+                  strMeasure2: data.ingredients[1] ? data.ingredients[1].measure : "",
+                  strMeasure3: data.ingredients[2] ? data.ingredients[2].measure : "",
+                  strMeasure4: data.ingredients[3] ? data.ingredients[3].measure : "",
+                  strMeasure5: data.ingredients[4] ? data.ingredients[4].measure : "",
+
+                  strImageSource: downloadURL,
+                  strImageAttribution: "",
+                },
+              ]
+            : [
+                ...target,
+                {
+                  idDrink: "enrolled" + target.length,
+                  strDrink: data.name,
+                  strDrinkAlternate: "",
+                  strCategory: data.category.toUpperCase(),
+                  strAlcoholic: "",
+                  strGlass: data.glass,
+                  strInstructions: data.desc,
+                  strDrinkThumb: downloadURL,
+                  strIngredient1: data.ingredients[0] ? data.ingredients[0].ingredient : "",
+                  strIngredient2: data.ingredients[1] ? data.ingredients[1].ingredient : "",
+                  strIngredient3: data.ingredients[2] ? data.ingredients[2].ingredient : "",
+                  strIngredient4: data.ingredients[3] ? data.ingredients[3].ingredient : "",
+                  strIngredient5: data.ingredients[4] ? data.ingredients[4].ingredient : "",
+
+                  strMeasure1: data.ingredients[0] ? data.ingredients[0].measure : "",
+                  strMeasure2: data.ingredients[1] ? data.ingredients[1].measure : "",
+                  strMeasure3: data.ingredients[2] ? data.ingredients[2].measure : "",
+                  strMeasure4: data.ingredients[3] ? data.ingredients[3].measure : "",
+                  strMeasure5: data.ingredients[4] ? data.ingredients[4].measure : "",
+
+                  strImageSource: downloadURL,
+                  strImageAttribution: "",
+                },
+              ];
+        return { ...current, ["cocktails"]: newArr };
+      });
+      setUploadProgress("Upload completed");
+    } catch (error) {
+      alert("오류가 발생했습니다. 잠시 후에 시도해주세요.");
+      setUploadProgress("Upload failed");
+    }
+
     reset();
 
     alert("등록이 완료되었습니다");
   };
 
-  useEffect(() => {
-    DBHandler.addUserInfoPost("cocktails", "enrolled", enrolled);
-    console.log("write");
-  }, [enrolled]);
+  // useEffect(() => {
+  //   DBHandler.addUserInfoPost("cocktails", "enrolled", enrolled);
+  //   console.log("write");
+  // }, [enrolled]);
 
   return (
     <Wrapper>
@@ -108,17 +179,29 @@ const Enroll = () => {
             </InputBox>
             <InputBox>
               <InputTitle>CATEGORY</InputTitle>
-              <Input {...register("category", { required: true })} autoComplete="off" />
+              <Select {...register("category", { required: true })} autoComplete="off">
+                {categories.map((cate) => (
+                  <OptionCategory key={cate} value={cate}>
+                    {cate.toUpperCase()}
+                  </OptionCategory>
+                ))}
+              </Select>
             </InputBox>
           </InputCol>
           <InputCol>
             <InputBox>
               <InputTitle>IMAGE</InputTitle>
-              <Input {...register("image", { required: true })} autoComplete="off" />
+              <Input type="file" {...register("image", { required: true })} autoComplete="off" />
             </InputBox>
             <InputBox>
               <InputTitle>GLASS</InputTitle>
-              <Input {...register("glass", { required: true })} autoComplete="off" />
+              <Select {...register("glass", { required: true })} autoComplete="off">
+                {glasses.map((glass) => (
+                  <OptionCategory key={glass} value={glass}>
+                    {glass.toUpperCase()}
+                  </OptionCategory>
+                ))}
+              </Select>
             </InputBox>
           </InputCol>
         </UpperRow>
@@ -170,7 +253,7 @@ const Wrapper = styled.div`
   padding: 0 72px;
   padding-top: 220px;
   padding-bottom: 100px;
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1000px) {
     padding: 0 16px;
     padding-top: 120px;
     padding-bottom: 100px;
@@ -200,14 +283,10 @@ const Description = styled.h2`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  padding: 50px;
-  padding-bottom: 30px;
   border-radius: 20px;
-  box-shadow: 0 -4px 8px 0 ${(props) => props.theme.snow};
-  width: 1080px;
-  @media screen and (max-width: 1200px) {
+  width: 850px;
+  @media screen and (max-width: 1000px) {
     width: 100%;
-    padding: 30px;
   }
 `;
 
@@ -228,6 +307,7 @@ const InputBox = styled.div`
 const InputTitle = styled.h2`
   font-size: 18px;
   font-weight: 400;
+  line-height: 1;
   @media screen and (max-width: 800px) {
     font-size: 16px;
   }
@@ -261,7 +341,7 @@ const IngredientBox = styled.div`
 `;
 
 const IngredientRow = styled.div`
-  margin-top: 20px;
+  margin: 10px 0;
   display: flex;
   align-items: flex-end;
   @media screen and (max-width: 580px) {
@@ -364,6 +444,24 @@ const CocktailDescription = styled.textarea`
   }
 `;
 
+const Select = styled.select`
+  border: 2px solid white;
+  background-color: transparent;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  width: 100%;
+  color: white;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+    border: 2px solid ${(props) => props.theme.accent};
+  }
+`;
+
+const OptionCategory = styled.option``;
+
 const Button = styled.button`
   color: black;
   background-color: ${(props) => props.theme.accent};
@@ -381,6 +479,6 @@ interface IForm {
   category: string;
   ingredients: { ingredient: string; measure: string }[];
   glass: string;
-  image: string;
+  image: FileList;
   desc: string;
 }

@@ -92,6 +92,7 @@ const Ingredient = () => {
           <Lists>
             {total.map((e, i) => (
               <List
+                key={e.strIngredient1 + i}
                 isnow={(currentPage === i + 1).toString()}
                 onClick={() => {
                   setCurrentPage(i + 1);

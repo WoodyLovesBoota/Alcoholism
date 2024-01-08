@@ -27,38 +27,10 @@ const Categories = ({ name, data }: ICategoriesProps) => {
     else setCurrent((prev) => Math.ceil(prev / 3) * 3);
   }, [screen]);
 
-  useEffect(() => {
-    if (screen === 0) {
-      enrolled.cocktails &&
-        setCurrent(
-          (prev) =>
-            prev +
-            4 -
-            (enrolled.cocktails.filter(
-              (cocktail) =>
-                cocktail.strCategory && cocktail.strCategory.toUpperCase() === name.toUpperCase()
-            ).length %
-              4)
-        );
-    } else {
-      enrolled.cocktails &&
-        setCurrent(
-          (prev) =>
-            prev +
-            3 -
-            (enrolled.cocktails.filter(
-              (cocktail) =>
-                cocktail.strCategory && cocktail.strCategory.toUpperCase() === name.toUpperCase()
-            ).length %
-              3)
-        );
-    }
-  }, [screen]);
-
   return (
     <Wrapper>
       <Menus>
-        {enrolled.cocktails &&
+        {/* {enrolled.cocktails &&
           enrolled.cocktails
             .filter(
               (cocktail) =>
@@ -70,7 +42,7 @@ const Categories = ({ name, data }: ICategoriesProps) => {
                 cocktail={cocktail}
                 isBookmark={false}
               />
-            ))}
+            ))} */}
 
         {cocktailMatch &&
           cocktailMatch.params.category === name &&

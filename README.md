@@ -34,36 +34,36 @@ Alcoholism은 오픈 API와 백엔드 서버를 활용하여 사용자에게 다
 
 ## 기능 구현
 ### API 커스터마이징을 통한 검색어 자동완성 기능 구현<br>
-![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2F1705337262684.webp?alt=media&token=f6ba58ec-ca9d-4644-af90-d5d0b5cbe24d)
+![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2F1705337262684.webp?alt=media&token=f6ba58ec-ca9d-4644-af90-d5d0b5cbe24d)<br><br>
 오픈 API가 제공하는 검색 API와 React의 useForm 훅을 활용하여 사용자가 원하는 칵테일을 쉽게 찾을 수 있는 검색 기능을 구현했습니다. 이 과정에서 API가 자동완성 기능을 직접 제공하지 않음에도 불구하고, Input의 onKeyUp과 onKeyDown 이벤트 핸들러를 활용하여 사용자가 검색어를 입력할 때마다 검색 API가 호출되어 상위 결과를 미리 보여주는 형태의 검색어 자동완성 기능을 구현했습니다.<br>
 
 초기 구현에서 useEffect와 axios를 활용하여 데이터를 fetch하는 방식을 사용하였습니다. 이 방법은 이벤트 핸들러와 연동하는 과정에서의 커스텀 로직을 간편하게 구현하는 데 장점이 있었지만, 검색어를 완성시키는 과정에서 동일한 단어에 대한 데이터 캐싱을 효율적으로 제공해주는 React Query로 구현 방식을 전환했습니다.<br>
 
-Input 필드에 변화가 있을 때마다 데이터를 Fetch하는 방식은 어느정도의 성능 저하를 초래하였지만, 마지막 API 호출 후 로딩 시간은 약 400ms로 유지되어 사용자 경험에 큰 영향을 미치지 않았습니다. 또한 React Query의 데이터 캐싱과 동기화 기능을 이용하여 불필요한 API call이 일어나는 것을 방지하였고, 유사한 이름의 칵테일이 많지 않아 예상보다 적은 양의 API 호출이 발생하여 효과적으로 검색어 자동완성 기능을 구현할 수 있었습니다.<br>
+Input 필드에 변화가 있을 때마다 데이터를 Fetch하는 방식은 어느정도의 성능 저하를 초래하였지만, 마지막 API 호출 후 로딩 시간은 약 400ms로 유지되어 사용자 경험에 큰 영향을 미치지 않았습니다. 또한 React Query의 데이터 캐싱과 동기화 기능을 이용하여 불필요한 API call이 일어나는 것을 방지하였고, 유사한 이름의 칵테일이 많지 않아 예상보다 적은 양의 API 호출이 발생하여 효과적으로 검색어 자동완성 기능을 구현할 수 있었습니다.<br><br>
 
 
 ### Recoil과 로컬 스토리지를 활용한 북마크(즐겨찾기) 기능 구현<br>
-![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2F1705337282121.webp?alt=media&token=d481170b-033b-4ae3-8dfe-c53283556a27)
+![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2F1705337282121.webp?alt=media&token=d481170b-033b-4ae3-8dfe-c53283556a27)<br><br>
 전역 상태 관리 라이브러리인 Recoil을 활용하여 사용자가 검색과 아카이브를 통해 마음에 드는 칵테일을 북마크에 추가할 수 있는 기능을 구현하였습니다. 북마크된 칵테일은 'Bookmark' 탭에서 관리되어, 사용자가 언제든지 목록을 관리할 수 있습니다.<br>
 
-전역으로 상태가 관리되는 Recoil의 특성을 통해 애플리케이션 내 모든 컴포넌트에서 저장한 칵테일을 쉽게 식별할 수 있도록 하였습니다. 또한, 브라우저의 로컬 스토리지를 활용하여 사용자가 애플리케이션을 재방문할 때 북마크 목록을 복원하는 기능을 구현하여 사용자 경험을 향상시키기 위해 노력했습니다.<br>
+전역으로 상태가 관리되는 Recoil의 특성을 통해 애플리케이션 내 모든 컴포넌트에서 저장한 칵테일을 쉽게 식별할 수 있도록 하였습니다. 또한, 브라우저의 로컬 스토리지를 활용하여 사용자가 애플리케이션을 재방문할 때 북마크 목록을 복원하는 기능을 구현하여 사용자 경험을 향상시키기 위해 노력했습니다.<br><br>
 
 
 ### 반응형 디자인을 통한 성능과 사용자 경험 개선<br>
-![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Desc%2Falco4.webp?alt=media&token=dd79c232-92ed-482f-b5fe-e05c57be1dac)
+![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Desc%2Falco4.webp?alt=media&token=dd79c232-92ed-482f-b5fe-e05c57be1dac)<br><br>
 Styled Components와 미디어 쿼리를 결합하여 반응형 디자인을 적용함으로써, 모바일, 태블릿, 데스크톱 등 다양한 디바이스에서 일관된 사용자 경험을 제공하였습니다. 이 과정에서 UX/UI 디자이너와의 협업을 통해 각 디바이스의 화면 크기와 성능에 맞춰 반응형 이미지와 애니메이션을 제공함으로써, 프로젝트의 초기 로딩 시간을 단축시키고 전반적인 사용자 경험을 개선하였습니다.<br>
 
-협업 과정에서 다양한 시각을 통해 서비스를 입체적으로 바라보는 경험을 하였으며, 지속적인 의견 교환을 통해 기술적 역량과 함께 커뮤니케이션 능력을 향상시킬 수 있었습니다. 서로의 의견을 주고받으면서 결과물이 점차 개선되는 과정을 경험하였고, 이를 통해 다양한 분야의 팀원들과의 효과적인 커뮤니케이션의 가치를 깊이 이해하게 되었습니다.<br>
+협업 과정에서 다양한 시각을 통해 서비스를 입체적으로 바라보는 경험을 하였으며, 지속적인 의견 교환을 통해 기술적 역량과 함께 커뮤니케이션 능력을 향상시킬 수 있었습니다. 서로의 의견을 주고받으면서 결과물이 점차 개선되는 과정을 경험하였고, 이를 통해 다양한 분야의 팀원들과의 효과적인 커뮤니케이션의 가치를 깊이 이해하게 되었습니다.<br><br>
 
 
 ## 문제 해결
 ### 카테고리 최적화를 통한 사용자 경험 개선<br>
-![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Desc%2Falco3.webp?alt=media&token=2526cc4f-e5ac-4579-be07-fc45e2ebb7e7) 
+![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Desc%2Falco3.webp?alt=media&token=2526cc4f-e5ac-4579-be07-fc45e2ebb7e7) <br><br>
 칵테일 아카이브 구현 과정에서 다양한 종류의 칵테일을 효과적으로 찾을 수 있는 기능을 제공하기 위해 재료별로 칵테일을 분류하여 데이터를 제공하였고, 이를 통해 사용자들이 원하는 정보를 쉽게 찾을 수 있도록 하였습니다.<br>
 
 하지만 오픈 API에서 제공된 데이터는 한정적이며, 카테고리가 지나치게 세분화되어 있었고 이로 인해 원하는 칵테일을 효율적으로 찾기 어렵다는 문제가 발생했습니다. 이를 해결하기 위해, Rum, light rum, dark rum과 같이 공통된 이름을 가진 카테고리를 하나로 통합하는 방식으로 데이터를 재구성했습니다. <br>
 
-이러한 데이터 2차 가공을 통해 100여 개에 달하는 카테고리를 20개로 줄이는 데 성공했으며, 사용자들이 원하는 칵테일을 보다 쉽게 찾고 접근할 수 있는 구조를 구현하였습니다.<br>
+이러한 데이터 2차 가공을 통해 100여 개에 달하는 카테고리를 20개로 줄이는 데 성공했으며, 사용자들이 원하는 칵테일을 보다 쉽게 찾고 접근할 수 있는 구조를 구현하였습니다.<br><br>
 
 
 ### Firebase를 활용한 백엔드 구축과 컴포넌트 생명주기 이해의 중요성 인식<br>

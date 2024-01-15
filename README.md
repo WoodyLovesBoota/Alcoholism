@@ -1,12 +1,14 @@
 # Alcoholism
 
-![Project ScreenShot0](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2Falcoholism%2001.webp?alt=media&token=b76858d5-76a4-497a-976f-4315da940925)
-
-<br>
+![Project ScreenShot0](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2F1705337236756.webp?alt=media&token=6fa77493-d5d8-400f-814f-33d364f4df9e)
 
 ## Alcoholism은?
 
-다양한 칵테일 레시피와 정보를 제공하는 웹 애플리케이션입니다.
+Alcoholism은 오픈 API와 백엔드 서버를 활용하여 사용자에게 다양한 칵테일 레시피와 정보를 제공하는 웹 애플리케이션 입니다. 사람들이 원하는 레시피를 쉽게 찾고, 자신만의 칵테일 레시피를 공유할 수 있는 플랫폼 구현을 목표로 개발했습니다.<br>
+
+오픈 API를 그대로 사용하는 것이 아닌, 데이터를 재구성하여 사용자가 보다 쉽게 접근할 수 있는 형태의 데이터를 만들어 제공하기 위해 노력하였습니다. 더불어 UX/UI 디자이너와 협력해 반응형 디자인, 애니메이션 등 시각적 요소를 활용하여 사용자 친화적인 서비스를 구현하였습니다.<br>
+
+프로젝트에서 구현한 핵심 기능은 칵테일 검색, 칵테일 아카이브, 즐겨찾기 저장, 칵테일 업로드 입니다.
 
 <br>
 
@@ -30,36 +32,47 @@
 
 <br>
 
-## 프로젝트 상세
+## 기능 구현
+### API 커스터마이징을 통한 검색어 자동완성 기능 구현<br>
+![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2F1705337262684.webp?alt=media&token=f6ba58ec-ca9d-4644-af90-d5d0b5cbe24d)
+오픈 API가 제공하는 검색 API와 React의 useForm 훅을 활용하여 사용자가 원하는 칵테일을 쉽게 찾을 수 있는 검색 기능을 구현했습니다. 이 과정에서 API가 자동완성 기능을 직접 제공하지 않음에도 불구하고, Input의 onKeyUp과 onKeyDown 이벤트 핸들러를 활용하여 사용자가 검색어를 입력할 때마다 검색 API가 호출되어 상위 결과를 미리 보여주는 형태의 검색어 자동완성 기능을 구현했습니다.<br>
 
-### 구현
+초기 구현에서 useEffect와 axios를 활용하여 데이터를 fetch하는 방식을 사용하였습니다. 이 방법은 이벤트 핸들러와 연동하는 과정에서의 커스텀 로직을 간편하게 구현하는 데 장점이 있었지만, 검색어를 완성시키는 과정에서 동일한 단어에 대한 데이터 캐싱을 효율적으로 제공해주는 React Query로 구현 방식을 전환했습니다.<br>
 
-- React와 Typescript를 사용하여 UI를 구현하였습니다.
-- React Query와 Cocktail DB API를 이용하여 칵테일에 대한 정보, 레시피를 받아왔습니다.
-- Firebase와 연동하여 커스텀 칵테일을 등록하고 관리하는 기능을 구현하였습니다.
+Input 필드에 변화가 있을 때마다 데이터를 Fetch하는 방식은 어느정도의 성능 저하를 초래하였지만, 마지막 API 호출 후 로딩 시간은 약 400ms로 유지되어 사용자 경험에 큰 영향을 미치지 않았습니다. 또한 React Query의 데이터 캐싱과 동기화 기능을 이용하여 불필요한 API call이 일어나는 것을 방지하였고, 유사한 이름의 칵테일이 많지 않아 예상보다 적은 양의 API 호출이 발생하여 효과적으로 검색어 자동완성 기능을 구현할 수 있었습니다.<br>
 
-<br>
 
-### 핵심 기능
+### Recoil과 로컬 스토리지를 활용한 북마크(즐겨찾기) 기능 구현<br>
+![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2F1705337282121.webp?alt=media&token=d481170b-033b-4ae3-8dfe-c53283556a27)
+전역 상태 관리 라이브러리인 Recoil을 활용하여 사용자가 검색과 아카이브를 통해 마음에 드는 칵테일을 북마크에 추가할 수 있는 기능을 구현하였습니다. 북마크된 칵테일은 'Bookmark' 탭에서 관리되어, 사용자가 언제든지 목록을 관리할 수 있습니다.<br>
 
-- **칵테일 검색하기**: 사용자가 원하는 칵테일을 이름, 재료 형식으로 검색하여 찾을 수 있습니다.
-- **칵테일 아카이브:**: 재료별, 카테고리별로 칵테일을 분류하여 칵테일을 효율적으로 둘러볼 수 있습니다.
-- **즐겨찾기 저장**: 맘에드는 칵테일을 Bookmark 하여 모아볼 수 있습니다.
-- **나만의 칵테일 등록**: 사용자가 새로운 칵테일을 업로드하여 다른 사용자들에게 공유할 수 있습니다.
+전역으로 상태가 관리되는 Recoil의 특성을 통해 애플리케이션 내 모든 컴포넌트에서 저장한 칵테일을 쉽게 식별할 수 있도록 하였습니다. 또한, 브라우저의 로컬 스토리지를 활용하여 사용자가 애플리케이션을 재방문할 때 북마크 목록을 복원하는 기능을 구현하여 사용자 경험을 향상시키기 위해 노력했습니다.<br>
 
-<br>
 
-**칵테일 검색하기**
-![Project ScreenShot1](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2Falcoholism%2003.webp?alt=media&token=1a29adb3-21f2-4bab-9485-a1014adff151)
+### 반응형 디자인을 통한 성능과 사용자 경험 개선<br>
+![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Desc%2Falco4.webp?alt=media&token=dd79c232-92ed-482f-b5fe-e05c57be1dac)
+Styled Components와 미디어 쿼리를 결합하여 반응형 디자인을 적용함으로써, 모바일, 태블릿, 데스크톱 등 다양한 디바이스에서 일관된 사용자 경험을 제공하였습니다. 이 과정에서 UX/UI 디자이너와의 협업을 통해 각 디바이스의 화면 크기와 성능에 맞춰 반응형 이미지와 애니메이션을 제공함으로써, 프로젝트의 초기 로딩 시간을 단축시키고 전반적인 사용자 경험을 개선하였습니다.<br>
 
-<br>
+협업 과정에서 다양한 시각을 통해 서비스를 입체적으로 바라보는 경험을 하였으며, 지속적인 의견 교환을 통해 기술적 역량과 함께 커뮤니케이션 능력을 향상시킬 수 있었습니다. 서로의 의견을 주고받으면서 결과물이 점차 개선되는 과정을 경험하였고, 이를 통해 다양한 분야의 팀원들과의 효과적인 커뮤니케이션의 가치를 깊이 이해하게 되었습니다.<br>
 
-**칵테일 아카이브**
-![Project ScreenShot2](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2Falcoholism%2004.webp?alt=media&token=d3d07546-93e5-4eaf-8963-76415bd299d7)
 
-<br>
+## 문제 해결
+### 카테고리 최적화를 통한 사용자 경험 개선<br>
+![](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Desc%2Falco3.webp?alt=media&token=2526cc4f-e5ac-4579-be07-fc45e2ebb7e7) 
+칵테일 아카이브 구현 과정에서 다양한 종류의 칵테일을 효과적으로 찾을 수 있는 기능을 제공하기 위해 재료별로 칵테일을 분류하여 데이터를 제공하였고, 이를 통해 사용자들이 원하는 정보를 쉽게 찾을 수 있도록 하였습니다.<br>
 
-**즐겨찾기 저장**
-![Project ScreenShot3](https://firebasestorage.googleapis.com/v0/b/travelgo-6fa6a.appspot.com/o/Alcoholism%2Falcoholism%2002.webp?alt=media&token=a4752769-9bbe-4b0a-b643-d0a2ab3d6fef)
+하지만 오픈 API에서 제공된 데이터는 한정적이며, 카테고리가 지나치게 세분화되어 있었고 이로 인해 원하는 칵테일을 효율적으로 찾기 어렵다는 문제가 발생했습니다. 이를 해결하기 위해, Rum, light rum, dark rum과 같이 공통된 이름을 가진 카테고리를 하나로 통합하는 방식으로 데이터를 재구성했습니다. <br>
 
+이러한 데이터 2차 가공을 통해 100여 개에 달하는 카테고리를 20개로 줄이는 데 성공했으며, 사용자들이 원하는 칵테일을 보다 쉽게 찾고 접근할 수 있는 구조를 구현하였습니다.<br>
+
+
+### Firebase를 활용한 백엔드 구축과 컴포넌트 생명주기 이해의 중요성 인식<br>
+
+이전까지 로컬 스토리지를 활용해 데이터를 임시로 저장하는 방식을 사용하였지만 칵테일 레시피를 업로드하는 기능을 구현하기 위해서 백엔드 서버가 필요하였습니다. 이에 Firebase의 Firestore 데이터베이스와 storage를 백엔드로 연결하여 서버 기능을 구현하였습니다.<br>
+
+서버 세팅과 연동 과정에서 문제가 발생하지는 않았지만, useEffect를 활용한 API 호출 과정에서 예상치 못한 시행착오를 겪었습니다. 컴포넌트의 생명주기 관리를 잘못 이해한 결과, 모든 컴포넌트가 업데이트 될 때 API Call이 일어나게 되었습니다. 수 초 만에 20,000번이 넘는 Call이 발생하여 결국 백엔드 서버가 block 되었습니다. <br>
+
+useEffect와 매개변수를 통한 함수형 컴포넌트 생명주기 관리를 다시 이해한 후, 컴포넌트 업데이트 시가 아닌 컴포넌트 생성 시에만 Call이 이루어지도록 API 호출 과정을 수정하였고, 이를 통해 불필요한 데이터 Fetch를 방지함으로써 문제를 해결할 수 있었습니다.<br>
+
+문제를 해결하는 과정을 통해 React의 함수형 컴포넌트와 생명주기 관리에 대한 이해를 심화할 수 있었습니다. 특히, 컴포넌트의 생성, 업데이트, 삭제와 같은 각각의 생명주기 단계를 useEffect를 사용하여 어떻게 처리하는지에 대해 명확히 파악할 수 있었습니다.
 
